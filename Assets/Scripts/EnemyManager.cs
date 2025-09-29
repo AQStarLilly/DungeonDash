@@ -6,15 +6,7 @@ public class EnemyManager : MonoBehaviour
 
     public void RegisterEnemy(HealthSystem enemy)
     {
-        enemy.OnDeath += HandleEnemyDeath;
+        Debug.Log($"Enemy Registered: {enemy.name}");
     }
 
-    private void HandleEnemyDeath(HealthSystem enemy)
-    {
-        // Reward currency
-        CurrencyManager.Instance.AddCurrency(10);
-
-        // Spawn a new enemy
-        spawnManager.SpawnEnemy();
-    }
 }

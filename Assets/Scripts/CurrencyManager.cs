@@ -1,13 +1,16 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class CurrencyManager : MonoBehaviour
 {
     public static CurrencyManager Instance;
 
-    public int currentCurrency = 0;
-    public TMP_Text currencyText;
+    [Header("Currency Values")]
+    public int totalCurrency = 0;   // Permanent across runs
+    public int runCurrency = 0;     // Resets each run
+
+    [Header("UI")]
+    public TMP_Text currencyText;   
 
     private void Awake()
     {
@@ -22,19 +25,36 @@ public class CurrencyManager : MonoBehaviour
 
     public void AddCurrency(int amount)
     {
-        currentCurrency += amount;
+        runCurrency += amount;
         UpdateUI();
     }
 
-    public void ResetCurrency()
+    public void CommitRunToTotal()
     {
-        currentCurrency = 0;
+        totalCurrency += runCurrency;
+        runCurrency = 0; // reset for next run
         UpdateUI();
+    }
+
+    public void ResetRunCurrency()
+    {
+        runCurrency = 0;
+        UpdateUI();
+    }
+
+    public int GetRunCurrency()
+    {
+        return runCurrency;
+    }
+
+    public int GetTotalCurrency()
+    {
+        return totalCurrency;
     }
 
     private void UpdateUI()
     {
         if (currencyText != null)
-            currencyText.text = $"Currency: {currentCurrency}";
+            currencyText.text = $"Run: {runCurrency} | Total: {totalCurrency}";
     }
 }

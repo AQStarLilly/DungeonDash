@@ -4,7 +4,8 @@ public class ProgressionManager : MonoBehaviour
 {
     public static ProgressionManager Instance;
 
-    private int level = 1;
+    private int level = 0; // start at 0 so first spawn increments to 1
+    public int maxWaves = 30;
 
     private void Awake()
     {
@@ -12,23 +13,36 @@ public class ProgressionManager : MonoBehaviour
         else Destroy(gameObject);
     }
 
+    public void ResetLevel() //called when you start a new run
+    {
+        level = 1;
+    }
+
     public void IncreaseLevel()
     {
-        level++;
+        if (level < maxWaves)
+        {
+            level++;
+        }
     }
 
     public int GetEnemyHealthBonus()
     {
-        return level * 10; // Example scaling
+        return (level - 1) * 10; // +10 HP per level
     }
 
     public int GetEnemyDamageBonus()
     {
-        return level * 2;
+        return (level - 1) * 2;  // +2 damage per level
     }
 
     public int GetCurrentLevel()
     {
         return level;
+    }
+
+    public int GetMaxWaves()
+    {
+        return maxWaves;
     }
 }

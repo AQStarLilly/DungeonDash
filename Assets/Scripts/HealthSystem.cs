@@ -1,20 +1,22 @@
 using UnityEngine;
-using TMPro; 
+using TMPro;
 
 public class HealthSystem : MonoBehaviour
 {
+    [Header("Stats")]
     public int maxHealth = 100;
     public int currentHealth;
+    public int attackDamage = 10; // Player fixed, Enemy scales
 
-    public TMPro.TMP_Text healthText;
+    [Header("UI")]
+    public TMP_Text healthText; // assigned dynamically by GameManager
 
     public delegate void DeathEvent(HealthSystem hs);
     public event DeathEvent OnDeath;
 
     private void Start()
     {
-        currentHealth = maxHealth;
-        UpdateUI();
+        ResetHealth();
     }
 
     public void TakeDamage(int damage)
@@ -23,7 +25,8 @@ public class HealthSystem : MonoBehaviour
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Die();
+            Debug.Log($"[HealthSystem] {name} died firing OnDeath");
+            OnDeath?.Invoke(this); // notify GameManager
         }
         UpdateUI();
     }
@@ -34,17 +37,17 @@ public class HealthSystem : MonoBehaviour
         UpdateUI();
     }
 
-    private void UpdateUI()
+    public void ResetHealth()
+    {
+        currentHealth = maxHealth;
+        UpdateUI();
+    }
+
+    public void UpdateUI()
     {
         if (healthText != null)
         {
             healthText.text = $"Health: {currentHealth}/{maxHealth}";
         }
-    }
-
-    private void Die()
-    {
-        OnDeath?.Invoke(this); 
-        Destroy(gameObject);
     }
 }
