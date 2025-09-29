@@ -1,18 +1,32 @@
 using UnityEngine;
 using TMPro;
+using System.Collections;
 
 public class HealthSystem : MonoBehaviour
 {
     [Header("Stats")]
     public int maxHealth = 100;
     public int currentHealth;
-    public int attackDamage = 10; // Player fixed, Enemy scales
+    public int attackDamage = 10;
 
     [Header("UI")]
-    public TMP_Text healthText; // assigned dynamically by GameManager
+    public TMP_Text healthText;
+
+    [Header("Visuals")]
+    private SpriteRenderer spriteRenderer;
+    private Color originalColor;
 
     public delegate void DeathEvent(HealthSystem hs);
     public event DeathEvent OnDeath;
+
+    private void Awake()
+    {
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        if (spriteRenderer != null)
+        {
+            originalColor = spriteRenderer.color;
+        }
+    }
 
     private void Start()
     {
@@ -22,13 +36,24 @@ public class HealthSystem : MonoBehaviour
     public void TakeDamage(int damage)
     {
         currentHealth -= damage;
+
+        if (spriteRenderer != null)
+            StartCoroutine(FlashRed());
+
         if (currentHealth <= 0)
         {
             currentHealth = 0;
-            Debug.Log($"[HealthSystem] {name} died firing OnDeath");
-            OnDeath?.Invoke(this); // notify GameManager
+            OnDeath?.Invoke(this);
         }
+
         UpdateUI();
+    }
+
+    private IEnumerator FlashRed()
+    {
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.color = originalColor;
     }
 
     public void Heal(int amount)
@@ -46,8 +71,6 @@ public class HealthSystem : MonoBehaviour
     public void UpdateUI()
     {
         if (healthText != null)
-        {
             healthText.text = $"Health: {currentHealth}/{maxHealth}";
-        }
     }
 }
