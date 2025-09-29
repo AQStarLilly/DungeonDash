@@ -65,6 +65,9 @@ public class GameManager : MonoBehaviour
 
         switch (newState)
         {
+            case GameState.MainMenu:
+                ResetGame();
+                break;
             case GameState.Gameplay:
                 if (playerHealth == null || currentEnemy == null)
                 {
@@ -342,5 +345,39 @@ public class GameManager : MonoBehaviour
     {
         if (currentEnemy != null) currentEnemy.OnDeath -= HandleEnemyDeath;
         if (playerHealth != null) playerHealth.OnDeath -= HandlePlayerDeath;
+    }
+
+    private void ResetGame()
+    {
+        // Stop any battle loops
+        if (battleLoop != null)
+        {
+            StopCoroutine(battleLoop);
+            battleLoop = null;
+        }
+
+        // Clean up any active combatants
+        UnsubscribeAll();
+
+        if (currentEnemy != null)
+        {
+            Destroy(currentEnemy.gameObject);
+            currentEnemy = null;
+        }
+
+        if (playerHealth != null)
+        {
+            Destroy(playerHealth.gameObject);
+            playerHealth = null;
+        }
+
+        CleanupAllEnemiesInScene();
+
+        // Reset managers
+        if (currencyManager != null) currencyManager.totalCurrency = 0;
+        if (currencyManager != null) currencyManager.ResetRunCurrency();
+        if (progressionManager != null) progressionManager.ResetLevel();
+
+        Debug.Log("Game fully reset - back to Main Menu");
     }
 }
