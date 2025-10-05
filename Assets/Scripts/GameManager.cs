@@ -44,6 +44,9 @@ public class GameManager : MonoBehaviour
     [Header("Upgrades UI")]
     public TMP_Text upgradesCurrencyText;
 
+    [Header("Gameplay Container")]
+    public GameObject gameplayContainer;
+
     private HealthSystem playerHealth;
     private HealthSystem currentEnemy;
     private Coroutine battleLoop;
@@ -69,8 +72,10 @@ public class GameManager : MonoBehaviour
         {
             case GameState.MainMenu:
                 ResetGame();
+                gameplayContainer.SetActive(false);
                 break;
             case GameState.Gameplay:
+                gameplayContainer.SetActive(true);
                 if (playerHealth == null || currentEnemy == null)
                 {
                     // Fresh run
@@ -86,7 +91,12 @@ public class GameManager : MonoBehaviour
 
             case GameState.Pause:
                 PauseBattle();
+                gameplayContainer.SetActive(true);
                 Time.timeScale = 0f;
+                break;
+
+            case GameState.PauseMenuOptions:
+                gameplayContainer.SetActive(false);
                 break;
 
             case GameState.Results:
@@ -117,7 +127,7 @@ public class GameManager : MonoBehaviour
             Destroy(playerHealth.gameObject);
             playerHealth = null;
         }
-        GameObject playerObj = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity);
+        GameObject playerObj = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity, gameplayContainer.transform);
         // Force Z = 0 just in case
         playerObj.transform.position = new Vector3(playerObj.transform.position.x, playerObj.transform.position.y, 0f);
 
@@ -128,6 +138,7 @@ public class GameManager : MonoBehaviour
 
         // First enemy (baseline, no scaling)
         currentEnemy = spawnManager.SpawnEnemy();
+        currentEnemy.transform.SetParent(gameplayContainer.transform);
         currentEnemy.healthText = enemyHealthText;
         // Force Z = 0 just in case
         currentEnemy.transform.position = new Vector3(currentEnemy.transform.position.x, currentEnemy.transform.position.y, 0f);
