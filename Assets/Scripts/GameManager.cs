@@ -380,4 +380,9 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Game fully reset - back to Main Menu");
     }
+
+    public void Quit()
+    {
+        Application.Quit();
+    }
 }
