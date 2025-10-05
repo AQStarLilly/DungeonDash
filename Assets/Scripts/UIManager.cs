@@ -5,7 +5,7 @@ public class UIManager : MonoBehaviour
 {
     public GameObject mainMenuUI;
     public GameObject gameplayUI;
-    public GameObject pauseMenuUI;
+    public GameObject pausePanel;
     public GameObject mainMenuOptionsUI;
     public GameObject pauseMenuOptionsUI;
     public GameObject upgradesUI;
@@ -16,20 +16,24 @@ public class UIManager : MonoBehaviour
     {
         // Disable all
         mainMenuUI.SetActive(false);
-        gameplayUI.SetActive(false);
-        pauseMenuUI.SetActive(false);
+        gameplayUI.SetActive(false);      
         mainMenuOptionsUI.SetActive(false);
         pauseMenuOptionsUI.SetActive(false);
         upgradesUI.SetActive(false);
         resultsUI.SetActive(false);
-        winUI.SetActive(false);      
+        winUI.SetActive(false);
+
+        pausePanel.SetActive(false);
 
         // Enable current
         switch (state)
         {
             case GameState.MainMenu: mainMenuUI.SetActive(true); break;
             case GameState.Gameplay: gameplayUI.SetActive(true); break;
-            case GameState.Pause: pauseMenuUI.SetActive(true); break;
+            case GameState.Pause:
+                gameplayUI.SetActive(true);
+                pausePanel.SetActive(true);
+                break;
             case GameState.MainMenuOptions: mainMenuOptionsUI.SetActive(true); break;
             case GameState.PauseMenuOptions: pauseMenuOptionsUI.SetActive(true); break;
             case GameState.Upgrades: upgradesUI.SetActive(true); break;

@@ -80,11 +80,13 @@ public class GameManager : MonoBehaviour
                 {
                     // Resume battle if paused
                     ResumeBattle();
+                    Time.timeScale = 1f;
                 }
                 break;
 
             case GameState.Pause:
                 PauseBattle();
+                Time.timeScale = 0f;
                 break;
 
             case GameState.Results:
