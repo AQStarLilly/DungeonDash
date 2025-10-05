@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     public EnemyManager enemyManager;
     public ProgressionManager progressionManager;
     public CurrencyManager currencyManager;
+    public SoundManager soundManager;
 
     [Header("Prefabs & Spawns")]
     public GameObject playerPrefab;
