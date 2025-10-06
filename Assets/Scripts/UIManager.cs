@@ -6,6 +6,7 @@ public class UIManager : MonoBehaviour
     public GameObject mainMenuUI;
     public GameObject gameplayUI;
     public GameObject pausePanel;
+    public GameObject storyPageUI;
     public GameObject mainMenuOptionsUI;
     public GameObject pauseMenuOptionsUI;
     public GameObject upgradesUI;
@@ -16,7 +17,8 @@ public class UIManager : MonoBehaviour
     {
         // Disable all
         mainMenuUI.SetActive(false);
-        gameplayUI.SetActive(false);      
+        gameplayUI.SetActive(false);
+        storyPageUI.SetActive(false);
         mainMenuOptionsUI.SetActive(false);
         pauseMenuOptionsUI.SetActive(false);
         upgradesUI.SetActive(false);
@@ -34,6 +36,7 @@ public class UIManager : MonoBehaviour
                 gameplayUI.SetActive(true);
                 pausePanel.SetActive(true);
                 break;
+            case GameState.Story: storyPageUI.SetActive(true); break;
             case GameState.MainMenuOptions: mainMenuOptionsUI.SetActive(true); break;
             case GameState.PauseMenuOptions: pauseMenuOptionsUI.SetActive(true); break;
             case GameState.Upgrades: upgradesUI.SetActive(true); break;
@@ -45,6 +48,7 @@ public class UIManager : MonoBehaviour
     public void GoToMainMenu() => GameManager.Instance.ChangeState(GameState.MainMenu);
     public void GoToGameplay() => GameManager.Instance.ChangeState(GameState.Gameplay);
     public void GoToPause() => GameManager.Instance.ChangeState(GameState.Pause);
+    public void GoToStory() => GameManager.Instance.ChangeState(GameState.Story);
     public void GoToMainMenuOptions() => GameManager.Instance.ChangeState(GameState.MainMenuOptions);
     public void GoToPauseMenuOptions() => GameManager.Instance.ChangeState(GameState.PauseMenuOptions);
     public void GoToUpgrades() => GameManager.Instance.ChangeState(GameState.Upgrades);

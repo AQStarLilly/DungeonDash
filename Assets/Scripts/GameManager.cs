@@ -9,6 +9,7 @@ public class GameManager : MonoBehaviour
         MainMenu,
         Gameplay,
         Pause,
+        Story,
         MainMenuOptions,
         PauseMenuOptions,
         Upgrades,
