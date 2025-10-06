@@ -77,7 +77,7 @@ public class GameManager : MonoBehaviour
                 gameplayContainer.SetActive(false);
                 break;
             case GameState.Gameplay:
-                gameplayContainer.SetActive(true);
+                gameplayContainer.SetActive(true);              
                 if (playerHealth == null || currentEnemy == null)
                 {
                     // Fresh run

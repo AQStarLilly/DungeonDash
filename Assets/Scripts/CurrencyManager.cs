@@ -55,6 +55,6 @@ public class CurrencyManager : MonoBehaviour
     private void UpdateUI()
     {
         if (currencyText != null)
-            currencyText.text = $"Run: {runCurrency} | Total: {totalCurrency}";
+            currencyText.text = $"Run: {runCurrency}";
     }
 }
