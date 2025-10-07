@@ -8,6 +8,7 @@ public class CurrencyManager : MonoBehaviour
     [Header("Currency Values")]
     public int totalCurrency = 0;   // Permanent across runs
     public int runCurrency = 0;     // Resets each run
+    public float currencyMultiplier = 1f;
 
     [Header("UI")]
     public TMP_Text currencyText;   
@@ -23,9 +24,10 @@ public class CurrencyManager : MonoBehaviour
         UpdateUI();
     }
 
-    public void AddCurrency(int amount)
+    public void AddCurrency(int baseAmount)
     {
-        runCurrency += amount;
+        int finalAmount = Mathf.RoundToInt(baseAmount * currencyMultiplier);
+        runCurrency += finalAmount;
         UpdateUI();
     }
 
@@ -50,6 +52,21 @@ public class CurrencyManager : MonoBehaviour
     public int GetTotalCurrency()
     {
         return totalCurrency;
+    }
+
+    public bool SpendCurrency(int amount)
+    {
+        if(totalCurrency >= amount)
+        {
+            totalCurrency -= amount;
+            UpdateUI();
+            return true;
+        }
+        else
+        {
+            Debug.Log("Not enough currency to spend");
+            return false;
+        }
     }
 
     private void UpdateUI()

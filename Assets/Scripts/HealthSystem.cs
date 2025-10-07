@@ -16,6 +16,9 @@ public class HealthSystem : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
+    [Header("Identity")]
+    public bool isPlayer = false;
+
     public delegate void DeathEvent(HealthSystem hs);
     public event DeathEvent OnDeath;
 
@@ -64,6 +67,11 @@ public class HealthSystem : MonoBehaviour
 
     public void ResetHealth()
     {
+        if(isPlayer && PlayerStats.Instance != null)
+        {
+            maxHealth = Mathf.RoundToInt(maxHealth * PlayerStats.Instance.healthMultiplier) + PlayerStats.Instance.shield;
+        }
+
         currentHealth = maxHealth;
         UpdateUI();
     }
@@ -72,5 +80,14 @@ public class HealthSystem : MonoBehaviour
     {
         if (healthText != null)
             healthText.text = $"Health: {currentHealth}/{maxHealth}";
+    }
+
+    public int GetAttackDamage()
+    {
+        if (isPlayer && PlayerStats.Instance != null)
+        {
+            return Mathf.RoundToInt(attackDamage * PlayerStats.Instance.damageMultiplier);
+        }
+        return attackDamage;
     }
 }

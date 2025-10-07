@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public ProgressionManager progressionManager;
     public CurrencyManager currencyManager;
     public SoundManager soundManager;
+    public UpgradeManager upgradeManager;
 
     [Header("Prefabs & Spawns")]
     public GameObject playerPrefab;
@@ -111,6 +112,8 @@ public class GameManager : MonoBehaviour
             case GameState.Upgrades:
                 if (upgradesCurrencyText != null)
                     upgradesCurrencyText.text = $"Gold Available: {currencyManager.totalCurrency}";
+                if (UpgradeManager.Instance != null)
+                    UpgradeManager.Instance.UpdateAllButtons();
                 break;
         }
     }
@@ -175,6 +178,13 @@ public class GameManager : MonoBehaviour
 
         playerHealth = playerObj.GetComponent<HealthSystem>();
         playerHealth.healthText = playerHealthText;
+
+        int baseHealth = playerHealth.maxHealth;
+        int baseDamage = playerHealth.attackDamage;
+
+        playerHealth.maxHealth = Mathf.RoundToInt(baseHealth * PlayerStats.Instance.healthMultiplier) + PlayerStats.Instance.shield;
+        playerHealth.attackDamage = Mathf.RoundToInt(baseDamage * PlayerStats.Instance.damageMultiplier);
+
         playerHealth.ResetHealth();
         SubscribeToPlayer();
 
@@ -208,11 +218,11 @@ public class GameManager : MonoBehaviour
 
             // Enemy hits player
             if (playerHealth != null && currentEnemy != null)
-                playerHealth.TakeDamage(currentEnemy.attackDamage);
+                playerHealth.TakeDamage(currentEnemy.GetAttackDamage());
 
             // Player hits enemy
             if (playerHealth != null && currentEnemy != null)
-                currentEnemy.TakeDamage(playerHealth.attackDamage);
+                currentEnemy.TakeDamage(playerHealth.GetAttackDamage());
 
             // If either died during attacks, bail out immediately
             if (playerHealth == null || currentEnemy == null)
@@ -283,6 +293,12 @@ public class GameManager : MonoBehaviour
 
         if (waveCounterText != null)
             waveCounterText.text = $"Wave {current}/{max}";
+    }
+
+    public void UpdateUpgradesCurrencyUI()
+    {
+        if (upgradesCurrencyText != null)
+            upgradesCurrencyText.text = $"Gold Available: {currencyManager.totalCurrency}";
     }
 
     private void HandlePlayerDeath(HealthSystem player)
@@ -426,6 +442,11 @@ public class GameManager : MonoBehaviour
         {
             Destroy(playerHealth.gameObject);
             playerHealth = null;
+        }
+
+        if (UpgradeManager.Instance != null)
+        {
+            UpgradeManager.Instance.ResetUpgrades();
         }
 
         CleanupAllEnemiesInScene();

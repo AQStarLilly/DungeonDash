@@ -1,32 +1,218 @@
 using UnityEngine;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine.UI;
+using System.Collections;
 
 public class UpgradeManager : MonoBehaviour
 {
-    //Set up all upgrade references - Dictionary?
+    public static UpgradeManager Instance;
 
+    [System.Serializable]
+    public class Upgrade
+    {
+        [Header("Identity")]
+        public string id;                 // e.g. "damage1", "damage2", "health", "shield", "currency"
+        public string displayName = "Upgrade";
 
-    //loop to check gold vs how much you need per upgrade?
-    //if you don't have enough button should be greyed out and if you try to click on it nothing will happen or maybe the button or currency will flash red
-    //Upgrades you can buy will be colored, like green or something to show you can afford it
-    //Have to update currency so when you buy upgrades it removes that currency from your total
+        [Header("Progress")]
+        public int level = 0;
+        public int maxLevel = 5;
 
+        [Header("Cost")]
+        public int baseCost = 20;
+        public float costMultiplier = 1.5f;
 
-    //Connect upgrades to player / gameplay so they affect him or spawn allies in scene (added health and damage from allies or ability you can use?)
+        [Header("Dependency (optional)")]
+        public string requiresUpgradeId = "";   // leave empty if none
+        public int requiresLevel = 0;           // e.g. 5 to unlock Damage II after Damage I max
 
+        [Header("UI")]
+        public Button button;
+        public TMP_Text buttonText;
 
-    //Add the clear option when starting a new game / wipes all upgrades.
+        public int CurrentCost => Mathf.RoundToInt(baseCost * Mathf.Pow(costMultiplier, level));
+        public bool IsMaxed => level >= maxLevel;
+    }
 
-    //Upgrades - Set value each upgrade (+10) or just a multiplier (*2) - Probably multiplier (fix enemies to match if I do this one)
-                                                                            //also try to not have multiplier be to crazy, like health increasing by 100 or more
-    //Balance is hard, both enemy and player need to scale similarly so game feels smooth and not a mess ((sudden increase in stats)should be more gradual)
-    //Game takes 30 mins or so ? Don't want to take to long or be to fast. May have to tweak number of waves depending on balance and multipliers
+    [Header("Upgrades List")]
+    public List<Upgrade> upgrades = new List<Upgrade>();
 
-    //Damage 1
-    //Damage 2
-    //Health
-    //Shield (Health Bar 2)
-    //Currency Multiplier
-    //Summonable Ally 1 (Add health & Damage to a collective pool  ||  Ability you gain from them (Janitor may throw buckets at people, 10 second cooldown)
-    //Summonable Ally 2 (Add health & Damage to a collective pool  ||  Ability you gain from them (Hr Lady who yells at people, 10 second cooldown)
-    //Summonable Ally 3 (Add health & Damage to a collective pool  ||  Ability you gain from them (Coworker who's always drunk - staggers around and bumbs into people, 10 second cooldown)
+    //  colors for states 
+    [Header("UI Colors")]
+    public Color normalText = Color.white;
+    public Color affordText = new Color(0.6f, 1f, 0.6f); 
+    public Color lockedText = new Color(0.7f, 0.7f, 0.7f); 
+
+    // quick lookup
+    private Dictionary<string, Upgrade> map = new Dictionary<string, Upgrade>();
+
+    private void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else { Destroy(gameObject); return; }
+
+        // build map
+        map.Clear();
+        foreach (var up in upgrades)
+        {
+            if (!string.IsNullOrEmpty(up.id) && !map.ContainsKey(up.id))
+                map.Add(up.id, up);
+        }
+    }
+
+    private void Start()
+    {
+        if (upgrades.Count > 0)
+        {
+            UpdateAllButtons();
+        }
+    }
+
+    private void OnEnable()
+    {
+        if (upgrades.Count > 0)
+        {
+            UpdateAllButtons();
+        }
+    }
+
+    public void TryBuyUpgrade(string upgradeId)
+    {
+        if (!map.TryGetValue(upgradeId, out var up) || up == null) return;
+
+        if (IsLocked(up))
+        {
+            // locked  ignore; (button should already be disabled)
+            return;
+        }
+
+        if (up.IsMaxed)
+        {
+            // maxed  ignore
+            return;
+        }
+
+        int cost = up.CurrentCost;
+        if (CurrencyManager.Instance.SpendCurrency(cost))
+        {
+            up.level++;
+            ApplyUpgradeEffect(up);
+            UpdateAllButtons();
+            GameManager.Instance.UpdateUpgradesCurrencyUI();
+        }
+        else
+        {
+            // cannot afford  flash red text
+            StartCoroutine(FlashRed(up.buttonText));
+        }
+    }
+
+    private bool IsLocked(Upgrade up)
+    {
+        if (string.IsNullOrEmpty(up.requiresUpgradeId) || up.requiresLevel <= 0) return false;
+        if (!map.TryGetValue(up.requiresUpgradeId, out var req)) return true; 
+        return req.level < up.requiresLevel;
+    }
+
+    private void ApplyUpgradeEffect(Upgrade up)
+    {
+        switch (up.id)
+        {
+            case "damage1":
+                // +10% dmg per level
+                PlayerStats.Instance.damageMultiplier += 0.10f;
+                break;
+
+            case "damage2":
+                // +15% dmg per level (unlocks after damage1 max)
+                PlayerStats.Instance.damageMultiplier += 0.15f;
+                break;
+
+            case "health":
+                // +20% max HP per level (applied on next spawn/reset)
+                PlayerStats.Instance.healthMultiplier += 0.20f;
+                break;
+
+            case "shield":
+                // +10 flat shield per level (baked into max HP on reset)
+                PlayerStats.Instance.shield += 10;
+                break;
+
+            case "currency":
+                // +20% currency per level (applies immediately to future kills)
+                CurrencyManager.Instance.currencyMultiplier += 0.20f;
+                break;
+
+            default:
+                Debug.Log($"{up.displayName} effect not implemented");
+                break;
+        }
+    }
+
+    public void UpdateAllButtons()
+    {
+        if (upgrades == null || upgrades.Count == 0)
+        {
+            Debug.LogWarning("[UpgradeManager] No upgrades configured.");
+            return;
+        }
+
+        foreach (var up in upgrades)
+        {
+            if (up == null)
+            {
+                Debug.LogWarning("[UpgradeManager] Null upgrade entry found in list.");
+                continue;
+            }
+
+            if (up.button == null || up.buttonText == null)
+            {
+                Debug.LogWarning($"[UpgradeManager] Missing UI reference for upgrade: {up.displayName} ({up.id})");
+                continue;
+            }
+
+            bool locked = IsLocked(up);
+            bool maxed = up.IsMaxed;
+            bool affordable = CurrencyManager.Instance != null &&
+                              CurrencyManager.Instance.totalCurrency >= up.CurrentCost;
+
+            if (maxed)
+            {
+                up.button.interactable = false;
+                up.buttonText.text = $"{up.displayName} (MAX)";
+                up.buttonText.color = lockedText;
+            }
+            else if (locked)
+            {
+                up.button.interactable = false;
+                up.buttonText.text = $"{up.displayName} (Locked)";
+                up.buttonText.color = lockedText;
+            }
+            else
+            {
+                up.button.interactable = affordable;
+                up.buttonText.text = $"{up.displayName}  Lv.{up.level}  —  Cost: {up.CurrentCost}";
+                up.buttonText.color = affordable ? affordText : normalText;
+            }
+        }
+    }
+
+    private IEnumerator FlashRed(TMP_Text text)
+    {
+        if (text == null) yield break;
+        Color original = text.color;
+        text.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        text.color = original;
+    }
+
+    public void ResetUpgrades()
+    {
+        foreach (var up in upgrades)
+            up.level = 0;
+
+        PlayerStats.Instance.ResetStats();
+        UpdateAllButtons();
+    }
 }
