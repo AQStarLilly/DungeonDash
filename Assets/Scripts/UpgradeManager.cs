@@ -135,7 +135,7 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case "shield":
-                // +10 flat shield per level (baked into max HP on reset, will fix so it's a seperate value - say 2 bars for health)
+                // +10 flat shield per level (baked into max HP on reset, will fix so it's a seperate value - shield icon above head, depletes as you take damage)
                 PlayerStats.Instance.shield += 10;
                 break;
 

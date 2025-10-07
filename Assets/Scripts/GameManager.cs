@@ -106,6 +106,8 @@ public class GameManager : MonoBehaviour
                 break;
 
             case GameState.Results:
+                gameplayContainer.SetActive(false);
+                break;
             case GameState.Win:
                 EndBattle();
                 break;
