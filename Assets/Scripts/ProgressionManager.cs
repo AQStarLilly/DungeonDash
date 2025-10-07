@@ -45,4 +45,9 @@ public class ProgressionManager : MonoBehaviour
     {
         return maxWaves;
     }
+
+    public void SetCurrentLevel(int wave)
+    {
+        level = Mathf.Clamp(wave, 1, maxWaves);
+    }
 }

@@ -27,6 +27,6 @@ public class UpgradeManager : MonoBehaviour
     //Shield (Health Bar 2)
     //Currency Multiplier
     //Summonable Ally 1 (Add health & Damage to a collective pool  ||  Ability you gain from them (Janitor may throw buckets at people, 10 second cooldown)
-    //Summonable Ally 2 (Add health & Damage to a collective pool  ||  Ability you gain from them (Janitor may throw buckets at people, 10 second cooldown)
-    //Summonable Ally 3 (Add health & Damage to a collective pool  ||  Ability you gain from them (Janitor may throw buckets at people, 10 second cooldown)
+    //Summonable Ally 2 (Add health & Damage to a collective pool  ||  Ability you gain from them (Hr Lady who yells at people, 10 second cooldown)
+    //Summonable Ally 3 (Add health & Damage to a collective pool  ||  Ability you gain from them (Coworker who's always drunk - staggers around and bumbs into people, 10 second cooldown)
 }

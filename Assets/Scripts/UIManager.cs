@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 using static GameManager;
 
 public class UIManager : MonoBehaviour
@@ -13,6 +14,9 @@ public class UIManager : MonoBehaviour
     public GameObject upgradesUI;
     public GameObject resultsUI;
     public GameObject winUI;
+
+    [Header("Main Menu Button")]
+    public Button loadGameButton;
 
     public void UpdateUI(GameState state)
     {
@@ -45,6 +49,14 @@ public class UIManager : MonoBehaviour
             case GameState.Upgrades: upgradesUI.SetActive(true); break;
             case GameState.Results: resultsUI.SetActive(true); break;
             case GameState.Win: winUI.SetActive(true); break;
+        }
+    }
+
+    public void UpdateLoadButtonInteractable(bool hasSave)
+    {
+        if(loadGameButton != null)
+        {
+            loadGameButton.interactable = hasSave;
         }
     }
 

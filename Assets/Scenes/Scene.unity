@@ -1866,6 +1866,7 @@ MonoBehaviour:
   upgradesUI: {fileID: 11971415}
   resultsUI: {fileID: 686387691}
   winUI: {fileID: 895042670}
+  loadGameButton: {fileID: 954558544}
 --- !u!4 &315462186
 Transform:
   m_ObjectHideFlags: 0
@@ -5259,7 +5260,7 @@ GameObject:
   - component: {fileID: 954558545}
   - component: {fileID: 954558544}
   m_Layer: 5
-  m_Name: Continue
+  m_Name: LoadGameButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5329,9 +5330,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 315462185}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: GoToInstructions
+      - m_Target: {fileID: 859732907}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: LoadSavedGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6367,7 +6368,7 @@ GameObject:
   - component: {fileID: 1269582231}
   - component: {fileID: 1269582230}
   m_Layer: 5
-  m_Name: New Game
+  m_Name: NewGameButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6437,9 +6438,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 315462185}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: GoToInstructions
+      - m_Target: {fileID: 859732907}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: StartNewGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -7640,7 +7641,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Continue
+  m_text: Load Game
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -9779,9 +9780,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 315462185}
-        m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: GoToMainMenu
+      - m_Target: {fileID: 859732907}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: QuitToMainMenuAndSave
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

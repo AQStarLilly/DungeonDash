@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     private HealthSystem currentEnemy;
     private Coroutine battleLoop;
     private bool isPaused = false;
+    private bool loadingFromSave = false;
 
     private void Awake()
     {
@@ -75,9 +76,12 @@ public class GameManager : MonoBehaviour
             case GameState.MainMenu:
                 ResetGame();
                 gameplayContainer.SetActive(false);
+
+                uiManager.UpdateLoadButtonInteractable(SaveSystem.HasSave());
                 break;
             case GameState.Gameplay:
-                gameplayContainer.SetActive(true);              
+                gameplayContainer.SetActive(true);
+                Time.timeScale = 1f;
                 if (playerHealth == null || currentEnemy == null)
                 {
                     // Fresh run
@@ -86,8 +90,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     // Resume battle if paused
-                    ResumeBattle();
-                    Time.timeScale = 1f;
+                    ResumeBattle();                   
                 }
                 break;
 
@@ -112,13 +115,50 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    // Save / Load Handlers //
+    public void StartNewGame()
+    {
+        SaveSystem.ClearSave();
+        ChangeState(GameState.Instructions);
+    }
+
+    public void LoadSavedGame()
+    {
+        if (SaveSystem.HasSave())
+        {
+            int savedCurrency, savedWave;
+            SaveSystem.LoadGame(out savedCurrency, out savedWave);
+
+            currencyManager.totalCurrency = savedCurrency;
+            progressionManager.SetCurrentLevel(savedWave);
+
+            loadingFromSave = true; 
+            ChangeState(GameState.Gameplay);
+        }
+    }
+
+    public void QuitToMainMenuAndSave()
+    {
+        SaveSystem.SaveGame(currencyManager.totalCurrency, progressionManager.GetCurrentLevel());
+        ChangeState(GameState.MainMenu);
+    }
+
+
+    // Battle Logic //
     private void StartBattle()
     {
         // Clear old results
         if (resultsCurrencyText != null) resultsCurrencyText.text = "";
         if (resultsWavesText != null) resultsWavesText.text = "";
         currencyManager.ResetRunCurrency();
-        progressionManager.ResetLevel();   // wave = 1 (baseline)
+
+        if (!loadingFromSave)
+        {
+            progressionManager.ResetLevel();   // wave = 1 (baseline)
+        }
+
+        // Clear the flag so it only applies once
+        loadingFromSave = false;
 
         // Safety: nuke any leftovers from previous runs
         CleanupAllEnemiesInScene();
