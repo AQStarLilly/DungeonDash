@@ -115,7 +115,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Upgrades:
                 if (upgradesCurrencyText != null)
-                    upgradesCurrencyText.text = $"Gold Available: {currencyManager.totalCurrency}";
+                    upgradesCurrencyText.text = $"{currencyManager.totalCurrency}";
                 if (UpgradeManager.Instance != null)
                     UpgradeManager.Instance.UpdateAllButtons();
                 break;
@@ -333,7 +333,7 @@ public class GameManager : MonoBehaviour
         int wavesCleared = progressionManager.GetCurrentLevel() - 1;
 
         if (resultsCurrencyText != null)
-            resultsCurrencyText.text = $"Currency Earned: {earnedThisRun}";
+            resultsCurrencyText.text = $"{earnedThisRun}";
 
         if (resultsWavesText != null)
             resultsWavesText.text = $"Waves Cleared: {wavesCleared}";

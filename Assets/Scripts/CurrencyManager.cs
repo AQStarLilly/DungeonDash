@@ -11,7 +11,9 @@ public class CurrencyManager : MonoBehaviour
     public float currencyMultiplier = 1f;
 
     [Header("UI")]
-    public TMP_Text currencyText;   
+    public TMP_Text gameplayCurrencyText;
+    public TMP_Text upgradesCurrencyText;
+    public TMP_Text resultsCurrencyText;
 
     private void Awake()
     {
@@ -71,7 +73,15 @@ public class CurrencyManager : MonoBehaviour
 
     private void UpdateUI()
     {
-        if (currencyText != null)
-            currencyText.text = $"Run: {runCurrency}";
+        if (gameplayCurrencyText != null)
+            gameplayCurrencyText.text = $"{runCurrency}";
+
+        // Upgrades screen shows total saved gold
+        if (upgradesCurrencyText != null)
+            upgradesCurrencyText.text = $"{totalCurrency}";
+
+        // Results screen shows what you earned this run
+        if (resultsCurrencyText != null)
+            resultsCurrencyText.text = $"{runCurrency}";
     }
 }
