@@ -5,6 +5,7 @@ public class SpawnManager : MonoBehaviour
     [Header("Enemy Setup")]
     public GameObject enemyPrefab;
     public Transform spawnPoint;
+    public Sprite[] enemySprites;
 
     [Header("References")]
     public EnemyManager enemyManager;
@@ -13,6 +14,12 @@ public class SpawnManager : MonoBehaviour
     {
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         HealthSystem hs = enemy.GetComponent<HealthSystem>();
+
+        SpriteRenderer sr = enemy.GetComponent<SpriteRenderer>();
+        if(sr != null && enemySprites.Length > 0)
+        {
+            sr.sprite = enemySprites[Random.Range(0, enemySprites.Length)];
+        }
 
         int extraHealth = ProgressionManager.Instance.GetEnemyHealthBonus();
         int extraDamage = ProgressionManager.Instance.GetEnemyDamageBonus();
