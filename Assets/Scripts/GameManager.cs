@@ -78,10 +78,12 @@ public class GameManager : MonoBehaviour
                 ResetGame();
                 gameplayContainer.SetActive(false);
 
+                BackgroundManager.Instance.ShowMainMenuBackground();
                 uiManager.UpdateLoadButtonInteractable(SaveSystem.HasSave());
                 break;
             case GameState.Gameplay:
                 gameplayContainer.SetActive(true);
+                BackgroundManager.Instance.ShowGameplayBackground();
                 Time.timeScale = 1f;
                 if (playerHealth == null || currentEnemy == null)
                 {
