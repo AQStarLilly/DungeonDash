@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.MainMenu:
-                ResetGame();
+                ResetGame(resetUpgrades: false);
                 gameplayContainer.SetActive(false);
 
                 BackgroundManager.Instance.ShowMainMenuBackground();
@@ -126,6 +126,7 @@ public class GameManager : MonoBehaviour
     public void StartNewGame()
     {
         SaveSystem.ClearSave();
+        ResetGame(resetUpgrades: true);
         ChangeState(GameState.Instructions);
     }
 
@@ -426,7 +427,7 @@ public class GameManager : MonoBehaviour
         if (playerHealth != null) playerHealth.OnDeath -= HandlePlayerDeath;
     }
 
-    private void ResetGame()
+    private void ResetGame(bool resetUpgrades = true)
     {
         // Stop any battle loops
         if (battleLoop != null)
@@ -450,7 +451,7 @@ public class GameManager : MonoBehaviour
             playerHealth = null;
         }
 
-        if (UpgradeManager.Instance != null)
+        if (resetUpgrades && UpgradeManager.Instance != null)
         {
             UpgradeManager.Instance.ResetUpgrades();
         }
