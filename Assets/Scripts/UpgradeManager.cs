@@ -216,3 +216,15 @@ public class UpgradeManager : MonoBehaviour
         UpdateAllButtons();
     }
 }
+
+
+//Wave 1 enemy - Health (30), Damage (8)
+//Final Boss (wave 30) - Health (320), Damage (66)
+
+//Player Start - Health (50), Damage (10)
+//Full Upgrades - Health(150), Damage(20)
+
+/* Definitely need to tweak (stats should be similar to boss by the time you get to final wave)
+ * All upgrades or mostly all upgrades unlocked to beat boss?
+ * 20-30 minutes to beat game?
+ */
