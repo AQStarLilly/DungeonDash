@@ -313,7 +313,7 @@ public class GameManager : MonoBehaviour
     public void UpdateUpgradesCurrencyUI()
     {
         if (upgradesCurrencyText != null)
-            upgradesCurrencyText.text = $"Gold Available: {currencyManager.totalCurrency}";
+            upgradesCurrencyText.text = $"{currencyManager.totalCurrency}";
     }
 
     private void HandlePlayerDeath(HealthSystem player)
