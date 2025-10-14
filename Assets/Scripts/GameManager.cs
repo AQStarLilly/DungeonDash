@@ -182,6 +182,7 @@ public class GameManager : MonoBehaviour
 
         playerHealth = playerObj.GetComponent<HealthSystem>();
         playerHealth.healthText = playerHealthText;
+        playerHealth.healthBarUI = GameObject.Find("PlayerHealthBarBG").GetComponent<HealthBarUI>();
 
         int baseHealth = playerHealth.maxHealth;
         int baseDamage = playerHealth.attackDamage;
@@ -196,6 +197,7 @@ public class GameManager : MonoBehaviour
         currentEnemy = spawnManager.SpawnEnemy();
         currentEnemy.transform.SetParent(gameplayContainer.transform);
         currentEnemy.healthText = enemyHealthText;
+        currentEnemy.healthBarUI = GameObject.Find("EnemyHealthBarBG").GetComponent<HealthBarUI>();
         // Force Z = 0 just in case
         currentEnemy.transform.position = new Vector3(currentEnemy.transform.position.x, currentEnemy.transform.position.y, 0f);
         currentEnemy.ResetHealth();

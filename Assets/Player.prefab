@@ -104,4 +104,5 @@ MonoBehaviour:
   currentHealth: 0
   attackDamage: 10
   healthText: {fileID: 0}
+  healthBarUI: {fileID: 0}
   isPlayer: 0

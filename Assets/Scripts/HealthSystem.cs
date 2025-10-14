@@ -11,6 +11,7 @@ public class HealthSystem : MonoBehaviour
 
     [Header("UI")]
     public TMP_Text healthText;
+    public HealthBarUI healthBarUI;
 
     [Header("Visuals")]
     private SpriteRenderer spriteRenderer;
@@ -33,6 +34,36 @@ public class HealthSystem : MonoBehaviour
 
     private void Start()
     {
+        // Automatically find and link the correct health bar if none is assigned
+        if (healthBarUI == null)
+        {        
+            var bars = Object.FindObjectsByType<HealthBarUI>(FindObjectsSortMode.None);
+
+            if (isPlayer)
+            {
+                // Assign the one with "Player" in its name
+                foreach (var bar in bars)
+                {
+                    if (bar.name.ToLower().Contains("player"))
+                    {
+                        healthBarUI = bar;
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                // Assign the one with "Enemy" in its name
+                foreach (var bar in bars)
+                {
+                    if (bar.name.ToLower().Contains("enemy"))
+                    {
+                        healthBarUI = bar;
+                        break;
+                    }
+                }
+            }
+        }
         ResetHealth();
     }
 
@@ -80,6 +111,11 @@ public class HealthSystem : MonoBehaviour
     {
         if (healthText != null)
             healthText.text = $"Health: {currentHealth}/{maxHealth}";
+
+        if (healthBarUI != null)
+        {
+            healthBarUI.SetHealth(currentHealth, maxHealth);
+        }
     }
 
     public int GetAttackDamage()
