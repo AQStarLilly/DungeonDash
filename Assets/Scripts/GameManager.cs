@@ -75,7 +75,7 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.MainMenu:
-                ResetGame(resetUpgrades: false);
+                ResetGame(resetUpgrades: false, resetCurrency: false);
                 gameplayContainer.SetActive(false);
 
                 BackgroundManager.Instance.ShowMainMenuBackground();
@@ -126,7 +126,7 @@ public class GameManager : MonoBehaviour
     public void StartNewGame()
     {
         SaveSystem.ClearSave();
-        ResetGame(resetUpgrades: true);
+        ResetGame(resetUpgrades: true, resetCurrency: true);
         ChangeState(GameState.Instructions);
     }
 
@@ -134,11 +134,19 @@ public class GameManager : MonoBehaviour
     {
         if (SaveSystem.HasSave())
         {
-            int savedCurrency, savedWave;
-            SaveSystem.LoadGame(out savedCurrency, out savedWave);
+            int savedTotalCurrency;
+            int savedRunCurrency;
+            int savedLastRun;
+            int savedWave;
+     
+            SaveSystem.LoadGame(out savedTotalCurrency, out savedRunCurrency, out savedLastRun, out savedWave);
 
-            currencyManager.totalCurrency = savedCurrency;
+            currencyManager.totalCurrency = savedTotalCurrency;
+            currencyManager.runCurrency = savedRunCurrency;
+            currencyManager.lastRunEarnings = savedLastRun;
             progressionManager.SetCurrentLevel(savedWave);
+
+            currencyManager.UpdateUI();
 
             loadingFromSave = true; 
             ChangeState(GameState.Gameplay);
@@ -147,7 +155,7 @@ public class GameManager : MonoBehaviour
 
     public void QuitToMainMenuAndSave()
     {
-        SaveSystem.SaveGame(currencyManager.totalCurrency, progressionManager.GetCurrentLevel());
+        SaveSystem.SaveGame(currencyManager.totalCurrency, currencyManager.runCurrency, currencyManager.lastRunEarnings, progressionManager.GetCurrentLevel());
         ChangeState(GameState.MainMenu);
     }
 
@@ -157,11 +165,11 @@ public class GameManager : MonoBehaviour
     {
         // Clear old results
         if (resultsCurrencyText != null) resultsCurrencyText.text = "";
-        if (resultsWavesText != null) resultsWavesText.text = "";
-        currencyManager.ResetRunCurrency();
+        if (resultsWavesText != null) resultsWavesText.text = "";      
 
         if (!loadingFromSave)
         {
+            currencyManager.ResetRunCurrency();
             progressionManager.ResetLevel();   // wave = 1 (baseline)
         }
 
@@ -427,7 +435,7 @@ public class GameManager : MonoBehaviour
         if (playerHealth != null) playerHealth.OnDeath -= HandlePlayerDeath;
     }
 
-    private void ResetGame(bool resetUpgrades = true)
+    private void ResetGame(bool resetUpgrades = true, bool resetCurrency = true)
     {
         // Stop any battle loops
         if (battleLoop != null)
@@ -449,6 +457,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(playerHealth.gameObject);
             playerHealth = null;
+        }
+
+        if (resetCurrency && currencyManager != null)
+        {
+            currencyManager.totalCurrency = 0;
+            currencyManager.ResetRunCurrency();
         }
 
         if (resetUpgrades && UpgradeManager.Instance != null)

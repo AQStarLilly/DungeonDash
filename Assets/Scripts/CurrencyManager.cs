@@ -15,6 +15,9 @@ public class CurrencyManager : MonoBehaviour
     public TMP_Text upgradesCurrencyText;
     public TMP_Text resultsCurrencyText;
 
+    [Header("Last Run Data")]
+    public int lastRunEarnings = 0;
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -35,6 +38,7 @@ public class CurrencyManager : MonoBehaviour
 
     public void CommitRunToTotal()
     {
+        lastRunEarnings = runCurrency;
         totalCurrency += runCurrency;
         runCurrency = 0; // reset for next run
         UpdateUI();
@@ -71,7 +75,7 @@ public class CurrencyManager : MonoBehaviour
         }
     }
 
-    private void UpdateUI()
+    public void UpdateUI()
     {
         if (gameplayCurrencyText != null)
             gameplayCurrencyText.text = $"{runCurrency}";
