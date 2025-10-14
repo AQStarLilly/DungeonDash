@@ -3703,6 +3703,7 @@ MonoBehaviour:
   gameplayCurrencyText: {fileID: 1794865289}
   upgradesCurrencyText: {fileID: 2056113877}
   resultsCurrencyText: {fileID: 439078211}
+  lastRunEarnings: 0
 --- !u!4 &661317597
 Transform:
   m_ObjectHideFlags: 0
