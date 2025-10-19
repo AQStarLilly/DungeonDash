@@ -93,7 +93,7 @@ public class GameManager : MonoBehaviour
                 else
                 {
                     // Resume battle if paused
-                    ResumeBattle();                   
+                    ResumeBattle();
                 }
                 break;
 
@@ -138,7 +138,7 @@ public class GameManager : MonoBehaviour
             int savedRunCurrency;
             int savedLastRun;
             int savedWave;
-     
+
             SaveSystem.LoadGame(out savedTotalCurrency, out savedRunCurrency, out savedLastRun, out savedWave);
 
             currencyManager.totalCurrency = savedTotalCurrency;
@@ -148,7 +148,7 @@ public class GameManager : MonoBehaviour
 
             currencyManager.UpdateUI();
 
-            loadingFromSave = true; 
+            loadingFromSave = true;
             ChangeState(GameState.Gameplay);
         }
     }
@@ -165,7 +165,7 @@ public class GameManager : MonoBehaviour
     {
         // Clear old results
         if (resultsCurrencyText != null) resultsCurrencyText.text = "";
-        if (resultsWavesText != null) resultsWavesText.text = "";      
+        if (resultsWavesText != null) resultsWavesText.text = "";
 
         if (!loadingFromSave)
         {

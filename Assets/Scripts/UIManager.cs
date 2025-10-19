@@ -18,6 +18,10 @@ public class UIManager : MonoBehaviour
     [Header("Main Menu Button")]
     public Button loadGameButton;
 
+    [Header("Popups")]
+    public ConfirmPopup confirmPopup;
+
+
     public void UpdateUI(GameState state)
     {
         // Disable all
@@ -70,4 +74,33 @@ public class UIManager : MonoBehaviour
     public void GoToUpgrades() => GameManager.Instance.ChangeState(GameState.Upgrades);
     public void GoToResults() => GameManager.Instance.ChangeState(GameState.Results);
     public void GoToWin() => GameManager.Instance.ChangeState(GameState.Win);
+
+
+    public void ClearSaveData()
+    {
+        if (confirmPopup != null)
+        {
+            confirmPopup.Show("Are you sure you want to delete all save data?",() =>
+                {
+                    // On Confirm
+                    SaveSystem.ClearSave();
+                    GameManager.Instance.currencyManager.totalCurrency = 0;
+                    GameManager.Instance.currencyManager.runCurrency = 0;
+                    GameManager.Instance.progressionManager.ResetLevel();
+                    GameManager.Instance.upgradeManager.ResetUpgrades();
+                    UpdateLoadButtonInteractable(false);
+                    Debug.Log("Save data cleared!");
+                },
+                () =>
+                {
+                    // On Cancel
+                    Debug.Log("Clear save canceled.");
+                }
+            );
+        }
+        else
+        {
+            Debug.LogWarning("ConfirmPopup not assigned in UIManager!");
+        }
+    }
 }

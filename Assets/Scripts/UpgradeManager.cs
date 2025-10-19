@@ -225,7 +225,7 @@ public class UpgradeManager : MonoBehaviour
 //Full Upgrades (Lvl 5) - Health (100), Shield (50), Damage(20)
 //Maybe double levels (Lvl 10)- Health (150), Shield (100) - Total (250) health aspect(tweak this slightly will be perfect since were only behind 70 health
 // Gain 15 health per upgrade instead of 10. - Health (200), Shield (150) - Total (350) health aspect. 
-// Damage (30) - only half of what the boss has - change damage to 3 per upgrade triples everything so roughly 70 damage at max
+// Damage (30) - only half of what the boss has - change damage to 3 damage per upgrade triples everything so roughly 70 damage at max
 // Fix combat so its turn based or increase health/damage as both player and boss would die at the same time.
 
 /* Definitely need to tweak (stats should be similar to boss by the time you get to final wave)
