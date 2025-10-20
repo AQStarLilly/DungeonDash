@@ -373,6 +373,16 @@ public class GameManager : MonoBehaviour
         // Heal player back to full
         if (playerHealth != null) playerHealth.ResetHealth();
 
+        int currentWave = progressionManager.GetCurrentLevel();
+        int maxWaves = progressionManager.GetMaxWaves();
+
+        if(currentWave >= maxWaves)
+        {
+            Debug.Log("You beat your Boss! Congratulations!");
+            ChangeState(GameState.Win);
+            return;
+        }
+
         // Spawn next enemy after a delay
         StartCoroutine(SpawnNextEnemy());
     }
