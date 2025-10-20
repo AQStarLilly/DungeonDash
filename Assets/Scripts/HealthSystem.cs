@@ -19,6 +19,9 @@ public class HealthSystem : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
 
+    [Header("Damage Popups.")]
+    public GameObject floatingTextPrefab;
+
     [Header("Identity")]
     public bool isPlayer = false;
 
@@ -69,12 +72,26 @@ public class HealthSystem : MonoBehaviour
         ResetHealth();
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, bool isCrit = false)
     {
         currentHealth -= damage;
 
         if (spriteRenderer != null)
             StartCoroutine(FlashRed());
+
+        if (floatingTextPrefab != null)
+        {
+            // Convert world position (above character) into screen space for UI Canvas
+            Vector3 worldPos = transform.position + Vector3.up * 3.5f;
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+            
+            Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
+
+            var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
+
+            // Initialize damage text visuals
+            popup.GetComponent<FloatingDamageText>().Initialize(damage, isCrit);
+        }
 
         if (currentHealth <= 0)
         {
@@ -85,22 +102,23 @@ public class HealthSystem : MonoBehaviour
         UpdateUI();
     }
 
-    public int CalculateAttackDamage()
+    public (int damage, bool isCrit) CalculateAttackDamage()
     {
         int finalDamage = attackDamage;
+        bool isCrit = false;
 
         if (isPlayer && PlayerStats.Instance != null)
         {
-            return Mathf.RoundToInt(finalDamage * PlayerStats.Instance.damageMultiplier);
+            finalDamage = Mathf.RoundToInt(finalDamage * PlayerStats.Instance.damageMultiplier);
         }
 
         if (Random.value <= critChance)
         {
             finalDamage = Mathf.RoundToInt(finalDamage * critMultiplier);
-            Debug.Log($"{gameObject.name} landed a CRITICAL HIT for {finalDamage} damage!");
+            isCrit = true;
         }
 
-        return finalDamage;
+        return (finalDamage, isCrit);
     }
 
     private IEnumerator FlashRed()

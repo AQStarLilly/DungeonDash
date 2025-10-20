@@ -103,6 +103,9 @@ MonoBehaviour:
   maxHealth: 50
   currentHealth: 0
   attackDamage: 10
+  critChance: 0.1
+  critMultiplier: 2
   healthText: {fileID: 0}
   healthBarUI: {fileID: 0}
+  floatingTextPrefab: {fileID: 1751419012950864591, guid: 374a7906e7aa3fe4f9a179fbc6532b91, type: 3}
   isPlayer: 0
