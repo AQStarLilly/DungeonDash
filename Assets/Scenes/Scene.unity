@@ -6053,7 +6053,7 @@ MonoBehaviour:
   spawnPoint: {fileID: 1927209980}
   enemySprites:
   - {fileID: -2105954068059381947, guid: 741b7523d360db341940c57acdfd9cae, type: 3}
-  - {fileID: -2359379457758155682, guid: 8a72a7b75401ead4ab86d3a0fa316da2, type: 3}
+  - {fileID: -7879980726111151015, guid: 5979089afb5b899499c03beee5b2b32a, type: 3}
   enemyManager: {fileID: 819109248}
 --- !u!4 &1059340593
 Transform:
