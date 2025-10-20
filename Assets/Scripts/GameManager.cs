@@ -67,6 +67,21 @@ public class GameManager : MonoBehaviour
         ChangeState(GameState.MainMenu);
     }
 
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            if (currentState == GameState.Gameplay)
+            {
+                ChangeState(GameState.Pause);
+            }
+            else if (currentState == GameState.Pause)
+            {
+                ChangeState(GameState.Gameplay);
+            }
+        }
+    }
+
     public void ChangeState(GameState newState)
     {
         currentState = newState;
