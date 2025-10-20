@@ -9672,8 +9672,8 @@ MonoBehaviour:
     requiresLevel: 0
     button: {fileID: 1102178836}
     buttonText: {fileID: 1309726366}
-  normalText: {r: 1, g: 1, b: 1, a: 1}
-  affordText: {r: 0.6, g: 1, b: 0.6, a: 1}
+  normalText: {r: 0, g: 0, b: 0, a: 1}
+  affordText: {r: 0.061409745, g: 0.8679245, b: 0.061409745, a: 1}
   lockedText: {r: 0.7, g: 0.7, b: 0.7, a: 1}
 --- !u!4 &1569325027
 Transform:
