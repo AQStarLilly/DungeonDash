@@ -248,11 +248,11 @@ public class GameManager : MonoBehaviour
 
             // Enemy hits player
             if (playerHealth != null && currentEnemy != null)
-                playerHealth.TakeDamage(currentEnemy.GetAttackDamage());
+                playerHealth.TakeDamage(currentEnemy.CalculateAttackDamage());
 
             // Player hits enemy
             if (playerHealth != null && currentEnemy != null)
-                currentEnemy.TakeDamage(playerHealth.GetAttackDamage());
+                currentEnemy.TakeDamage(playerHealth.CalculateAttackDamage());
 
             // If either died during attacks, bail out immediately
             if (playerHealth == null || currentEnemy == null)

@@ -8,6 +8,8 @@ public class HealthSystem : MonoBehaviour
     public int maxHealth = 100;
     public int currentHealth;
     public int attackDamage = 10;
+    [Range(0f, 1f)] public float critChance = 0.1f;
+    public float critMultiplier = 2f;
 
     [Header("UI")]
     public TMP_Text healthText;
@@ -83,6 +85,24 @@ public class HealthSystem : MonoBehaviour
         UpdateUI();
     }
 
+    public int CalculateAttackDamage()
+    {
+        int finalDamage = attackDamage;
+
+        if (isPlayer && PlayerStats.Instance != null)
+        {
+            return Mathf.RoundToInt(finalDamage * PlayerStats.Instance.damageMultiplier);
+        }
+
+        if (Random.value <= critChance)
+        {
+            finalDamage = Mathf.RoundToInt(finalDamage * critMultiplier);
+            Debug.Log($"{gameObject.name} landed a CRITICAL HIT for {finalDamage} damage!");
+        }
+
+        return finalDamage;
+    }
+
     private IEnumerator FlashRed()
     {
         spriteRenderer.color = Color.red;
@@ -116,14 +136,5 @@ public class HealthSystem : MonoBehaviour
         {
             healthBarUI.SetHealth(currentHealth, maxHealth);
         }
-    }
-
-    public int GetAttackDamage()
-    {
-        if (isPlayer && PlayerStats.Instance != null)
-        {
-            return Mathf.RoundToInt(attackDamage * PlayerStats.Instance.damageMultiplier);
-        }
-        return attackDamage;
     }
 }
