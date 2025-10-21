@@ -392,7 +392,7 @@ public class GameManager : MonoBehaviour
         currentEnemy = null;
 
         // Heal player back to full
-        if (playerHealth != null) playerHealth.ResetHealth();
+        if (playerHealth != null) playerHealth.ResetHealth();      
 
         int currentWave = progressionManager.GetCurrentLevel();
         int maxWaves = progressionManager.GetMaxWaves();
