@@ -6,20 +6,32 @@ public class SpawnManager : MonoBehaviour
     public GameObject enemyPrefab;
     public Transform spawnPoint;
     public Sprite[] enemySprites;
+    public Sprite bossSprite;
 
     [Header("References")]
     public EnemyManager enemyManager;
 
     public HealthSystem SpawnEnemy()
     {
+        int currentWave = ProgressionManager.Instance.GetCurrentLevel();
+        int maxWaves = ProgressionManager.Instance.GetMaxWaves();
+        bool isBossWave = (currentWave >= maxWaves);
+
         GameObject enemy = Instantiate(enemyPrefab, spawnPoint.position, Quaternion.identity);
         HealthSystem hs = enemy.GetComponent<HealthSystem>();
-
         SpriteRenderer sr = enemy.GetComponent<SpriteRenderer>();
-        if(sr != null && enemySprites.Length > 0)
+
+        if (sr != null)
         {
-            sr.sprite = enemySprites[Random.Range(0, enemySprites.Length)];
-        }
+            if (isBossWave && bossSprite != null)
+            {
+                sr.sprite = bossSprite;
+            }
+            else if (enemySprites.Length > 0)
+            {
+                sr.sprite = enemySprites[Random.Range(0, enemySprites.Length)];
+            }
+        }             
 
         int extraHealth = ProgressionManager.Instance.GetEnemyHealthBonus();
         int extraDamage = ProgressionManager.Instance.GetEnemyDamageBonus();

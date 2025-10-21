@@ -6054,6 +6054,7 @@ MonoBehaviour:
   enemySprites:
   - {fileID: -2105954068059381947, guid: 741b7523d360db341940c57acdfd9cae, type: 3}
   - {fileID: -7879980726111151015, guid: 5979089afb5b899499c03beee5b2b32a, type: 3}
+  bossSprite: {fileID: -8127518668019787841, guid: 6aa5318e854dbf84aafcd7b1b80bdc9d, type: 3}
   enemyManager: {fileID: 819109248}
 --- !u!4 &1059340593
 Transform:
