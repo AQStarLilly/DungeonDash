@@ -1549,6 +1549,7 @@ MonoBehaviour:
   resultsUI: {fileID: 686387691}
   winUI: {fileID: 895042670}
   loadGameButton: {fileID: 954558544}
+  scrollingBackground: {fileID: 1565956537}
   confirmPopup: {fileID: 1935535972}
 --- !u!4 &315462186
 Transform:
@@ -8464,6 +8465,7 @@ GameObject:
   - component: {fileID: 1565956535}
   - component: {fileID: 1565956534}
   - component: {fileID: 1565956536}
+  - component: {fileID: 1565956537}
   m_Layer: 5
   m_Name: GameplayBackground
   m_TagString: Untagged
@@ -8494,7 +8496,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
+  - {fileID: 2100000, guid: 11612345b026574449abcbf1bfe68c78, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8553,6 +8555,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b81304a59f68a442b2185d476598ed2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1565956537
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1565956533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa795d818dc7b3a4dbd2ce6f59ed5c11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scrollSpeed: 0.1
+  moveDuration: 2
 --- !u!1 &1569325025
 GameObject:
   m_ObjectHideFlags: 0

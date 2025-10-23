@@ -18,8 +18,15 @@ public class ScrollingBackground : MonoBehaviour
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         material = sr.material;
 
-        // ensure the texture repeats correctly
+        if (material == null || material.mainTexture == null)
+        {
+            Debug.LogError("ScrollingBackground: Missing material or texture on sprite renderer.");
+            enabled = false;
+            return;
+        }
+
         material.mainTexture.wrapMode = TextureWrapMode.Repeat;
+        material.mainTextureOffset = Vector2.zero;
     }
 
     public IEnumerator ScrollLeft()
@@ -38,5 +45,14 @@ public class ScrollingBackground : MonoBehaviour
         }
 
         isScrolling = false;
+    }
+
+    public void ResetScroll()
+    {
+        offset = Vector2.zero;
+        if(material != null)
+        {
+            material.mainTextureOffset = offset;
+        }
     }
 }

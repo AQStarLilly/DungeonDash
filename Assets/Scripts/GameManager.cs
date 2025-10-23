@@ -142,6 +142,11 @@ public class GameManager : MonoBehaviour
     {
         SaveSystem.ClearSave();
         ResetGame(resetUpgrades: true, resetCurrency: true);
+
+        var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
+        if (scroll != null)
+            scroll.ResetScroll();
+
         ChangeState(GameState.Instructions);
     }
 
@@ -392,7 +397,11 @@ public class GameManager : MonoBehaviour
         currentEnemy = null;
 
         // Heal player back to full
-        if (playerHealth != null) playerHealth.ResetHealth();      
+        if (playerHealth != null) playerHealth.ResetHealth();
+
+        var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
+        if (scroll != null)
+            StartCoroutine(scroll.ScrollLeft());
 
         int currentWave = progressionManager.GetCurrentLevel();
         int maxWaves = progressionManager.GetMaxWaves();

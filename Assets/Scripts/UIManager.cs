@@ -17,6 +17,9 @@ public class UIManager : MonoBehaviour
     [Header("Main Menu Button")]
     public Button loadGameButton;
 
+    [Header("Background Reference")]
+    public ScrollingBackground scrollingBackground;
+
     [Header("Popups")]
     public ConfirmPopup confirmPopup;
 
@@ -62,7 +65,21 @@ public class UIManager : MonoBehaviour
     }
 
     public void GoToMainMenu() => GameManager.Instance.ChangeState(GameState.MainMenu);
-    public void GoToGameplay() => GameManager.Instance.ChangeState(GameState.Gameplay);
+    public void GoToGameplay()
+    {
+        // Reset background when starting a new run from Upgrades or Main Menu
+        if (scrollingBackground != null)
+            scrollingBackground.ResetScroll();
+        else
+        {
+            // fallback if you forgot to assign it
+            var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
+            if (scroll != null)
+                scroll.ResetScroll();
+        }
+
+        GameManager.Instance.ChangeState(GameState.Gameplay);
+    }
     public void GoToPause() => GameManager.Instance.ChangeState(GameState.Pause);
     public void GoToInstructions() => GameManager.Instance.ChangeState(GameState.Instructions);
     public void GoToMainMenuOptions() => GameManager.Instance.ChangeState(GameState.MainMenuOptions);
