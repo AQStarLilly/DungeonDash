@@ -23,11 +23,99 @@ public class SoundManager : MonoBehaviour
     //Upgrade Button SFX?
     //Game Won SFX - plays when you beat the final boss
     
+    public static SoundManager Instance;
+
+    [Header("Audio Source")]
+    public AudioSource musicSource;
+
+    [Header("Music Tracks")]
+    public AudioClip menuMusic;
+    public AudioClip gameplayMusic;
+
+    [Header("Settings")]
+    public float fadeDuration = 0.7f;
+    private AudioClip currentTrack;
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); 
+        }
+        else
+        {
+            Destroy(gameObject);
+            return;
+        }
+    }
+
+    private void Start()
+    {
+        if (musicSource == null)
+            musicSource = GetComponent<AudioSource>();
+    }
+
+    /// <summary>
+    /// Switches Music based on the game state
+    /// </summary>
+    public void PlayMusicForState(GameManager.GameState state)
+    {
+        AudioClip nextTrack = null;
+
+        switch (state)
+        {
+            // Menu music
+            case GameManager.GameState.MainMenu:
+            case GameManager.GameState.MainMenuOptions:
+            case GameManager.GameState.Instructions:
+            case GameManager.GameState.Upgrades:
+                nextTrack = menuMusic;
+                break;
 
 
-    //Music - 2(Minimum)
-    //Main Menu - Plays in Main menu
-    //Gameplay - Plays in Gameplay, PauseMenu (maybe gets more intense when you go to fight the boss / new music track for Boss Fight)
-    //Upgrades Menu - Casual Shop-Like Music
-    //Game Won Music ? 
+            // Gameplay music
+            case GameManager.GameState.Gameplay:
+            case GameManager.GameState.Pause:
+            case GameManager.GameState.PauseMenuOptions:
+            case GameManager.GameState.Results:
+                nextTrack = gameplayMusic;
+                break;
+
+            default:
+                return;
+        }
+        if (nextTrack == currentTrack) return;
+
+        StartCoroutine(FadeAndSwitch(nextTrack));
+    }
+
+    private System.Collections.IEnumerator FadeAndSwitch(AudioClip nextTrack)
+    {
+        if (musicSource.isPlaying)
+        {
+            // Fade out
+            float startVolume = musicSource.volume;
+            for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+            {
+                musicSource.volume = Mathf.Lerp(startVolume, 0f, t / fadeDuration);
+                yield return null;
+            }
+            musicSource.Stop();
+        }
+
+        // Switch tracks
+        musicSource.clip = nextTrack;
+        currentTrack = nextTrack;
+        musicSource.Play();
+
+        // Fade in
+        for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+        {
+            musicSource.volume = Mathf.Lerp(0f, 1f, t / fadeDuration);
+            yield return null;
+        }
+
+        musicSource.volume = 1f;
+    }
 }

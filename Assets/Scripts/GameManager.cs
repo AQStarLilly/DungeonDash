@@ -9,7 +9,6 @@ public class GameManager : MonoBehaviour
         MainMenu,
         Gameplay,
         Pause,
-        Story,
         Instructions,
         MainMenuOptions,
         PauseMenuOptions,
@@ -86,6 +85,11 @@ public class GameManager : MonoBehaviour
     {
         currentState = newState;
         uiManager.UpdateUI(newState);
+
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayMusicForState(newState);
+        }
 
         switch (newState)
         {
