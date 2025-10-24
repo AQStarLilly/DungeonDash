@@ -37,6 +37,10 @@ public class SoundManager : MonoBehaviour
     public float fadeDuration = 0.7f;
     private AudioClip currentTrack;
 
+    [Header("Volume Settings")]
+    [Range(0f, 1f)] public float masterVolume = 1f;
+    private const string VolumeKey = "MusicVolume";
+
     private void Awake()
     {
         if (Instance == null)
@@ -125,5 +129,27 @@ public class SoundManager : MonoBehaviour
         }
 
         musicSource.volume = 1f;
+    }
+
+    public void SetVolume(float value)
+    {
+        masterVolume = Mathf.Clamp01(value);
+        if (musicSource != null)
+            musicSource.volume = masterVolume;
+        PlayerPrefs.SetFloat(VolumeKey, masterVolume);
+        PlayerPrefs.Save();
+    }
+
+    public float GetVolume()
+    {
+        return masterVolume;
+    }
+
+    private void OnEnable()
+    {
+        if (PlayerPrefs.HasKey(VolumeKey))
+            masterVolume = PlayerPrefs.GetFloat(VolumeKey);
+        if (musicSource != null)
+            musicSource.volume = masterVolume;
     }
 }
