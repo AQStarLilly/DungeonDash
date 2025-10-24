@@ -84,6 +84,8 @@ public class GameManager : MonoBehaviour
     public void ChangeState(GameState newState)
     {
         currentState = newState;
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlayMusicForState(newState);
         uiManager.UpdateUI(newState);
 
         if (SoundManager.Instance != null)
@@ -94,6 +96,7 @@ public class GameManager : MonoBehaviour
         switch (newState)
         {
             case GameState.MainMenu:
+                Time.timeScale = 1f;
                 ResetGame(resetUpgrades: false, resetCurrency: false);
                 gameplayContainer.SetActive(false);
 

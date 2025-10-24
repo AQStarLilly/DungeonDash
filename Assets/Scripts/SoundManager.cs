@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class SoundManager : MonoBehaviour
 {
@@ -102,14 +103,16 @@ public class SoundManager : MonoBehaviour
             StartCoroutine(FadeAndSwitch(bossMusic));
         }
     }
-    private System.Collections.IEnumerator FadeAndSwitch(AudioClip nextTrack)
+
+    private IEnumerator FadeAndSwitch(AudioClip nextTrack)
     {
         if (musicSource.isPlaying)
         {
             // Fade out
             float startVolume = musicSource.volume;
-            for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+            for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
             {
+                float k = fadeDuration <= 0f ? 1f : t / fadeDuration;
                 musicSource.volume = Mathf.Lerp(startVolume, 0f, t / fadeDuration);
                 yield return null;
             }
@@ -122,8 +125,9 @@ public class SoundManager : MonoBehaviour
         musicSource.Play();
 
         // Fade in
-        for (float t = 0; t < fadeDuration; t += Time.deltaTime)
+        for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
+            float k = fadeDuration <= 0f ? 1f : t / fadeDuration;
             musicSource.volume = Mathf.Lerp(0f, 1f, t / fadeDuration);
             yield return null;
         }
