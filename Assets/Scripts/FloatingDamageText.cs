@@ -18,10 +18,14 @@ public class FloatingDamageText : MonoBehaviour
         originalColor = text.color;
     }
 
-    public void Initialize(int damage, bool isCrit)
+    public void Initialize(int damage, bool isCrit, bool isShield = false)
     {
         text.text = damage.ToString();        
-        if (isCrit)
+        if (isShield)
+        {
+            text.color = Color.blue;
+        }
+        else if (isCrit)
         {
             text.color = Color.red;
             text.text += " *";

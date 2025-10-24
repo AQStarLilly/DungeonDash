@@ -101,8 +101,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dc594a8876d0c244cb73105ea8101c48, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMaxHealth: 50
-  baseAttackDamage: 10
   maxHealth: 50
   currentHealth: 0
   maxShield: 0
@@ -126,7 +124,7 @@ GameObject:
   - component: {fileID: 5370911760911804184}
   - component: {fileID: 6358715325982669624}
   - component: {fileID: 3864794550722856998}
-  m_Layer: 0
+  m_Layer: 5
   m_Name: PlayerShieldVisual
   m_TagString: Untagged
   m_Icon: {fileID: 0}

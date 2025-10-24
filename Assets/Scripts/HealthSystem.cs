@@ -104,7 +104,7 @@ public class HealthSystem : MonoBehaviour
 
                 // Spawn UI text in the correct canvas layer
                 var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
-                popup.GetComponent<FloatingDamageText>().Initialize(shieldDamage, false);
+                popup.GetComponent<FloatingDamageText>().Initialize(shieldDamage, false, true);
             }
         }
 

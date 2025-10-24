@@ -224,7 +224,8 @@ public class GameManager : MonoBehaviour
         int baseHealth = playerHealth.maxHealth;
         int baseDamage = playerHealth.attackDamage;
 
-        playerHealth.maxHealth = Mathf.RoundToInt(baseHealth * PlayerStats.Instance.healthMultiplier) + PlayerStats.Instance.shield;
+        playerHealth.maxHealth = Mathf.RoundToInt(baseHealth * PlayerStats.Instance.healthMultiplier);
+        playerHealth.maxShield = PlayerStats.Instance.shield;
         playerHealth.attackDamage = Mathf.RoundToInt(baseDamage * PlayerStats.Instance.damageMultiplier);
 
         playerHealth.ResetHealth();
