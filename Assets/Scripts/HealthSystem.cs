@@ -95,9 +95,16 @@ public class HealthSystem : MonoBehaviour
             // Show shield damage popup
             if (floatingTextPrefab != null)
             {
-                Vector3 spawnPos = transform.position + Vector3.up * 1.2f;
-                var popup = Instantiate(floatingTextPrefab, spawnPos, Quaternion.identity);
-                popup.GetComponent<FloatingDamageText>().Initialize(shieldDamage, false); 
+                // Find a canvas to attach to
+                Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
+
+                // Calculate screen position above the character
+                Vector3 worldPos = transform.position + new Vector3(0f, 3.5f, 0f);
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+                // Spawn UI text in the correct canvas layer
+                var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
+                popup.GetComponent<FloatingDamageText>().Initialize(shieldDamage, false);
             }
         }
 
@@ -111,8 +118,12 @@ public class HealthSystem : MonoBehaviour
 
             if (floatingTextPrefab != null)
             {
-                Vector3 spawnPos = transform.position + Vector3.up * 1.2f;
-                var popup = Instantiate(floatingTextPrefab, spawnPos, Quaternion.identity);
+                Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
+
+                Vector3 worldPos = transform.position + new Vector3(0f, 3.5f, 0f);
+                Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+                var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
                 popup.GetComponent<FloatingDamageText>().Initialize(damageRemaining, isCrit);
             }
 

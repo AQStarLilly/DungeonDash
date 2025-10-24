@@ -20,8 +20,7 @@ public class FloatingDamageText : MonoBehaviour
 
     public void Initialize(int damage, bool isCrit)
     {
-        text.text = damage.ToString();
-
+        text.text = damage.ToString();        
         if (isCrit)
         {
             text.color = Color.red;
