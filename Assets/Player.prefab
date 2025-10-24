@@ -108,6 +108,8 @@ MonoBehaviour:
   attackDamage: 10
   critChance: 0.1
   critMultiplier: 2
+  regenerateShieldOnReset: 1
+  shieldValueText: {fileID: 0}
   healthText: {fileID: 0}
   healthBarUI: {fileID: 0}
   floatingTextPrefab: {fileID: 1751419012950864591, guid: 374a7906e7aa3fe4f9a179fbc6532b91, type: 3}
@@ -139,9 +141,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6771454461543324096}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 921.51184, y: 451.37982, z: -9.114909}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.01, y: 1.31, z: -1}
+  m_LocalScale: {x: 0.03, y: 0.03, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1868394011063984247}
@@ -190,8 +192,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  m_Color: {r: 0, g: 0.9052371, b: 0.990566, a: 0.5019608}
+  m_Sprite: {fileID: -3566627764646378083, guid: c31c11b2040c05f48800fb2d47adfd5f, type: 3}
+  m_Color: {r: 0, g: 0.9052371, b: 0.990566, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

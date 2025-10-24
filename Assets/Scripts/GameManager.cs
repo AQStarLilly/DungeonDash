@@ -214,21 +214,17 @@ public class GameManager : MonoBehaviour
             playerHealth = null;
         }
         GameObject playerObj = Instantiate(playerPrefab, playerSpawnPoint.position, Quaternion.identity, gameplayContainer.transform);
-        // Force Z = 0 just in case
         playerObj.transform.position = new Vector3(playerObj.transform.position.x, playerObj.transform.position.y, 0f);
 
         playerHealth = playerObj.GetComponent<HealthSystem>();
+        playerHealth.isPlayer = true;
         playerHealth.healthText = playerHealthText;
         playerHealth.healthBarUI = GameObject.Find("PlayerHealthBarBG").GetComponent<HealthBarUI>();
 
-        int baseHealth = playerHealth.maxHealth;
-        int baseDamage = playerHealth.attackDamage;
+        // initialize player stats for the start of the run
+        bool firstSpawnOfRun = !loadingFromSave;
+        playerHealth.InitializeFromPlayerStats(firstSpawnOfRun);
 
-        playerHealth.maxHealth = Mathf.RoundToInt(baseHealth * PlayerStats.Instance.healthMultiplier);
-        playerHealth.maxShield = PlayerStats.Instance.shield;
-        playerHealth.attackDamage = Mathf.RoundToInt(baseDamage * PlayerStats.Instance.damageMultiplier);
-
-        playerHealth.ResetHealth();
         SubscribeToPlayer();
 
         // First enemy (baseline, no scaling)
@@ -238,7 +234,7 @@ public class GameManager : MonoBehaviour
         currentEnemy.healthBarUI = GameObject.Find("EnemyHealthBarBG").GetComponent<HealthBarUI>();
         // Force Z = 0 just in case
         currentEnemy.transform.position = new Vector3(currentEnemy.transform.position.x, currentEnemy.transform.position.y, 0f);
-        currentEnemy.ResetHealth();
+        currentEnemy.InitializeEnemy();
         SubscribeToEnemy(currentEnemy);
 
         UpdateWaveCounter();
@@ -311,7 +307,7 @@ public class GameManager : MonoBehaviour
         currentEnemy = spawnManager.SpawnEnemy();
         currentEnemy.healthText = enemyHealthText;
         currentEnemy.transform.position = new Vector3(currentEnemy.transform.position.x, currentEnemy.transform.position.y, 0f);
-        currentEnemy.ResetHealth();
+        currentEnemy.InitializeEnemy();
         SubscribeToEnemy(currentEnemy);
 
         UpdateWaveCounter();
@@ -415,7 +411,7 @@ public class GameManager : MonoBehaviour
         currentEnemy = null;
 
         // Heal player back to full
-        if (playerHealth != null) playerHealth.ResetHealth();
+        if (playerHealth != null) playerHealth.ResetForNextWave();
 
         var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
         if (scroll != null)

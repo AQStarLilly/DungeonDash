@@ -40,7 +40,7 @@ public class SpawnManager : MonoBehaviour
         hs.currentHealth = hs.maxHealth;
         hs.attackDamage += extraDamage;
 
-        hs.ResetHealth();
+        hs.InitializeEnemy();
 
         if (enemyManager != null)
         {

@@ -15,6 +15,12 @@ public class HealthSystem : MonoBehaviour
     [Range(0f, 1f)] public float critChance = 0.1f;
     public float critMultiplier = 2f;
 
+    [Header("Shield Settings")]
+    public bool regenerateShieldOnReset = true;
+
+    [Header("Shield UI (World-Space)")]
+    public TMP_Text shieldValueText;
+
     [Header("UI")]
     public TMP_Text healthText;
     public HealthBarUI healthBarUI;
@@ -35,56 +41,78 @@ public class HealthSystem : MonoBehaviour
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         if (spriteRenderer != null)
-        {
             originalColor = spriteRenderer.color;
-        }
     }
 
     private void Start()
     {
-        // Automatically find and link the correct health bar if none is assigned
+        // Don’t reset health automatically — GameManager handles initialization
         if (healthBarUI == null)
-        {        
+        {
             var bars = Object.FindObjectsByType<HealthBarUI>(FindObjectsSortMode.None);
-
-            if (isPlayer)
+            foreach (var bar in bars)
             {
-                // Assign the one with "Player" in its name
-                foreach (var bar in bars)
-                {
-                    if (bar.name.ToLower().Contains("player"))
-                    {
-                        healthBarUI = bar;
-                        break;
-                    }
-                }
-            }
-            else
-            {
-                // Assign the one with "Enemy" in its name
-                foreach (var bar in bars)
-                {
-                    if (bar.name.ToLower().Contains("enemy"))
-                    {
-                        healthBarUI = bar;
-                        break;
-                    }
-                }
+                string lower = bar.name.ToLower();
+                if (isPlayer && lower.Contains("player")) { healthBarUI = bar; break; }
+                if (!isPlayer && lower.Contains("enemy")) { healthBarUI = bar; break; }
             }
         }
-        ResetHealth();
+
+        UpdateUI();
+    }
+
+    // Initialize values from PlayerStats when the run starts
+    public void InitializeFromPlayerStats(bool firstSpawnOfRun)
+    {
+        if (isPlayer && PlayerStats.Instance != null)
+        {
+            maxHealth = Mathf.RoundToInt(maxHealth * PlayerStats.Instance.healthMultiplier);
+            currentHealth = maxHealth;
+
+            maxShield = PlayerStats.Instance.shield;
+
+            if (firstSpawnOfRun)
+                currentShield = maxShield; // start with full shield
+            else
+                currentShield = Mathf.Min(currentShield, maxShield);
+
+            regenerateShieldOnReset = false; // don’t regen each wave
+        }
+        else
+        {
+            currentHealth = maxHealth;
+            currentShield = 0;
+            regenerateShieldOnReset = true;
+        }
+
+        RefreshShieldVisual();
+        UpdateUI();
+    }
+
+    //Reset for next wave (health only)
+    public void ResetForNextWave()
+    {
+        currentHealth = maxHealth;
+
+        if (regenerateShieldOnReset)
+            currentShield = maxShield;
+        else
+            currentShield = Mathf.Min(currentShield, maxShield);
+
+        RefreshShieldVisual();
+        UpdateUI();
     }
 
     public void TakeDamage(int damage, bool isCrit = false)
     {
-        int damageRemaining = damage;
+        int remaining = damage;
 
-        // Apply to Shield first
+        // Apply shield first
         if (currentShield > 0)
         {
-            int shieldDamage = Mathf.Min(currentShield, damageRemaining);
-            currentShield -= shieldDamage;
-            damageRemaining -= shieldDamage;
+            int shieldHit = Mathf.Min(currentShield, remaining);
+            currentShield -= shieldHit;
+            remaining -= shieldHit;
 
             if (shieldVisual != null)
             {
@@ -92,26 +120,21 @@ public class HealthSystem : MonoBehaviour
                 shieldVisual.FlashHit();
             }
 
-            // Show shield damage popup
             if (floatingTextPrefab != null)
             {
-                // Find a canvas to attach to
                 Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
-
-                // Calculate screen position above the character
                 Vector3 worldPos = transform.position + new Vector3(0f, 3.5f, 0f);
                 Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
 
-                // Spawn UI text in the correct canvas layer
                 var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
-                popup.GetComponent<FloatingDamageText>().Initialize(shieldDamage, false, true);
+                popup.GetComponent<FloatingDamageText>().Initialize(shieldHit, false, true);
             }
         }
 
-        // Apply remaining to Health
-        if (damageRemaining > 0)
+        // Remaining damage applies to health
+        if (remaining > 0)
         {
-            currentHealth -= damageRemaining;
+            currentHealth -= remaining;
 
             if (spriteRenderer != null)
                 StartCoroutine(FlashRed());
@@ -119,12 +142,11 @@ public class HealthSystem : MonoBehaviour
             if (floatingTextPrefab != null)
             {
                 Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
-
                 Vector3 worldPos = transform.position + new Vector3(0f, 3.5f, 0f);
                 Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
 
                 var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
-                popup.GetComponent<FloatingDamageText>().Initialize(damageRemaining, isCrit);
+                popup.GetComponent<FloatingDamageText>().Initialize(remaining, isCrit);
             }
 
             if (currentHealth <= 0)
@@ -134,8 +156,9 @@ public class HealthSystem : MonoBehaviour
             }
         }
 
+        RefreshShieldVisual();
         UpdateUI();
-    }    
+    }
 
     private IEnumerator FlashRed()
     {
@@ -144,36 +167,18 @@ public class HealthSystem : MonoBehaviour
         spriteRenderer.color = originalColor;
     }
 
-    public void Heal(int amount)
+    private void RefreshShieldVisual()
     {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-        UpdateUI();
-    }
+        if (shieldVisual == null) return;
 
-    public void ResetHealth()
-    {
-        if(isPlayer && PlayerStats.Instance != null)
+        if (maxShield > 0 && currentShield > 0)
         {
-            maxHealth = Mathf.RoundToInt(maxHealth * PlayerStats.Instance.healthMultiplier);
-            maxShield = PlayerStats.Instance.shield;
+            shieldVisual.ShowShield();
+            shieldVisual.UpdateShieldVisual(currentShield, maxShield);
         }
-
-        currentHealth = maxHealth;
-        currentShield = maxShield;
-
-        UpdateUI();
-
-        if (shieldVisual != null)
+        else
         {
-            if (maxShield > 0)
-            {
-                shieldVisual.ShowShield();
-                shieldVisual.UpdateShieldVisual(currentShield, maxShield);
-            }
-            else
-            {
-                shieldVisual.HideShield();
-            }
+            shieldVisual.HideShield();
         }
     }
 
@@ -187,29 +192,35 @@ public class HealthSystem : MonoBehaviour
                 healthText.text = $"HP: {currentHealth}/{maxHealth}";
         }
 
-
         if (healthBarUI != null)
-        {
             healthBarUI.SetHealth(currentHealth, maxHealth);
-        }
     }
 
     public (int damage, bool isCrit) CalculateAttackDamage()
     {
-        int finalDamage = attackDamage;
-        bool isCrit = false;
+        int dmg = attackDamage;
+        bool crit = false;
 
         if (isPlayer && PlayerStats.Instance != null)
-        {
-            finalDamage = Mathf.RoundToInt(finalDamage * PlayerStats.Instance.damageMultiplier);
-        }
+            dmg = Mathf.RoundToInt(dmg * PlayerStats.Instance.damageMultiplier);
 
         if (Random.value <= critChance)
         {
-            finalDamage = Mathf.RoundToInt(finalDamage * critMultiplier);
-            isCrit = true;
+            dmg = Mathf.RoundToInt(dmg * critMultiplier);
+            crit = true;
         }
 
-        return (finalDamage, isCrit);
+        return (dmg, crit);
+    }
+
+    public void InitializeEnemy()
+    {
+        currentHealth = maxHealth;
+        currentShield = 0;
+
+        if (shieldVisual != null)
+            shieldVisual.HideShield();
+
+        UpdateUI();
     }
 }

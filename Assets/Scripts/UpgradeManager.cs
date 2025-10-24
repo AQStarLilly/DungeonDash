@@ -135,8 +135,8 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case "shield":
-                int baseShield = 20;
-                int perLevel = 10;
+                int baseShield = 60;
+                int perLevel = 15;
 
                 int totalShield = baseShield + (perLevel * (up.level - 1));
                 PlayerStats.Instance.shield = totalShield;
