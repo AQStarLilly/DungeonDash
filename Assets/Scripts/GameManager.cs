@@ -131,6 +131,7 @@ public class GameManager : MonoBehaviour
                 break;
             case GameState.Win:
                 EndBattle();
+                StartCoroutine(ReturnToMenuMusicWithDelay(2f));
                 break;
             case GameState.Upgrades:
                 if (upgradesCurrencyText != null)
@@ -286,6 +287,15 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         progressionManager.IncreaseLevel();
+
+        int currentWave = progressionManager.GetCurrentLevel();
+        int maxWaves = progressionManager.GetMaxWaves();
+
+        // Switch to boss music on the last wave
+        if (currentWave == maxWaves - 1 && SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlayBossMusic();
+        }
 
         // if level > max, go to Win
         if (progressionManager.GetCurrentLevel() > progressionManager.GetMaxWaves())
@@ -522,6 +532,13 @@ public class GameManager : MonoBehaviour
         if (progressionManager != null) progressionManager.ResetLevel();
 
         Debug.Log("Game fully reset - back to Main Menu");
+    }
+
+    private IEnumerator ReturnToMenuMusicWithDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlayMusicForState(GameState.MainMenu);
     }
 
     public void Quit()

@@ -31,6 +31,7 @@ public class SoundManager : MonoBehaviour
     [Header("Music Tracks")]
     public AudioClip menuMusic;
     public AudioClip gameplayMusic;
+    public AudioClip bossMusic;
 
     [Header("Settings")]
     public float fadeDuration = 0.7f;
@@ -90,6 +91,13 @@ public class SoundManager : MonoBehaviour
         StartCoroutine(FadeAndSwitch(nextTrack));
     }
 
+    public void PlayBossMusic()
+    {
+        if (bossMusic != null && bossMusic != currentTrack)
+        {
+            StartCoroutine(FadeAndSwitch(bossMusic));
+        }
+    }
     private System.Collections.IEnumerator FadeAndSwitch(AudioClip nextTrack)
     {
         if (musicSource.isPlaying)
