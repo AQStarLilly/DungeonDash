@@ -91,9 +91,10 @@ public class SoundManager : MonoBehaviour
             default:
                 return;
         }
-        if (nextTrack == currentTrack) return;
-
-        StartCoroutine(FadeAndSwitch(nextTrack));
+        if (nextTrack != null && musicSource.clip != nextTrack)
+        {
+            StartCoroutine(FadeAndSwitch(nextTrack));
+        }
     }
 
     public void PlayBossMusic()
@@ -106,33 +107,35 @@ public class SoundManager : MonoBehaviour
 
     private IEnumerator FadeAndSwitch(AudioClip nextTrack)
     {
-        if (musicSource.isPlaying)
-        {
-            // Fade out
-            float startVolume = musicSource.volume;
-            for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
-            {
-                float k = fadeDuration <= 0f ? 1f : t / fadeDuration;
-                musicSource.volume = Mathf.Lerp(startVolume, 0f, t / fadeDuration);
-                yield return null;
-            }
-            musicSource.Stop();
-        }
+        if (musicSource == null) yield break;
 
-        // Switch tracks
-        musicSource.clip = nextTrack;
-        currentTrack = nextTrack;
-        musicSource.Play();
+        float startVolume = musicSource.volume;
 
-        // Fade in
+        // Fade OUT using unscaledDeltaTime
         for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
-            float k = fadeDuration <= 0f ? 1f : t / fadeDuration;
-            musicSource.volume = Mathf.Lerp(0f, 1f, t / fadeDuration);
+            float progress = fadeDuration <= 0f ? 1f : t / fadeDuration;
+            musicSource.volume = Mathf.Lerp(startVolume, 0f, progress);
             yield return null;
         }
 
-        musicSource.volume = 1f;
+        musicSource.Stop();
+        musicSource.clip = nextTrack;
+        musicSource.Play();
+
+        // Re-apply the current saved volume before fading in
+        float targetVolume = PlayerPrefs.GetFloat("MusicVolume", masterVolume);
+        masterVolume = targetVolume; // sync the internal variable
+
+        // Fade IN using unscaledDeltaTime
+        for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
+        {
+            float progress = fadeDuration <= 0f ? 1f : t / fadeDuration;
+            musicSource.volume = Mathf.Lerp(0f, targetVolume, progress);
+            yield return null;
+        }
+
+        musicSource.volume = targetVolume;
     }
 
     public void SetVolume(float value)
