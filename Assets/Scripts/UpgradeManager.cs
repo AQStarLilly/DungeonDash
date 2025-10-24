@@ -135,8 +135,13 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case "shield":
-                // +10 flat shield per level (baked into max HP on reset, will fix so it's a seperate value - shield icon above head, depletes as you take damage)
-                PlayerStats.Instance.shield += 10;
+                int baseShield = 20;
+                int perLevel = 10;
+
+                int totalShield = baseShield + (perLevel * (up.level - 1));
+                PlayerStats.Instance.shield = totalShield;
+
+                Debug.Log($"[UpgradeManager] Shield upgraded! New Shield = {PlayerStats.Instance.shield}");
                 break;
 
             case "currency":

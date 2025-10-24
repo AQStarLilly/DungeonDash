@@ -7,6 +7,10 @@ public class HealthSystem : MonoBehaviour
     [Header("Stats")]
     public int maxHealth = 100;
     public int currentHealth;
+    public int maxShield = 0;
+    public int currentShield = 0;
+
+    [Header("Attack Stats")]
     public int attackDamage = 10;
     [Range(0f, 1f)] public float critChance = 0.1f;
     public float critMultiplier = 2f;
@@ -18,9 +22,8 @@ public class HealthSystem : MonoBehaviour
     [Header("Visuals")]
     private SpriteRenderer spriteRenderer;
     private Color originalColor;
-
-    [Header("Damage Popups.")]
     public GameObject floatingTextPrefab;
+    public ShieldVisual shieldVisual;
 
     [Header("Identity")]
     public bool isPlayer = false;
@@ -74,32 +77,110 @@ public class HealthSystem : MonoBehaviour
 
     public void TakeDamage(int damage, bool isCrit = false)
     {
-        currentHealth -= damage;
+        int damageRemaining = damage;
 
-        if (spriteRenderer != null)
-            StartCoroutine(FlashRed());
-
-        if (floatingTextPrefab != null)
+        // Apply to Shield first
+        if (currentShield > 0)
         {
-            // Convert world position (above character) into screen space for UI Canvas
-            Vector3 worldPos = transform.position + Vector3.up * 3.5f;
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-            
-            Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
+            int shieldDamage = Mathf.Min(currentShield, damageRemaining);
+            currentShield -= shieldDamage;
+            damageRemaining -= shieldDamage;
 
-            var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
+            if (shieldVisual != null)
+            {
+                shieldVisual.UpdateShieldVisual(currentShield, maxShield);
+                shieldVisual.FlashHit();
+            }
 
-            // Initialize damage text visuals
-            popup.GetComponent<FloatingDamageText>().Initialize(damage, isCrit);
+            // Show shield damage popup
+            if (floatingTextPrefab != null)
+            {
+                Vector3 spawnPos = transform.position + Vector3.up * 1.2f;
+                var popup = Instantiate(floatingTextPrefab, spawnPos, Quaternion.identity);
+                popup.GetComponent<FloatingDamageText>().Initialize(shieldDamage, false); 
+            }
         }
 
-        if (currentHealth <= 0)
+        // Apply remaining to Health
+        if (damageRemaining > 0)
         {
-            currentHealth = 0;
-            OnDeath?.Invoke(this);
+            currentHealth -= damageRemaining;
+
+            if (spriteRenderer != null)
+                StartCoroutine(FlashRed());
+
+            if (floatingTextPrefab != null)
+            {
+                Vector3 spawnPos = transform.position + Vector3.up * 1.2f;
+                var popup = Instantiate(floatingTextPrefab, spawnPos, Quaternion.identity);
+                popup.GetComponent<FloatingDamageText>().Initialize(damageRemaining, isCrit);
+            }
+
+            if (currentHealth <= 0)
+            {
+                currentHealth = 0;
+                OnDeath?.Invoke(this);
+            }
         }
 
         UpdateUI();
+    }    
+
+    private IEnumerator FlashRed()
+    {
+        spriteRenderer.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        spriteRenderer.color = originalColor;
+    }
+
+    public void Heal(int amount)
+    {
+        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
+        UpdateUI();
+    }
+
+    public void ResetHealth()
+    {
+        if(isPlayer && PlayerStats.Instance != null)
+        {
+            maxHealth = Mathf.RoundToInt(maxHealth * PlayerStats.Instance.healthMultiplier);
+            maxShield = PlayerStats.Instance.shield;
+        }
+
+        currentHealth = maxHealth;
+        currentShield = maxShield;
+
+        UpdateUI();
+
+        if (shieldVisual != null)
+        {
+            if (maxShield > 0)
+            {
+                shieldVisual.ShowShield();
+                shieldVisual.UpdateShieldVisual(currentShield, maxShield);
+            }
+            else
+            {
+                shieldVisual.HideShield();
+            }
+        }
+    }
+
+    public void UpdateUI()
+    {
+        if (healthText != null)
+        {
+            if (currentShield > 0)
+                healthText.text = $"HP: {currentHealth}/{maxHealth} | Shield: {currentShield}/{maxShield}";
+            else
+                healthText.text = $"HP: {currentHealth}/{maxHealth}";
+        }
+
+
+        if (healthBarUI != null)
+        {
+            healthBarUI.SetHealth(currentHealth, maxHealth);
+        }
     }
 
     public (int damage, bool isCrit) CalculateAttackDamage()
@@ -119,40 +200,5 @@ public class HealthSystem : MonoBehaviour
         }
 
         return (finalDamage, isCrit);
-    }
-
-    private IEnumerator FlashRed()
-    {
-        spriteRenderer.color = Color.red;
-        yield return new WaitForSeconds(0.1f);
-        spriteRenderer.color = originalColor;
-    }
-
-    public void Heal(int amount)
-    {
-        currentHealth = Mathf.Min(currentHealth + amount, maxHealth);
-        UpdateUI();
-    }
-
-    public void ResetHealth()
-    {
-        if(isPlayer && PlayerStats.Instance != null)
-        {
-            maxHealth = Mathf.RoundToInt(maxHealth * PlayerStats.Instance.healthMultiplier) + PlayerStats.Instance.shield;
-        }
-
-        currentHealth = maxHealth;
-        UpdateUI();
-    }
-
-    public void UpdateUI()
-    {
-        if (healthText != null)
-            healthText.text = $"Health: {currentHealth}/{maxHealth}";
-
-        if (healthBarUI != null)
-        {
-            healthBarUI.SetHealth(currentHealth, maxHealth);
-        }
     }
 }
