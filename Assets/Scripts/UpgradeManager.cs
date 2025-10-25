@@ -125,8 +125,8 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case "damage2":
-                // +15% dmg per level (unlocks after damage1 max)
-                PlayerStats.Instance.damageMultiplier += 0.15f;
+                // +20% dmg per level (unlocks after damage1 max)
+                PlayerStats.Instance.damageMultiplier += 0.20f;
                 break;
 
             case "health":
@@ -221,19 +221,3 @@ public class UpgradeManager : MonoBehaviour
         UpdateAllButtons();
     }
 }
-
-
-//Wave 1 enemy - Health (30), Damage (8)
-//Final Boss (wave 30) - Health (320), Damage (66)
-
-//Player Start - Health (50), Damage (10)
-//Full Upgrades (Lvl 5) - Health (100), Shield (50), Damage(20)
-//Maybe double levels (Lvl 10)- Health (150), Shield (100) - Total (250) health aspect(tweak this slightly will be perfect since were only behind 70 health
-// Gain 15 health/shield per upgrade instead of 10. - Health (200), Shield (150) - Total (350) health aspect. 
-// Damage (30) - only half of what the boss has - change damage to 3 damage per upgrade triples everything so roughly 70 damage at max
-// Fix combat so its turn based or increase health/damage as both player and boss would die at the same time.
-
-/* Definitely need to tweak (stats should be similar to boss by the time you get to final wave)
- * All upgrades or mostly all upgrades unlocked to beat boss?
- * 20-30 minutes to beat game?
- */
