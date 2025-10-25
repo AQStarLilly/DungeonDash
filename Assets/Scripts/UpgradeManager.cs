@@ -120,18 +120,18 @@ public class UpgradeManager : MonoBehaviour
         switch (up.id)
         {
             case "damage1":
-                // +10% dmg per level
-                PlayerStats.Instance.damageMultiplier += 0.10f;
-                break;
-
-            case "damage2":
-                // +20% dmg per level (unlocks after damage1 max)
+                // +20% dmg per level
                 PlayerStats.Instance.damageMultiplier += 0.20f;
                 break;
 
+            case "damage2":
+                // +40% dmg per level (unlocks after damage1 max)
+                PlayerStats.Instance.damageMultiplier += 0.40f;
+                break;
+
             case "health":
-                // +20% max HP per level (applied on next spawn/reset)
-                PlayerStats.Instance.healthMultiplier += 0.20f;
+                // +70% max HP per level (applied on next spawn/reset)
+                PlayerStats.Instance.healthMultiplier += 0.70f;
                 break;
 
             case "shield":
