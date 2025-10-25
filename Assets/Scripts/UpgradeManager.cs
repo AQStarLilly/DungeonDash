@@ -17,7 +17,7 @@ public class UpgradeManager : MonoBehaviour
 
         [Header("Progress")]
         public int level = 0;
-        public int maxLevel = 5;
+        public int maxLevel = 10;
 
         [Header("Cost")]
         public int baseCost = 20;

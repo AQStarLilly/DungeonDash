@@ -9430,7 +9430,7 @@ MonoBehaviour:
   - id: damage1
     displayName: Damage 1
     level: 0
-    maxLevel: 5
+    maxLevel: 10
     baseCost: 30
     costMultiplier: 1.6
     requiresUpgradeId: 
@@ -9440,7 +9440,7 @@ MonoBehaviour:
   - id: damage2
     displayName: Damage 2
     level: 0
-    maxLevel: 5
+    maxLevel: 10
     baseCost: 120
     costMultiplier: 1
     requiresUpgradeId: damage1
@@ -9450,7 +9450,7 @@ MonoBehaviour:
   - id: health
     displayName: Health
     level: 0
-    maxLevel: 5
+    maxLevel: 10
     baseCost: 25
     costMultiplier: 1.5
     requiresUpgradeId: 
@@ -9460,7 +9460,7 @@ MonoBehaviour:
   - id: shield
     displayName: Shield
     level: 0
-    maxLevel: 5
+    maxLevel: 10
     baseCost: 20
     costMultiplier: 1.4
     requiresUpgradeId: 
@@ -9470,7 +9470,7 @@ MonoBehaviour:
   - id: currency
     displayName: Currency
     level: 0
-    maxLevel: 5
+    maxLevel: 10
     baseCost: 50
     costMultiplier: 1.8
     requiresUpgradeId: 
