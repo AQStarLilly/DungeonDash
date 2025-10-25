@@ -138,6 +138,7 @@ public class HealthSystem : MonoBehaviour
 
             if (spriteRenderer != null)
                 StartCoroutine(FlashRed());
+                StartCoroutine(ShakeOnHit());
 
             if (floatingTextPrefab != null)
             {
@@ -165,6 +166,25 @@ public class HealthSystem : MonoBehaviour
         spriteRenderer.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         spriteRenderer.color = originalColor;
+    }
+
+    private IEnumerator ShakeOnHit(float duration = 0.15f, float magnitude = 0.1f)
+    {
+        Vector3 originalPos = transform.localPosition;
+
+        float elapsed = 0f;
+        while(elapsed < duration)
+        {
+            float offsetX = Random.Range(-1f, 1f) * magnitude;
+            float offsetY = Random.Range(-1f, 1f) * magnitude;
+
+            transform.localPosition = originalPos + new Vector3(offsetX, offsetY, 0f);
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.localPosition = originalPos;
     }
 
     private void RefreshShieldVisual()
