@@ -12,6 +12,7 @@ public class UIManager : MonoBehaviour
     public GameObject pauseMenuOptionsUI;
     public GameObject upgradesUI;
     public GameObject resultsUI;
+    public GameObject creditsUI;
     public GameObject winUI;
 
     [Header("Main Menu Button")]
@@ -34,6 +35,7 @@ public class UIManager : MonoBehaviour
         pauseMenuOptionsUI.SetActive(false);
         upgradesUI.SetActive(false);
         resultsUI.SetActive(false);
+        creditsUI.SetActive(false);
         winUI.SetActive(false);
 
         pausePanel.SetActive(false);
@@ -52,6 +54,7 @@ public class UIManager : MonoBehaviour
             case GameState.PauseMenuOptions: pauseMenuOptionsUI.SetActive(true); break;
             case GameState.Upgrades: upgradesUI.SetActive(true); break;
             case GameState.Results: resultsUI.SetActive(true); break;
+            case GameState.Credits: creditsUI.SetActive(true); break;
             case GameState.Win: winUI.SetActive(true); break;
         }
     }
@@ -86,6 +89,7 @@ public class UIManager : MonoBehaviour
     public void GoToPauseMenuOptions() => GameManager.Instance.ChangeState(GameState.PauseMenuOptions);
     public void GoToUpgrades() => GameManager.Instance.ChangeState(GameState.Upgrades);
     public void GoToResults() => GameManager.Instance.ChangeState(GameState.Results);
+    public void GoToCredits() => GameManager.Instance.ChangeState(GameState.Credits);
     public void GoToWin() => GameManager.Instance.ChangeState(GameState.Win);
 
 

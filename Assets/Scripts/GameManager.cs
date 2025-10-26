@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
         PauseMenuOptions,
         Upgrades,
         Results,
+        Credits,
         Win
     }
 
