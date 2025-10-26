@@ -220,4 +220,21 @@ public class UpgradeManager : MonoBehaviour
         PlayerStats.Instance.ResetStats();
         UpdateAllButtons();
     }
+
+    public void ApplyAllUpgradeEffects()
+    {
+        PlayerStats.Instance.ResetStats();
+
+        foreach (var up in upgrades)
+        {
+            if (up.level > 0)
+            {
+                for (int i = 0; i < up.level; i++)
+                {
+                    ApplyUpgradeEffect(up);
+                }
+            }
+        }
+        Debug.Log("[Upgrade Manager] applied all upgrade effects from save.");
+    }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public static class SaveSystem 
 {
@@ -6,6 +7,7 @@ public static class SaveSystem
     private const string RunCurrencyKey = "RunCurrency";
     private const string LastRunKey = "LastRunEarnings";
     private const string WaveKey = "Wave";
+    private const string UpgradePrefix = "Upgrade_";
 
     public static void SaveGame (int totalCurrency, int runCurrency, int lastRunEarnings, int wave)
     {
@@ -13,6 +15,17 @@ public static class SaveSystem
         PlayerPrefs.SetInt(RunCurrencyKey, runCurrency);
         PlayerPrefs.SetInt(LastRunKey, lastRunEarnings);
         PlayerPrefs.SetInt(WaveKey, wave);
+
+        if (UpgradeManager.Instance != null)
+        {
+            foreach (var up in UpgradeManager.Instance.upgrades)
+            {
+                if (!string.IsNullOrEmpty(up.id))
+                {
+                    PlayerPrefs.SetInt(UpgradePrefix + up.id, up.level);
+                }
+            }
+        }
         PlayerPrefs.Save();
         Debug.Log("Game Saved!");
     }
@@ -28,6 +41,20 @@ public static class SaveSystem
         runCurrency = PlayerPrefs.GetInt(RunCurrencyKey, 0);
         lastRunEarnings = PlayerPrefs.GetInt(LastRunKey, 0);
         wave = PlayerPrefs.GetInt(WaveKey, 1);
+
+        if (UpgradeManager.Instance != null)
+        {
+            foreach (var up in UpgradeManager.Instance.upgrades)
+            {
+                if (!string.IsNullOrEmpty(up.id))
+                {
+                    up.level = PlayerPrefs.GetInt(UpgradePrefix + up.id, 0);
+                }
+            }
+
+            UpgradeManager.Instance.ApplyAllUpgradeEffects();
+            UpgradeManager.Instance.UpdateAllButtons();
+        }
     }
 
     public static void ClearSave()
@@ -36,6 +63,17 @@ public static class SaveSystem
         PlayerPrefs.DeleteKey(RunCurrencyKey);
         PlayerPrefs.DeleteKey(LastRunKey);
         PlayerPrefs.DeleteKey(WaveKey);
+
+        if (UpgradeManager.Instance != null)
+        {
+            foreach (var up in UpgradeManager.Instance.upgrades)
+            {
+                if (!string.IsNullOrEmpty(up.id))
+                {
+                    PlayerPrefs.DeleteKey(UpgradePrefix + up.id);
+                }
+            }
+        }
         Debug.Log("Save Cleared.");
     }
 }

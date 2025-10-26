@@ -168,6 +168,11 @@ public class GameManager : MonoBehaviour
             int savedWave;
 
             SaveSystem.LoadGame(out savedTotalCurrency, out savedRunCurrency, out savedLastRun, out savedWave);
+            if (UpgradeManager.Instance != null)
+            {
+                UpgradeManager.Instance.ApplyAllUpgradeEffects();
+                UpgradeManager.Instance.UpdateAllButtons();
+            }
 
             currencyManager.totalCurrency = savedTotalCurrency;
             currencyManager.runCurrency = savedRunCurrency;
