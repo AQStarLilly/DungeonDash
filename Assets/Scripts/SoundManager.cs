@@ -2,28 +2,7 @@ using UnityEngine;
 using System.Collections;
 
 public class SoundManager : MonoBehaviour
-{
-    //SFX - 10(Minimum)
-    //Player
-        //Death (plays and goes into the results screen)
-        //Attack
-        //Take Damage
-
-    //Enemy
-        //Death
-        //Attack
-        //Take Damage
-
-    //Boss
-        //Some sort of line for the boss to say or have the boss howl/yell as you come up to them?
-        //Death
-        //Attack
-        //Take Damage
-
-    //DUNGEON DASH - play when you first load into the game - and when you hit dash again? (just yell dungeon dash with intense feel)
-    //Upgrade Button SFX?
-    //Game Won SFX - plays when you beat the final boss
-    
+{ 
     public static SoundManager Instance;
 
     [Header("Audio Source")]
@@ -160,3 +139,18 @@ public class SoundManager : MonoBehaviour
             musicSource.volume = masterVolume;
     }
 }
+
+
+//SFX - 10(Minimum)
+
+/* Button Sound
+ * Upgrade Button Sound
+ * Player Death
+ * Player Attack
+ * Enemy Death
+ * Enemy Attack
+ * Boss Howl (plays when you start wave 30)
+ * DUNGEON DASH (have it play when you start a run and when you play again from upgrades)
+ * Boss Attack
+ * Boss Death
+ */
