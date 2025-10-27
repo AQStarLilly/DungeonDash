@@ -293,6 +293,12 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2f);
 
         progressionManager.IncreaseLevel();
+        var visual = FindFirstObjectByType<WaveNumberVisual>();
+        if (visual != null)
+        {
+            int newWave = progressionManager.GetCurrentLevel();
+            visual.SetWave(newWave, false); // false = red (new wave active)
+        }
 
         int currentWave = progressionManager.GetCurrentLevel();
         int maxWaves = progressionManager.GetMaxWaves();
@@ -352,8 +358,11 @@ public class GameManager : MonoBehaviour
         int current = progressionManager.GetCurrentLevel();
         int max = progressionManager.GetMaxWaves();
 
-        if (waveCounterText != null)
-            waveCounterText.text = $"Wave {current}/{max}";
+        var visual = FindFirstObjectByType<WaveNumberVisual>();
+        if (visual != null)
+        {
+            visual.SetWave(current, false); // false = red (active)
+        }
     }
 
     public void UpdateUpgradesCurrencyUI()
@@ -417,7 +426,7 @@ public class GameManager : MonoBehaviour
         currentEnemy = null;
 
         // Heal player back to full
-        if (playerHealth != null) playerHealth.ResetForNextWave();
+        if (playerHealth != null) playerHealth.ResetForNextWave();      
 
         var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
         if (scroll != null)
@@ -426,7 +435,13 @@ public class GameManager : MonoBehaviour
         int currentWave = progressionManager.GetCurrentLevel();
         int maxWaves = progressionManager.GetMaxWaves();
 
-        if(currentWave >= maxWaves)
+        var visual = FindFirstObjectByType<WaveNumberVisual>();
+        if (visual != null)
+        {
+            visual.SetWave(currentWave, true); // true = grey (wave cleared)
+        }
+
+        if (currentWave >= maxWaves)
         {
             Debug.Log("You beat your Boss! Congratulations!");
             ChangeState(GameState.Win);
