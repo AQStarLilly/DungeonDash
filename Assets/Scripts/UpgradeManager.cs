@@ -97,6 +97,7 @@ public class UpgradeManager : MonoBehaviour
         if (CurrencyManager.Instance.SpendCurrency(cost))
         {
             up.level++;
+            SoundManager.Instance?.PlaySFX(SoundManager.Instance.upgradePurchase);
             ApplyUpgradeEffect(up);
             UpdateAllButtons();
             GameManager.Instance.UpdateUpgradesCurrencyUI();

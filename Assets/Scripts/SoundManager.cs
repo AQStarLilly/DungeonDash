@@ -13,6 +13,27 @@ public class SoundManager : MonoBehaviour
     public AudioClip gameplayMusic;
     public AudioClip bossMusic;
 
+    [Header("Sound Effects")]
+    public AudioSource sfxSource; // separate source for short effects
+
+    [Header("UI Sounds")]
+    public AudioClip buttonClick;
+    public AudioClip upgradePurchase;
+    public AudioClip announcerSound;
+
+    [Header("Player Sounds")]
+    public AudioClip playerAttack;
+    public AudioClip playerDeath;
+
+    [Header("Enemy Sounds")]
+    public AudioClip enemyAttack;
+    public AudioClip enemyDeath;
+
+    [Header("Boss Sounds")]
+    public AudioClip bossHowl;       // when boss is about to spawn (wave 30)
+    public AudioClip bossAttack;
+    public AudioClip bossDeath;
+
     [Header("Settings")]
     public float fadeDuration = 0.7f;
     private AudioClip currentTrack;
@@ -84,6 +105,12 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    public void PlaySFX(AudioClip clip, float volume = 1f)
+    {
+        if (clip == null || sfxSource == null) return;
+        sfxSource.PlayOneShot(clip, volume * masterVolume);
+    }
+
     private IEnumerator FadeAndSwitch(AudioClip nextTrack)
     {
         if (musicSource == null) yield break;
@@ -141,16 +168,3 @@ public class SoundManager : MonoBehaviour
 }
 
 
-//SFX - 10(Minimum)
-
-/* Button Sound
- * Upgrade Button Sound
- * Player Death
- * Player Attack
- * Enemy Death
- * Enemy Attack
- * Boss Howl (plays when you start wave 30)
- * DUNGEON DASH (have it play when you start a run and when you play again from upgrades)
- * Boss Attack
- * Boss Death
- */

@@ -67,9 +67,19 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public void GoToMainMenu() => GameManager.Instance.ChangeState(GameState.MainMenu);
+    public void GoToMainMenu()
+    {
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
+
+        GameManager.Instance.ChangeState(GameState.MainMenu);
+    }
+
     public void GoToGameplay()
     {
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.announcerSound);
+
         // Reset background when starting a new run from Upgrades or Main Menu
         if (scrollingBackground != null)
             scrollingBackground.ResetScroll();
@@ -83,13 +93,48 @@ public class UIManager : MonoBehaviour
 
         GameManager.Instance.ChangeState(GameState.Gameplay);
     }
-    public void GoToPause() => GameManager.Instance.ChangeState(GameState.Pause);
-    public void GoToInstructions() => GameManager.Instance.ChangeState(GameState.Instructions);
-    public void GoToMainMenuOptions() => GameManager.Instance.ChangeState(GameState.MainMenuOptions);
-    public void GoToPauseMenuOptions() => GameManager.Instance.ChangeState(GameState.PauseMenuOptions);
-    public void GoToUpgrades() => GameManager.Instance.ChangeState(GameState.Upgrades);
+    public void GoToPause()
+    {
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
+
+        GameManager.Instance.ChangeState(GameState.Pause);
+    }
+    public void GoToInstructions()
+    {
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
+
+        GameManager.Instance.ChangeState(GameState.Instructions);
+    }
+    public void GoToMainMenuOptions()
+    {
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
+
+        GameManager.Instance.ChangeState(GameState.MainMenuOptions);
+    }
+    public void GoToPauseMenuOptions()
+    {
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
+
+        GameManager.Instance.ChangeState(GameState.PauseMenuOptions);
+    }
+    public void GoToUpgrades()
+    {
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
+
+        GameManager.Instance.ChangeState(GameState.Upgrades);
+    }
     public void GoToResults() => GameManager.Instance.ChangeState(GameState.Results);
-    public void GoToCredits() => GameManager.Instance.ChangeState(GameState.Credits);
+    public void GoToCredits()
+    {
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
+        GameManager.Instance.ChangeState(GameState.Credits);
+    }
     public void GoToWin() => GameManager.Instance.ChangeState(GameState.Win);
 
 

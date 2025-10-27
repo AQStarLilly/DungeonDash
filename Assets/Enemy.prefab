@@ -105,7 +105,7 @@ MonoBehaviour:
   maxShield: 0
   currentShield: 0
   attackDamage: 8
-  critChance: 0.1
+  critChance: 0.05
   critMultiplier: 2
   regenerateShieldOnReset: 1
   shieldValueText: {fileID: 0}
