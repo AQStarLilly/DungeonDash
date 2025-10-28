@@ -244,3 +244,12 @@ public class HealthSystem : MonoBehaviour
         UpdateUI();
     }
 }
+
+
+/* Update Shield Ideas
+ * Maybe the shield doesn't 100% absorb damage, but you still take some damage (damage bleed(shield would last longer but still disappear)(EX - 10 damage would be 8 damage to shield, 2 to hp)
+ * the shield could take a specific number of hits instead of hp, and maybe regenerates each room (Block 1 or 2 hits at start(full hit) and upgrades increase how mnay hits they block)
+ * player could use the shield when they want (Save it for later waves)
+ * Switch shield to Damage Reduction instead (Enemies deal less damage to you and your upgrade can increase how much you resist attacks)
+ * 
+ */
