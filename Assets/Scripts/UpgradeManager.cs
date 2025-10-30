@@ -30,6 +30,8 @@ public class UpgradeManager : MonoBehaviour
         [Header("UI")]
         public Button button;
         public TMP_Text buttonText;
+        public Image displayImage;
+        public List<Sprite> levelSprites;
 
         public int CurrentCost => Mathf.RoundToInt(baseCost * Mathf.Pow(costMultiplier, level));
         public bool IsMaxed => level >= maxLevel;
@@ -42,7 +44,7 @@ public class UpgradeManager : MonoBehaviour
     [Header("UI Colors")]
     public Color normalText = Color.white;
     public Color affordText = new Color(0.6f, 1f, 0.6f); 
-    public Color lockedText = new Color(0.7f, 0.7f, 0.7f); 
+    public Color lockedText = new Color(0.7f, 0.7f, 0.7f);
 
     // quick lookup
     private Dictionary<string, Upgrade> map = new Dictionary<string, Upgrade>();
@@ -172,34 +174,36 @@ public class UpgradeManager : MonoBehaviour
                 continue;
             }
 
-            if (up.button == null || up.buttonText == null)
-            {
-                Debug.LogWarning($"[UpgradeManager] Missing UI reference for upgrade: {up.displayName} ({up.id})");
-                continue;
-            }
-
             bool locked = IsLocked(up);
             bool maxed = up.IsMaxed;
             bool affordable = CurrencyManager.Instance != null &&
                               CurrencyManager.Instance.totalCurrency >= up.CurrentCost;
 
+            // --- Update interactable state ---
+            up.button.interactable = !locked && !maxed && affordable;
+
+            // --- Update cost text ---
             if (maxed)
             {
-                up.button.interactable = false;
-                up.buttonText.text = $"{up.displayName} (MAX)";
+                up.buttonText.text = "MAXED";
                 up.buttonText.color = lockedText;
             }
             else if (locked)
             {
-                up.button.interactable = false;
-                up.buttonText.text = $"{up.displayName} (Locked)";
+                up.buttonText.text = "LOCKED";
                 up.buttonText.color = lockedText;
             }
             else
             {
-                up.button.interactable = affordable;
-                up.buttonText.text = $"{up.displayName}  Lv.{up.level}  —  Cost: {up.CurrentCost}";
+                up.buttonText.text = $"{up.CurrentCost}";
                 up.buttonText.color = affordable ? affordText : normalText;
+            }
+
+            // --- Update level sprite ---
+            if (up.displayImage != null && up.levelSprites != null && up.levelSprites.Count > 0)
+            {
+                int spriteIndex = Mathf.Clamp(up.level, 0, up.levelSprites.Count - 1);
+                up.displayImage.sprite = up.levelSprites[spriteIndex];
             }
         }
     }
