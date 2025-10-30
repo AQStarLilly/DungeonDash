@@ -251,50 +251,60 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator BattleRoutine()
     {
+        yield return new WaitForSeconds(0.5f);
+
         while (true)
         {
-            yield return new WaitForSeconds(1f);
-
             if (currentState != GameState.Gameplay)
                 yield break;
 
-            // If either side is gone - stop safely
+            // If anyone is null, stop the loop
             if (playerHealth == null || currentEnemy == null)
                 yield break;
 
-            // Enemy hits player
-            if (playerHealth != null && currentEnemy != null)
+            //
+            // --- PLAYER TURN ---
+            //
+            var (playerDamage, playerCrit) = playerHealth.CalculateAttackDamage();
+            currentEnemy.TakeDamage(playerDamage, playerCrit);
+            SoundManager.Instance?.PlaySFX(SoundManager.Instance.playerAttack);
+
+            // Wait briefly for hit animation / damage text
+            yield return new WaitForSeconds(0.5f);
+
+            // Check if enemy died
+            if (currentEnemy == null || currentEnemy.currentHealth <= 0)
             {
-                var (enemyDamage, enemyCrit) = currentEnemy.CalculateAttackDamage();
-                playerHealth.TakeDamage(enemyDamage, enemyCrit);
-
-                if (progressionManager.GetCurrentLevel() == progressionManager.GetMaxWaves())
-                {
-                    SoundManager.Instance?.PlaySFX(SoundManager.Instance.bossAttack);
-                }
-                else
-                {
-                    SoundManager.Instance?.PlaySFX(SoundManager.Instance.enemyAttack);
-                }
-            }
-
-            // Player hits enemy
-            if (playerHealth != null && currentEnemy != null)
-            {
-                var (playerDamage, playerCrit) = playerHealth.CalculateAttackDamage();
-                currentEnemy.TakeDamage(playerDamage, playerCrit);
-                SoundManager.Instance?.PlaySFX(SoundManager.Instance.playerAttack);
-            }
-
-            // If either died during attacks, bail out immediately
-            if (playerHealth == null || currentEnemy == null)
+                HandleEnemyDeath(currentEnemy);
                 yield break;
+            }
 
-            if (playerHealth.currentHealth <= 0)
-                yield break; // HandlePlayerDeath will trigger
+            //
+            // --- ENEMY TURN ---
+            //
+            var (enemyDamage, enemyCrit) = currentEnemy.CalculateAttackDamage();
+            playerHealth.TakeDamage(enemyDamage, enemyCrit);
 
-            if (currentEnemy.currentHealth <= 0)
-                yield break; // HandleEnemyDeath will trigger
+            if (progressionManager.GetCurrentLevel() == progressionManager.GetMaxWaves())
+            {
+                SoundManager.Instance?.PlaySFX(SoundManager.Instance.bossAttack);
+            }
+            else
+            {
+                SoundManager.Instance?.PlaySFX(SoundManager.Instance.enemyAttack);
+            }
+
+            yield return new WaitForSeconds(0.5f);
+
+            // Check if player died
+            if (playerHealth == null || playerHealth.currentHealth <= 0)
+            {
+                HandlePlayerDeath(playerHealth);
+                yield break;
+            }
+
+            // Short delay before next round
+            yield return new WaitForSeconds(0.5f);
         }
     }
 
