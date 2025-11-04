@@ -75,7 +75,7 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.ChangeState(GameState.MainMenu);
     }
 
-    public void GoToGameplay()
+    public void GoToGameplay() //Updating this will fix announcer voice repeating and background resetting when hitting the resume button
     {
         if (SoundManager.Instance != null)
             SoundManager.Instance.PlaySFX(SoundManager.Instance.announcerSound);
