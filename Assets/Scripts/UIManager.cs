@@ -138,7 +138,7 @@ public class UIManager : MonoBehaviour
     public void GoToWin() => GameManager.Instance.ChangeState(GameState.Win);
 
 
-    public void ClearSaveData()
+    public void ClearSaveData() //Update this to fix having to double click save button before popup appears
     {
         if (confirmPopup != null)
         {
