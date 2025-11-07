@@ -75,8 +75,10 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.ChangeState(GameState.MainMenu);
     }
 
-    public void GoToGameplay(bool fromResume = false) //Updating this will fix announcer voice repeating and background resetting when hitting the resume button
+    public void GoToGameplay(bool fromResume = false, bool fromUpgrades = false)
     {
+        // Only play the announcer and reset scroll if this is a *new run*,
+        // not a resume from pause.
         if (!fromResume)
         {
             if (SoundManager.Instance != null)
@@ -94,7 +96,8 @@ public class UIManager : MonoBehaviour
             }
         }
 
-        GameManager.Instance.ChangeState(GameState.Gameplay);
+        // Tell GameManager whether this is a *fresh run* (from upgrades or main menu)
+        GameManager.Instance.StartGameplay(fromUpgrades);
     }
     public void GoToPause()
     {
@@ -168,4 +171,10 @@ public class UIManager : MonoBehaviour
             Debug.LogWarning("ConfirmPopup not assigned in UIManager!");
         }
     }
+
+
+    // --- Button-friendly shortcuts ---
+    public void GoToGameplayFromMenu() => GoToGameplay(false, false);
+    public void GoToGameplayFromPause() => GoToGameplay(true, false);
+    public void GoToGameplayFromUpgrades() => GoToGameplay(false, true);
 }

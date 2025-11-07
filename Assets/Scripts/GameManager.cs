@@ -162,6 +162,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public void StartGameplay(bool fromUpgrades)
+    {
+        if (fromUpgrades)
+        {
+            Debug.Log("[GameManager] Starting fresh run from Upgrades screen.");
+
+            // Fully reset combat-related things
+            CleanupAllEnemiesInScene();
+            progressionManager.ResetLevel();      // wave = 1
+            currencyManager.ResetRunCurrency();   // clear temporary earnings
+            playerHealth = null;
+            currentEnemy = null;
+            loadingFromSave = false;
+        }
+
+        ChangeState(GameState.Gameplay);
+    }
+
     // Save / Load Handlers //
     public void StartNewGame()
     {

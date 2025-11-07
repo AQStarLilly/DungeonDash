@@ -1190,8 +1190,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 315462185}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: GoToGameplay
-        m_Mode: 6
+        m_MethodName: GoToGameplayFromUpgrades
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1455,8 +1455,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 315462185}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: GoToGameplay
-        m_Mode: 6
+        m_MethodName: GoToGameplayFromPause
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -10855,8 +10855,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 315462185}
         m_TargetAssemblyTypeName: UIManager, Assembly-CSharp
-        m_MethodName: GoToGameplay
-        m_Mode: 6
+        m_MethodName: GoToGameplayFromMenu
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
