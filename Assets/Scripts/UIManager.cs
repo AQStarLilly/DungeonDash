@@ -75,20 +75,23 @@ public class UIManager : MonoBehaviour
         GameManager.Instance.ChangeState(GameState.MainMenu);
     }
 
-    public void GoToGameplay() //Updating this will fix announcer voice repeating and background resetting when hitting the resume button
+    public void GoToGameplay(bool fromResume = false) //Updating this will fix announcer voice repeating and background resetting when hitting the resume button
     {
-        if (SoundManager.Instance != null)
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.announcerSound);
-
-        // Reset background when starting a new run from Upgrades or Main Menu
-        if (scrollingBackground != null)
-            scrollingBackground.ResetScroll();
-        else
+        if (!fromResume)
         {
-            // fallback if you forgot to assign it
-            var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
-            if (scroll != null)
-                scroll.ResetScroll();
+            if (SoundManager.Instance != null)
+                SoundManager.Instance.PlaySFX(SoundManager.Instance.announcerSound);
+
+            // Reset background when starting a new run from Upgrades or Main Menu
+            if (scrollingBackground != null)
+                scrollingBackground.ResetScroll();
+            else
+            {
+                // fallback if you forgot to assign it
+                var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
+                if (scroll != null)
+                    scroll.ResetScroll();
+            }
         }
 
         GameManager.Instance.ChangeState(GameState.Gameplay);

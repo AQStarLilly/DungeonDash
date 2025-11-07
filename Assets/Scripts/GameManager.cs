@@ -55,6 +55,8 @@ public class GameManager : MonoBehaviour
     private Coroutine battleLoop;
     private bool isPaused = false;
     private bool loadingFromSave = false;
+    private bool isSpawningEnemy = false;
+    private Coroutine stageTransitionCR;
 
     private void Awake()
     {
@@ -108,15 +110,29 @@ public class GameManager : MonoBehaviour
                 gameplayContainer.SetActive(true);
                 BackgroundManager.Instance.ShowGameplayBackground();
                 Time.timeScale = 1f;
-                if (playerHealth == null || currentEnemy == null)
+
+                if (isSpawningEnemy)
                 {
-                    // Fresh run
+                    Debug.Log("GameManager gameplay resumed, waiting for next enemy spawn");
+                    break;
+                }
+
+                if (playerHealth == null && currentEnemy == null)
+                {
+                    // Starting a new run
+                    Debug.Log("[GameManager] Starting a fresh battle.");
                     StartBattle();
                 }
-                else
+                else if (playerHealth != null && currentEnemy != null)
                 {
-                    // Resume battle if paused
+                    // Resuming an active battle
+                    Debug.Log("[GameManager] Resuming ongoing battle.");
                     ResumeBattle();
+                }
+                else if (playerHealth != null && currentEnemy == null)
+                {
+                    // Between waves (during stage scroll) — do nothing, let the coroutine handle spawning
+                    Debug.Log("[GameManager] Gameplay resumed mid-transition (waiting for next wave).");
                 }
                 break;
 
@@ -310,7 +326,16 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator SpawnNextEnemy()
     {
-        yield return new WaitForSeconds(2f);
+        if (isSpawningEnemy) yield break;
+        isSpawningEnemy = true;
+
+        // Safety: stop if player paused or game is not in active gameplay
+        if (currentState != GameState.Gameplay)
+        {
+            Debug.Log("[GameManager] SpawnNextEnemy aborted — game not in Gameplay state.");
+            isSpawningEnemy = false;
+            yield break;
+        }
 
         progressionManager.IncreaseLevel();
         if (progressionManager.GetCurrentLevel() == progressionManager.GetMaxWaves())
@@ -338,6 +363,7 @@ public class GameManager : MonoBehaviour
         if (progressionManager.GetCurrentLevel() > progressionManager.GetMaxWaves())
         {
             ChangeState(GameState.Win);
+            isSpawningEnemy = false;
             yield break;
         }
 
@@ -348,6 +374,8 @@ public class GameManager : MonoBehaviour
         SubscribeToEnemy(currentEnemy);
 
         UpdateWaveCounter();
+
+        isSpawningEnemy = false;
 
         battleLoop = StartCoroutine(BattleRoutine());
     }
@@ -457,11 +485,7 @@ public class GameManager : MonoBehaviour
         currentEnemy = null;
 
         // Heal player back to full
-        if (playerHealth != null) playerHealth.ResetForNextWave();      
-
-        var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
-        if (scroll != null)
-            StartCoroutine(scroll.ScrollLeft());
+        if (playerHealth != null) playerHealth.ResetForNextWave();
 
         int currentWave = progressionManager.GetCurrentLevel();
         int maxWaves = progressionManager.GetMaxWaves();
@@ -479,8 +503,20 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Spawn next enemy after a delay
-        StartCoroutine(SpawnNextEnemy());
+        var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
+        if (scroll != null)
+        {
+            if (stageTransitionCR != null)
+                StopCoroutine(stageTransitionCR);
+
+            // Chain the scroll and spawn together
+            stageTransitionCR = StartCoroutine(ScrollThenSpawn(scroll));
+        }
+        else
+        {
+            // Fallback: spawn directly if no background found
+            StartCoroutine(SpawnNextEnemy());
+        }
     }
 
     private void PauseBattle()
@@ -490,6 +526,7 @@ public class GameManager : MonoBehaviour
             StopCoroutine(battleLoop);
             battleLoop = null;
         }
+ 
         isPaused = true;
         Debug.Log("Battle paused");
     }
@@ -498,9 +535,14 @@ public class GameManager : MonoBehaviour
     {
         if (isPaused)
         {
-            battleLoop = StartCoroutine(BattleRoutine());
-            isPaused = false;
-            Debug.Log("Battle resumed");
+            // Only resume if we’re not in the middle of spawning
+            if (!isSpawningEnemy && playerHealth != null && currentEnemy != null && battleLoop == null)
+            {
+                battleLoop = StartCoroutine(BattleRoutine());
+                Debug.Log("Battle resumed");
+            }
+
+            isPaused = false;         
         }
     }
 
@@ -591,6 +633,18 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(delay);
         if (SoundManager.Instance != null)
             SoundManager.Instance.PlayMusicForState(GameState.MainMenu);
+    }
+
+    private IEnumerator ScrollThenSpawn(ScrollingBackground scroll)
+    {
+        // Run the scroll animation first
+        yield return StartCoroutine(scroll.ScrollLeft());
+
+        // brief 0.25s delay for polish
+        yield return new WaitForSeconds(0.25f);
+
+        // Then immediately start spawning next enemy
+        StartCoroutine(SpawnNextEnemy());
     }
 
     public void Quit()

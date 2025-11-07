@@ -38,6 +38,14 @@ public class ScrollingBackground : MonoBehaviour
 
         while (timer < moveDuration)
         {
+            //If the game is pasued, wait until it's resumed
+            if (GameManager.Instance != null && GameManager.Instance.currentState == GameManager.GameState.Pause)
+            {
+                yield return null;
+                continue;
+            }
+
+            //Scroll normally during gameplay
             timer += Time.deltaTime;
             offset.x += scrollSpeed * Time.deltaTime;
             material.mainTextureOffset = offset;
