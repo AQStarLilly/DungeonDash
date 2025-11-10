@@ -142,8 +142,6 @@ public class UpgradeManager : MonoBehaviour
                 float reductionPerLevel = 0.05f;
                 PlayerStats.Instance.damageReduction = Mathf.Clamp01(up.level * reductionPerLevel);
 
-                Debug.Log($"[UpgradeManager] Damage Reduction upgraded! New Reduction = {PlayerStats.Instance.damageReduction * 100}%");
-
                 // Show the shield visual (cosmetic only)
                 var player = FindFirstObjectByType<HealthSystem>();
                 if (player != null && player.isPlayer && player.shieldVisual != null)
@@ -246,3 +244,10 @@ public class UpgradeManager : MonoBehaviour
         Debug.Log("[Upgrade Manager] applied all upgrade effects from save.");
     }
 }
+
+
+/*Last 3 Upgrades
+ * Janitor - Throws a mop
+ * HR Lady - Yells "Your Fired"
+ * Drunk Coworker - Throws an empty beer bottle
+ */
