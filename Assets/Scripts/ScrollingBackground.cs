@@ -25,7 +25,7 @@ public class ScrollingBackground : MonoBehaviour
             return;
         }
 
-        material.mainTexture.wrapMode = TextureWrapMode.Repeat;
+        //material.mainTexture.wrapMode = TextureWrapMode.Repeat;
         material.mainTextureOffset = Vector2.zero;
     }
 

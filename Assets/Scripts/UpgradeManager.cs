@@ -12,7 +12,7 @@ public class UpgradeManager : MonoBehaviour
     public class Upgrade
     {
         [Header("Identity")]
-        public string id;                 // e.g. "damage1", "damage2", "health", "shield", "currency"
+        public string id;                 // e.g. "damage1", "damage2", "health", "shield", "currency", "janitor", "hrlady", "drunkcoworker"
         public string displayName = "Upgrade";
 
         [Header("Progress")]
@@ -153,6 +153,16 @@ public class UpgradeManager : MonoBehaviour
                 CurrencyManager.Instance.currencyMultiplier += 0.20f;
                 break;
 
+            case "janitor":
+                // Summon Janitor to throw a mop at enemies
+
+                break;
+
+            case "hrlady":
+                // Summon Janitor to throw a mop at enemies
+
+                break;
+
             default:
                 Debug.Log($"{up.displayName} effect not implemented");
                 break;
@@ -247,7 +257,11 @@ public class UpgradeManager : MonoBehaviour
 
 
 /*Last 3 Upgrades
- * Janitor - Throws a mop
- * HR Lady - Yells "Your Fired"
- * Drunk Coworker - Throws an empty beer bottle
+ * Janitor - Throws a mop (Upgrade Box - Face on sticky Note, Gameplay - Face surrounded by black border box, Mop)
+ * HR Lady - Yells "Your Fired" (Upgrade Box - Face on sticky Note, Gameplay - Face surrounded by black border box, Text/Speech Bubble Form - Your Fired(Red Color))
+ * Drunk Coworker - Throws an empty beer bottle (Upgrade Box - Face on sticky Note, Gameplay - Face surrounded by black border box, Empty Beer Bottle)
+ * 
+ * Count hits for abilities
+ * 
+ * Cost text when you hover should be green if you can afford it or red if you can't
  */
