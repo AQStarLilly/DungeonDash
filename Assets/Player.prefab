@@ -103,13 +103,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 50
   currentHealth: 0
-  maxShield: 0
-  currentShield: 0
   attackDamage: 10
   critChance: 0.05
   critMultiplier: 2
-  regenerateShieldOnReset: 1
-  shieldValueText: {fileID: 0}
   healthText: {fileID: 0}
   healthBarUI: {fileID: 0}
   floatingTextPrefab: {fileID: 1751419012950864591, guid: 374a7906e7aa3fe4f9a179fbc6532b91, type: 3}
@@ -142,8 +138,8 @@ Transform:
   m_GameObject: {fileID: 6771454461543324096}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.01, y: 1.31, z: -1}
-  m_LocalScale: {x: 0.03, y: 0.03, z: 1}
+  m_LocalPosition: {x: 0.8, y: 5.33, z: -1}
+  m_LocalScale: {x: 0.02, y: 0.02, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1868394011063984247}

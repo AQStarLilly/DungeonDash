@@ -138,13 +138,16 @@ public class UpgradeManager : MonoBehaviour
                 break;
 
             case "shield":
-                int baseShield = 60;
-                int perLevel = 15;
+                // Each level adds 5% damage reduction (up to 50%)
+                float reductionPerLevel = 0.05f;
+                PlayerStats.Instance.damageReduction = Mathf.Clamp01(up.level * reductionPerLevel);
 
-                int totalShield = baseShield + (perLevel * (up.level - 1));
-                PlayerStats.Instance.shield = totalShield;
+                Debug.Log($"[UpgradeManager] Damage Reduction upgraded! New Reduction = {PlayerStats.Instance.damageReduction * 100}%");
 
-                Debug.Log($"[UpgradeManager] Shield upgraded! New Shield = {PlayerStats.Instance.shield}");
+                // Show the shield visual (cosmetic only)
+                var player = FindFirstObjectByType<HealthSystem>();
+                if (player != null && player.isPlayer && player.shieldVisual != null)
+                    player.shieldVisual.ShowShield();
                 break;
 
             case "currency":

@@ -7,20 +7,12 @@ public class HealthSystem : MonoBehaviour
     [Header("Stats")]
     public int maxHealth = 100;
     public int currentHealth;
-    public int maxShield = 0;
-    public int currentShield = 0;
-
+    
     [Header("Attack Stats")]
     public int attackDamage = 10;
     [Range(0f, 1f)] public float critChance = 0.1f;
     public float critMultiplier = 2f;
-
-    [Header("Shield Settings")]
-    public bool regenerateShieldOnReset = true;
-
-    [Header("Shield UI (World-Space)")]
-    public TMP_Text shieldValueText;
-
+    
     [Header("UI")]
     public TMP_Text healthText;
     public HealthBarUI healthBarUI;
@@ -69,95 +61,62 @@ public class HealthSystem : MonoBehaviour
             maxHealth = Mathf.RoundToInt(maxHealth * PlayerStats.Instance.healthMultiplier);
             currentHealth = maxHealth;
 
-            maxShield = PlayerStats.Instance.shield;
-
-            if (firstSpawnOfRun)
-                currentShield = maxShield; // start with full shield
-            else
-                currentShield = Mathf.Min(currentShield, maxShield);
-
-            regenerateShieldOnReset = false; // don’t regen each wave
+            // Show shield visual if you have damage reduction
+            if (PlayerStats.Instance.damageReduction > 0f && shieldVisual != null)
+                shieldVisual.ShowShield();
         }
         else
         {
             currentHealth = maxHealth;
-            currentShield = 0;
-            regenerateShieldOnReset = true;
+            if (shieldVisual != null)
+                shieldVisual.HideShield();
         }
 
-        RefreshShieldVisual();
         UpdateUI();
     }
 
     //Reset for next wave (health only)
     public void ResetForNextWave()
     {
-        currentHealth = maxHealth;
+        currentHealth = maxHealth;   
 
-        if (regenerateShieldOnReset)
-            currentShield = maxShield;
-        else
-            currentShield = Mathf.Min(currentShield, maxShield);
-
-        RefreshShieldVisual();
         UpdateUI();
     }
 
     public void TakeDamage(int damage, bool isCrit = false)
     {
-        int remaining = damage;
+        int finalDamage = damage;
 
-        // Apply shield first
-        if (currentShield > 0)
+        // --- Apply player’s damage reduction ---
+        if (isPlayer && PlayerStats.Instance != null && PlayerStats.Instance.damageReduction > 0f)
         {
-            int shieldHit = Mathf.Min(currentShield, remaining);
-            currentShield -= shieldHit;
-            remaining -= shieldHit;
-
-            if (shieldVisual != null)
-            {
-                shieldVisual.UpdateShieldVisual(currentShield, maxShield);
-                shieldVisual.FlashHit();
-            }
-
-            if (floatingTextPrefab != null)
-            {
-                Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
-                Vector3 worldPos = transform.position + new Vector3(0f, 3.5f, 0f);
-                Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-
-                var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
-                popup.GetComponent<FloatingDamageText>().Initialize(shieldHit, false, true);
-            }
+            float reduction = PlayerStats.Instance.damageReduction;
+            finalDamage = Mathf.RoundToInt(finalDamage * (1f - reduction));
         }
 
-        // Remaining damage applies to health
-        if (remaining > 0)
+        currentHealth -= finalDamage;
+
+        if (spriteRenderer != null)
+            StartCoroutine(FlashRed());
+        StartCoroutine(ShakeOnHit());
+
+        // --- Floating text (normal red/black) ---
+        if (floatingTextPrefab != null)
         {
-            currentHealth -= remaining;
+            Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
+            Vector3 worldPos = transform.position + new Vector3(0f, 3.5f, 0f);
+            Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
 
-            if (spriteRenderer != null)
-                StartCoroutine(FlashRed());
-                StartCoroutine(ShakeOnHit());
-
-            if (floatingTextPrefab != null)
-            {
-                Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
-                Vector3 worldPos = transform.position + new Vector3(0f, 3.5f, 0f);
-                Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-
-                var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
-                popup.GetComponent<FloatingDamageText>().Initialize(remaining, isCrit);
-            }
-
-            if (currentHealth <= 0)
-            {
-                currentHealth = 0;
-                OnDeath?.Invoke(this);
-            }
+            var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
+            popup.GetComponent<FloatingDamageText>().Initialize(finalDamage, isCrit);
         }
 
-        RefreshShieldVisual();
+        if (currentHealth <= 0)
+        {
+            currentHealth = 0;
+            OnDeath?.Invoke(this);
+        }
+
         UpdateUI();
     }
 
@@ -187,30 +146,10 @@ public class HealthSystem : MonoBehaviour
         transform.localPosition = originalPos;
     }
 
-    private void RefreshShieldVisual()
-    {
-        if (shieldVisual == null) return;
-
-        if (maxShield > 0 && currentShield > 0)
-        {
-            shieldVisual.ShowShield();
-            shieldVisual.UpdateShieldVisual(currentShield, maxShield);
-        }
-        else
-        {
-            shieldVisual.HideShield();
-        }
-    }
-
     public void UpdateUI()
     {
         if (healthText != null)
-        {
-            if (currentShield > 0)
-                healthText.text = $"HP: {currentHealth}/{maxHealth} | Shield: {currentShield}/{maxShield}";
-            else
-                healthText.text = $"HP: {currentHealth}/{maxHealth}";
-        }
+            healthText.text = $"HP: {currentHealth}/{maxHealth}";
 
         if (healthBarUI != null)
             healthBarUI.SetHealth(currentHealth, maxHealth);
@@ -236,7 +175,6 @@ public class HealthSystem : MonoBehaviour
     public void InitializeEnemy()
     {
         currentHealth = maxHealth;
-        currentShield = 0;
 
         if (shieldVisual != null)
             shieldVisual.HideShield();
@@ -245,11 +183,3 @@ public class HealthSystem : MonoBehaviour
     }
 }
 
-
-/* Update Shield Ideas
- * Maybe the shield doesn't 100% absorb damage, but you still take some damage (damage bleed(shield would last longer but still disappear)(EX - 10 damage would be 8 damage to shield, 2 to hp)
- * the shield could take a specific number of hits instead of hp, and maybe regenerates each room (Block 1 or 2 hits at start(full hit) and upgrades increase how mnay hits they block)
- * player could use the shield when they want (Save it for later waves)
- * Switch shield to Damage Reduction instead (Enemies deal less damage to you and your upgrade can increase how much you resist attacks)
- * 
- */
