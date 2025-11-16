@@ -15,6 +15,9 @@ public class UpgradeManager : MonoBehaviour
         public string id;                 // e.g. "damage1", "damage2", "health", "shield", "currency", "janitor", "hrlady", "drunkcoworker"
         public string displayName = "Upgrade";
 
+        [TextArea]
+        public string description;
+
         [Header("Progress")]
         public int level = 0;
         public int maxLevel = 10;
@@ -35,6 +38,8 @@ public class UpgradeManager : MonoBehaviour
 
         public int CurrentCost => Mathf.RoundToInt(baseCost * Mathf.Pow(costMultiplier, level));
         public bool IsMaxed => level >= maxLevel;
+
+        [HideInInspector] public UpgradeTooltip tooltip;
     }
 
     [Header("Upgrades List")]
@@ -48,6 +53,15 @@ public class UpgradeManager : MonoBehaviour
 
     // quick lookup
     private Dictionary<string, Upgrade> map = new Dictionary<string, Upgrade>();
+
+    [Header("Tooltip UI")]
+    public UpgradeTooltip tooltip;
+
+    public Upgrade GetUpgrade(string id)
+    {
+        map.TryGetValue(id, out var up);
+        return up;
+    }
 
     private void Awake()
     {
@@ -102,7 +116,12 @@ public class UpgradeManager : MonoBehaviour
             SoundManager.Instance?.PlaySFX(SoundManager.Instance.upgradePurchase);
             ApplyUpgradeEffect(up);
             UpdateAllButtons();
+            var statsPanel = FindFirstObjectByType<PlayerStatsPanel>();
+            if (statsPanel != null)
+                statsPanel.UpdateStatsUI();
             GameManager.Instance.UpdateUpgradesCurrencyUI();
+            if (tooltip != null && tooltip.IsVisible)
+                tooltip.Refresh();
         }
         else
         {
