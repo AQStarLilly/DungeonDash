@@ -24,7 +24,7 @@ public class UpgradeTooltip : MonoBehaviour
         titleText.text = currentUpgrade.displayName;
         descriptionText.text = currentUpgrade.description;
         levelText.text = $"{currentUpgrade.level}/{currentUpgrade.maxLevel}";
-        costText.text = $"Cost: {currentUpgrade.CurrentCost}";
+        costText.text = $"{currentUpgrade.CurrentCost}";
     }
 
     public void HideTooltip()
