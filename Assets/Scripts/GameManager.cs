@@ -47,11 +47,16 @@ public class GameManager : MonoBehaviour
     [Header("Upgrades UI")]
     public TMP_Text upgradesCurrencyText;
 
+    [Header("Ability Buttons")]
+    public AbilityButton janitorButton;
+    public AbilityButton hrLadyButton;
+    public AbilityButton drunkButton;
+
     [Header("Gameplay Container")]
     public GameObject gameplayContainer;
 
     private HealthSystem playerHealth;
-    private HealthSystem currentEnemy;
+    public HealthSystem currentEnemy;
     private Coroutine battleLoop;
     private bool isPaused = false;
     private bool loadingFromSave = false;
@@ -266,6 +271,7 @@ public class GameManager : MonoBehaviour
         playerHealth.InitializeFromPlayerStats(firstSpawnOfRun);
 
         SubscribeToPlayer();
+        SetupAbilityButtons();
 
         // First enemy (baseline, no scaling)
         currentEnemy = spawnManager.SpawnEnemy();
@@ -663,6 +669,22 @@ public class GameManager : MonoBehaviour
 
         // Then immediately start spawning next enemy
         StartCoroutine(SpawnNextEnemy());
+    }
+
+    private void SetupAbilityButtons()
+    {
+        void Setup(AbilityButton button, string id)
+        {
+            var up = UpgradeManager.Instance.GetUpgrade(id);
+            if (up != null && up.level > 0 && up.isActiveAbility)
+                button.Initialize(up);
+            else
+                button.gameObject.SetActive(false);
+        }
+
+        Setup(janitorButton, "janitor");
+        Setup(hrLadyButton, "hrlady");
+        Setup(drunkButton, "drunkCoworker");
     }
 
     public void Quit()

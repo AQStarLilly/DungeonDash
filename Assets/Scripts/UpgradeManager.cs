@@ -12,7 +12,7 @@ public class UpgradeManager : MonoBehaviour
     public class Upgrade
     {
         [Header("Identity")]
-        public string id;                 // e.g. "damage1", "damage2", "health", "shield", "currency", "janitor", "hrlady", "drunkcoworker"
+        public string id;
         public string displayName = "Upgrade";
 
         [TextArea]
@@ -27,8 +27,11 @@ public class UpgradeManager : MonoBehaviour
         public float costMultiplier = 1.5f;
 
         [Header("Dependency (optional)")]
-        public string requiresUpgradeId = "";   // leave empty if none
-        public int requiresLevel = 0;           // e.g. 5 to unlock Damage II after Damage I max
+        public string requiresUpgradeId = "";
+        public int requiresLevel = 0;
+
+        [Header("Wave Unlock (optional)")]
+        public int requiredWave = 0;
 
         [Header("UI")]
         public Button button;
@@ -40,18 +43,22 @@ public class UpgradeManager : MonoBehaviour
         public bool IsMaxed => level >= maxLevel;
 
         [HideInInspector] public UpgradeTooltip tooltip;
+
+        [Header("Active Ability Settings")]
+        public bool isActiveAbility = false;
+        public int abilityDamage = 20;
+        public float cooldown = 10f;
+        public Sprite abilityIcon;
     }
 
     [Header("Upgrades List")]
     public List<Upgrade> upgrades = new List<Upgrade>();
 
-    //  colors for states 
     [Header("UI Colors")]
-    public Color normalText = Color.white;
-    public Color affordText = new Color(0.6f, 1f, 0.6f); 
-    public Color lockedText = new Color(0.7f, 0.7f, 0.7f);
+    public Color cannotAffordColor = Color.red;
+    public Color canAffordColor = Color.green;
+    public Color lockedTextColor = new Color(0.7f, 0.7f, 0.7f);
 
-    // quick lookup
     private Dictionary<string, Upgrade> map = new Dictionary<string, Upgrade>();
 
     [Header("Tooltip UI")]
@@ -68,7 +75,6 @@ public class UpgradeManager : MonoBehaviour
         if (Instance == null) Instance = this;
         else { Destroy(gameObject); return; }
 
-        // build map
         map.Clear();
         foreach (var up in upgrades)
         {
@@ -77,64 +83,57 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
-        if (upgrades.Count > 0)
-        {
-            UpdateAllButtons();
-        }
-    }
-
     private void OnEnable()
     {
-        if (upgrades.Count > 0)
-        {
-            UpdateAllButtons();
-        }
+        UpdateAllButtons();
+    }
+
+    private void Start()
+    {
+        UpdateAllButtons();
     }
 
     public void TryBuyUpgrade(string upgradeId)
     {
         if (!map.TryGetValue(upgradeId, out var up) || up == null) return;
 
-        if (IsLocked(up))
-        {
-            // locked  ignore; (button should already be disabled)
-            return;
-        }
-
-        if (up.IsMaxed)
-        {
-            // maxed  ignore
-            return;
-        }
+        if (IsLocked(up)) return;
+        if (up.IsMaxed) return;
 
         int cost = up.CurrentCost;
+
         if (CurrencyManager.Instance.SpendCurrency(cost))
         {
             up.level++;
             SoundManager.Instance?.PlaySFX(SoundManager.Instance.upgradePurchase);
+
             ApplyUpgradeEffect(up);
             UpdateAllButtons();
+
             var statsPanel = FindFirstObjectByType<PlayerStatsPanel>();
-            if (statsPanel != null)
-                statsPanel.UpdateStatsUI();
+            if (statsPanel != null) statsPanel.UpdateStatsUI();
+
             GameManager.Instance.UpdateUpgradesCurrencyUI();
+
             if (tooltip != null && tooltip.IsVisible)
                 tooltip.Refresh();
         }
         else
         {
-            // cannot afford  flash red text
             StartCoroutine(FlashRed(up.buttonText));
         }
     }
 
     public bool IsLocked(Upgrade up)
     {
-        if (string.IsNullOrEmpty(up.requiresUpgradeId) || up.requiresLevel <= 0) return false;
-        if (!map.TryGetValue(up.requiresUpgradeId, out var req)) return true; 
-        return req.level < up.requiresLevel;
+        // Dependency lock (damage2)
+        if (up.requiresLevel > 0 && !string.IsNullOrEmpty(up.requiresUpgradeId))
+        {
+            if (!map.TryGetValue(up.requiresUpgradeId, out var req)) return true;
+            if (req.level < up.requiresLevel) return true;
+        }
+
+        return false;
     }
 
     private void ApplyUpgradeEffect(Upgrade up)
@@ -142,112 +141,82 @@ public class UpgradeManager : MonoBehaviour
         switch (up.id)
         {
             case "damage1":
-                // +20% dmg per level
                 PlayerStats.Instance.damageMultiplier += 0.20f;
                 break;
 
             case "damage2":
-                // +40% dmg per level (unlocks after damage1 max)
                 PlayerStats.Instance.damageMultiplier += 0.40f;
                 break;
 
             case "health":
-                // +70% max HP per level (applied on next spawn/reset)
                 PlayerStats.Instance.healthMultiplier += 0.70f;
                 break;
 
             case "shield":
-                // Each level adds 5% damage reduction (up to 50%)
                 float reductionPerLevel = 0.05f;
-                PlayerStats.Instance.damageReduction = Mathf.Clamp01(up.level * reductionPerLevel);
+                PlayerStats.Instance.damageReduction =
+                    Mathf.Clamp01(up.level * reductionPerLevel);
 
-                // Show the shield visual (cosmetic only)
                 var player = FindFirstObjectByType<HealthSystem>();
                 if (player != null && player.isPlayer && player.shieldVisual != null)
                     player.shieldVisual.ShowShield();
                 break;
 
             case "currency":
-                // +20% currency per level (applies immediately to future kills)
                 CurrencyManager.Instance.currencyMultiplier += 0.20f;
                 break;
 
             case "janitor":
-                // Summon Janitor to throw a mop at enemies
-
-                break;
-
             case "hrlady":
-                // Summon Janitor to throw a mop at enemies
-
-                break;
-
-            default:
-                Debug.Log($"{up.displayName} effect not implemented");
+            case "drunkCoworker":
                 break;
         }
     }
 
     public void UpdateAllButtons()
     {
-        if (upgrades == null || upgrades.Count == 0)
-        {
-            Debug.LogWarning("[UpgradeManager] No upgrades configured.");
-            return;
-        }
-
         foreach (var up in upgrades)
         {
-            if (up == null)
-            {
-                Debug.LogWarning("[UpgradeManager] Null upgrade entry found in list.");
-                continue;
-            }
+            if (up == null) continue;
 
-            bool locked = IsLocked(up);
+            bool affordable = CurrencyManager.Instance.totalCurrency >= up.CurrentCost;
             bool maxed = up.IsMaxed;
-            bool affordable = CurrencyManager.Instance != null &&
-                              CurrencyManager.Instance.totalCurrency >= up.CurrentCost;
+            bool dependencyLocked = IsLocked(up);
 
-            // --- Update interactable state ---
-            up.button.interactable = !locked && !maxed && affordable;
+            // --- Wave lock ---
+            bool waveLocked = (up.requiredWave > 0 &&
+                               GameManager.Instance.progressionManager.GetCurrentLevel() < up.requiredWave);
 
-            // --- Update cost text ---
+            // --- Button interactability ---
+            up.button.interactable = !maxed && !dependencyLocked && !waveLocked && affordable;
+
+            // --- Cost text ---
             if (up.buttonText != null)
             {
                 if (maxed)
                 {
                     up.buttonText.text = "MAXED";
-                    up.buttonText.color = lockedText;
+                    up.buttonText.color = lockedTextColor;
                 }
-                else if (locked)
+                else if (dependencyLocked || waveLocked)
                 {
                     up.buttonText.text = "LOCKED";
-                    up.buttonText.color = lockedText;
+                    up.buttonText.color = lockedTextColor;
                 }
                 else
                 {
                     up.buttonText.text = $"{up.CurrentCost}";
-                    up.buttonText.color = affordable ? affordText : normalText;
+                    up.buttonText.color = affordable ? canAffordColor : cannotAffordColor;
                 }
             }
 
-            // --- Update level sprite ---
-            if (up.displayImage != null && up.levelSprites != null && up.levelSprites.Count > 0)
+            // --- Level sprite ---
+            if (up.displayImage != null && up.levelSprites.Count > 0)
             {
-                int spriteIndex = Mathf.Clamp(up.level, 0, up.levelSprites.Count - 1);
-                up.displayImage.sprite = up.levelSprites[spriteIndex];
+                int index = Mathf.Clamp(up.level, 0, up.levelSprites.Count - 1);
+                up.displayImage.sprite = up.levelSprites[index];
             }
         }
-    }
-
-    private IEnumerator FlashRed(TMP_Text text)
-    {
-        if (text == null) yield break;
-        Color original = text.color;
-        text.color = Color.red;
-        yield return new WaitForSeconds(0.2f);
-        text.color = original;
     }
 
     public void ResetUpgrades()
@@ -265,15 +234,29 @@ public class UpgradeManager : MonoBehaviour
 
         foreach (var up in upgrades)
         {
-            if (up.level > 0)
-            {
-                for (int i = 0; i < up.level; i++)
-                {
-                    ApplyUpgradeEffect(up);
-                }
-            }
+            for (int i = 0; i < up.level; i++)
+                ApplyUpgradeEffect(up);
         }
-        Debug.Log("[Upgrade Manager] applied all upgrade effects from save.");
+    }
+
+    private IEnumerator FlashRed(TMP_Text text)
+    {
+        if (text == null) yield break;
+
+        Color original = text.color;
+        text.color = Color.red;
+        yield return new WaitForSeconds(0.2f);
+        text.color = original;
+    }
+
+    public void UnlockUpgradeById(string id)
+    {
+        if (map.TryGetValue(id, out var up))
+        {
+            up.requiresUpgradeId = "";
+            up.requiresLevel = 0;
+            UpdateAllButtons();
+        }
     }
 }
 

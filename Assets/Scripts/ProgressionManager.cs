@@ -24,6 +24,19 @@ public class ProgressionManager : MonoBehaviour
         {
             level++;
         }
+
+        if(level == 5)
+        {
+            UpgradeManager.Instance.UnlockUpgradeById("janitor");
+        }
+        if (level == 10)
+        {
+            UpgradeManager.Instance.UnlockUpgradeById("hrlady");
+        }
+        if (level == 15)
+        {
+            UpgradeManager.Instance.UnlockUpgradeById("drunkCoworker");
+        }
     }
 
     public int GetEnemyHealthBonus()
