@@ -130,7 +130,7 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 
-    private bool IsLocked(Upgrade up)
+    public bool IsLocked(Upgrade up)
     {
         if (string.IsNullOrEmpty(up.requiresUpgradeId) || up.requiresLevel <= 0) return false;
         if (!map.TryGetValue(up.requiresUpgradeId, out var req)) return true; 
@@ -213,20 +213,23 @@ public class UpgradeManager : MonoBehaviour
             up.button.interactable = !locked && !maxed && affordable;
 
             // --- Update cost text ---
-            if (maxed)
+            if (up.buttonText != null)
             {
-                up.buttonText.text = "MAXED";
-                up.buttonText.color = lockedText;
-            }
-            else if (locked)
-            {
-                up.buttonText.text = "LOCKED";
-                up.buttonText.color = lockedText;
-            }
-            else
-            {
-                up.buttonText.text = $"{up.CurrentCost}";
-                up.buttonText.color = affordable ? affordText : normalText;
+                if (maxed)
+                {
+                    up.buttonText.text = "MAXED";
+                    up.buttonText.color = lockedText;
+                }
+                else if (locked)
+                {
+                    up.buttonText.text = "LOCKED";
+                    up.buttonText.color = lockedText;
+                }
+                else
+                {
+                    up.buttonText.text = $"{up.CurrentCost}";
+                    up.buttonText.color = affordable ? affordText : normalText;
+                }
             }
 
             // --- Update level sprite ---

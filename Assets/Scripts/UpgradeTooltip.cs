@@ -22,6 +22,23 @@ public class UpgradeTooltip : MonoBehaviour
         if (currentUpgrade == null) return;
 
         titleText.text = currentUpgrade.displayName;
+
+        // Show unlock requirement if locked 
+        if (UpgradeManager.Instance != null && UpgradeManager.Instance.IsLocked(currentUpgrade))
+        {
+            var required = UpgradeManager.Instance.GetUpgrade(currentUpgrade.requiresUpgradeId);
+
+            string requiredName = required != null ? required.displayName : currentUpgrade.requiresUpgradeId;
+
+            descriptionText.text =
+                $"<color=#FF8080>Locked</color>\nRequires {requiredName} level {currentUpgrade.requiresLevel}";
+
+            levelText.text = $"{currentUpgrade.level}/{currentUpgrade.maxLevel}";
+            costText.text = $"{currentUpgrade.CurrentCost}";
+            return;
+        }
+
+        // --- Normal behavior when UNLOCKED ---
         descriptionText.text = currentUpgrade.description;
         levelText.text = $"{currentUpgrade.level}/{currentUpgrade.maxLevel}";
         costText.text = $"{currentUpgrade.CurrentCost}";
