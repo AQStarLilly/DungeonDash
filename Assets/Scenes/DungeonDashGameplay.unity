@@ -9093,7 +9093,7 @@ MonoBehaviour:
     - {fileID: 8386305925817113633, guid: e4f077b5f09c8fd4ca8136605d9135ee, type: 3}
     - {fileID: 7751807004270782842, guid: 28ea0fe0118be0f4b8f94db7da83fe88, type: 3}
     - {fileID: -8288074824744616658, guid: 0f7bfbb8d5a419c418bb7acfa9fa2cf5, type: 3}
-    - {fileID: -2506287225713235939, guid: 0f98b13a064c06145a5267bf7220b383, type: 3}
+    - {fileID: 1458145081580033184, guid: f0b5e18a442ceb84c9ac630d3fb4460b, type: 3}
     - {fileID: 5280399987334037129, guid: 0f1f4ab14d399d745ad6ab0dd225269b, type: 3}
     - {fileID: -6384308039042101130, guid: 4f6de932852ae734d827c4ced0f453a2, type: 3}
     - {fileID: -2342561766160806372, guid: 7781b504de6df1b4a850054541c68bd0, type: 3}
@@ -9285,9 +9285,9 @@ MonoBehaviour:
     abilityDamage: 50
     cooldown: 25
     abilityIcon: {fileID: 691946164617198588, guid: d0dbbe022592caf4f84c0b314b9389c9, type: 3}
-  normalText: {r: 1, g: 0, b: 0, a: 1}
-  affordText: {r: 0, g: 1, b: 0, a: 1}
-  lockedText: {r: 0.7, g: 0.7, b: 0.7, a: 1}
+  cannotAffordColor: {r: 1, g: 0, b: 0, a: 1}
+  canAffordColor: {r: 0, g: 1, b: 0, a: 1}
+  lockedTextColor: {r: 0.7, g: 0.7, b: 0.7, a: 1}
   tooltip: {fileID: 393361945}
 --- !u!4 &1569325027
 Transform:
