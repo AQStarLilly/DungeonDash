@@ -25,15 +25,15 @@ public class ProgressionManager : MonoBehaviour
             level++;
         }
 
-        if(level == 5)
+        if(level == 6)
         {
             UpgradeManager.Instance.UnlockUpgradeById("janitor");
         }
-        if (level == 10)
+        if (level == 11)
         {
             UpgradeManager.Instance.UnlockUpgradeById("hrlady");
         }
-        if (level == 15)
+        if (level == 16)
         {
             UpgradeManager.Instance.UnlockUpgradeById("drunkCoworker");
         }
