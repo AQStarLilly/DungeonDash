@@ -127,13 +127,13 @@ public class UpgradeManager : MonoBehaviour
     public bool IsLocked(Upgrade up)
     {
         // Dependency lock (damage2)
-        if (up.requiresLevel > 0 && !string.IsNullOrEmpty(up.requiresUpgradeId))
-        {
-            if (!map.TryGetValue(up.requiresUpgradeId, out var req)) return true;
-            if (req.level < up.requiresLevel) return true;
-        }
+        if (string.IsNullOrEmpty(up.requiresUpgradeId) || up.requiresLevel <= 0)
+            return false;
 
-        return false;
+        if (!map.TryGetValue(up.requiresUpgradeId, out var req))
+            return true;
+
+        return req.level < up.requiresLevel;
     }
 
     private void ApplyUpgradeEffect(Upgrade up)
@@ -179,18 +179,34 @@ public class UpgradeManager : MonoBehaviour
         {
             if (up == null) continue;
 
+            // --- SAFETY FIX ---
+            // Force empty dependency to behave correctly even if inspector saved whitespace
+            if (up.requiresUpgradeId != null && up.requiresUpgradeId.Trim() == "")
+                up.requiresUpgradeId = "";
+
             bool affordable = CurrencyManager.Instance.totalCurrency >= up.CurrentCost;
             bool maxed = up.IsMaxed;
             bool dependencyLocked = IsLocked(up);
 
-            // --- Wave lock ---
-            bool waveLocked = (up.requiredWave > 0 &&
-                               GameManager.Instance.progressionManager.GetCurrentLevel() < up.requiredWave);
+            // ---- Wave Lock ----
+            bool waveLocked =
+                up.requiredWave > 0 &&
+                GameManager.Instance.progressionManager.GetCurrentLevel() < up.requiredWave;
 
-            // --- Button interactability ---
+            // DEBUG JUST FOR THE CURRENCY UPGRADE
+            if (up.id == "currency")
+            {
+                Debug.Log($"[Currency Upgrade] " +
+                          $"level={up.level}, maxLevel={up.maxLevel}, " +
+                          $"cost={up.CurrentCost}, totalCurrency={CurrencyManager.Instance.totalCurrency}, " +
+                          $"affordable={affordable}, maxed={maxed}, " +
+                          $"dependencyLocked={dependencyLocked}, waveLocked={waveLocked}");
+            }
+
+            // ---- Button Interactable ----
             up.button.interactable = !maxed && !dependencyLocked && !waveLocked && affordable;
 
-            // --- Cost text ---
+            // ---- Cost Text (ONLY if assigned) ----
             if (up.buttonText != null)
             {
                 if (maxed)
@@ -210,12 +226,14 @@ public class UpgradeManager : MonoBehaviour
                 }
             }
 
-            // --- Level sprite ---
-            if (up.displayImage != null && up.levelSprites.Count > 0)
+            // ---- Level Sprite ----
+            if (up.displayImage != null && up.levelSprites != null && up.levelSprites.Count > 0)
             {
                 int index = Mathf.Clamp(up.level, 0, up.levelSprites.Count - 1);
                 up.displayImage.sprite = up.levelSprites[index];
             }
+
+            
         }
     }
 
