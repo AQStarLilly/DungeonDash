@@ -279,14 +279,3 @@ public class UpgradeManager : MonoBehaviour
         }
     }
 }
-
-
-/*Last 3 Upgrades
- * Janitor - Throws a mop (Upgrade Box - Face on sticky Note, Gameplay - Face surrounded by black border box, Mop)
- * HR Lady - Yells "Your Fired" (Upgrade Box - Face on sticky Note, Gameplay - Face surrounded by black border box, Text/Speech Bubble Form - Your Fired(Red Color))
- * Drunk Coworker - Throws an empty beer bottle (Upgrade Box - Face on sticky Note, Gameplay - Face surrounded by black border box, Empty Beer Bottle)
- * 
- * Count hits for abilities
- * 
- * Cost text when you hover should be green if you can afford it or red if you can't
- */
