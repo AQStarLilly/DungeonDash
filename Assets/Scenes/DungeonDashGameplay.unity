@@ -718,7 +718,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 920571544875539073, guid: 6b15bc02725052b49a17521eeefc14f0, type: 3}
+  m_Sprite: {fileID: 3234336932867387074, guid: 2c140347baab3894e8fbb2d1cc92252a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2745,7 +2745,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 110679143074904534, guid: 3a64e8ee8f4e3104ebe4b759cb8800cd, type: 3}
+  m_Sprite: {fileID: -7064005884759454157, guid: c24b688b87d43664c95e3edab22bce28, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3089,7 +3089,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8386305925817113633, guid: e4f077b5f09c8fd4ca8136605d9135ee, type: 3}
+  m_Sprite: {fileID: 2805868889237006980, guid: 300002f3844887e488c05398b20eee73, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6108,7 +6108,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8386305925817113633, guid: e4f077b5f09c8fd4ca8136605d9135ee, type: 3}
+  m_Sprite: {fileID: 2805868889237006980, guid: 300002f3844887e488c05398b20eee73, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -6579,7 +6579,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -128807318314111398, guid: b1ab8a411096df545966184417713290, type: 3}
+  m_Sprite: {fileID: -2175745049294208623, guid: 3efe0b93def0d84438d5656b567a591a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -8015,7 +8015,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 920571544875539073, guid: 6b15bc02725052b49a17521eeefc14f0, type: 3}
+  m_Sprite: {fileID: 3234336932867387074, guid: 2c140347baab3894e8fbb2d1cc92252a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -9072,7 +9072,7 @@ MonoBehaviour:
     buttonText: {fileID: 0}
     displayImage: {fileID: 1324841437}
     levelSprites:
-    - {fileID: -1855396642840975129, guid: 691e10da37bac3145bc85c2df746691b, type: 3}
+    - {fileID: 3234336932867387074, guid: 2c140347baab3894e8fbb2d1cc92252a, type: 3}
     - {fileID: 920571544875539073, guid: 6b15bc02725052b49a17521eeefc14f0, type: 3}
     - {fileID: -2753717720703807861, guid: b0321cc5f114a9048bd397fe4c173e0c, type: 3}
     - {fileID: -7115005707186161883, guid: 61c171e321520784a97f77f45513cda1, type: 3}
@@ -9102,7 +9102,7 @@ MonoBehaviour:
     buttonText: {fileID: 0}
     displayImage: {fileID: 541815073}
     levelSprites:
-    - {fileID: 1644498599905659907, guid: e3af17da06e0baa4ab543945a07d78a8, type: 3}
+    - {fileID: 2805868889237006980, guid: 300002f3844887e488c05398b20eee73, type: 3}
     - {fileID: 8386305925817113633, guid: e4f077b5f09c8fd4ca8136605d9135ee, type: 3}
     - {fileID: 7751807004270782842, guid: 28ea0fe0118be0f4b8f94db7da83fe88, type: 3}
     - {fileID: -8288074824744616658, guid: 0f7bfbb8d5a419c418bb7acfa9fa2cf5, type: 3}
@@ -9132,7 +9132,7 @@ MonoBehaviour:
     buttonText: {fileID: 0}
     displayImage: {fileID: 1980702773}
     levelSprites:
-    - {fileID: -765187810910609461, guid: cd0082550cf2f764b95eddad505eebf5, type: 3}
+    - {fileID: -765187810910609461, guid: 795a8fd38ea31eb46970ae4af5fa7246, type: 3}
     - {fileID: 2045994070260232039, guid: 5a5c366eab7d3ba4cad6abb33e465f37, type: 3}
     - {fileID: 6540464533205305539, guid: 3bd98bb9b8f3111448df844c64acb921, type: 3}
     - {fileID: -2637150370873066781, guid: 9ef081a5ecfa9014b8f4c6d582f385a9, type: 3}
@@ -9162,7 +9162,7 @@ MonoBehaviour:
     buttonText: {fileID: 0}
     displayImage: {fileID: 504347336}
     levelSprites:
-    - {fileID: -5105799302585572363, guid: 0b025aeafcb51e74b9d0711578f0629e, type: 3}
+    - {fileID: -7064005884759454157, guid: c24b688b87d43664c95e3edab22bce28, type: 3}
     - {fileID: 110679143074904534, guid: 3a64e8ee8f4e3104ebe4b759cb8800cd, type: 3}
     - {fileID: 5985838413405237068, guid: e355e98ec8a3655438cec8128e3b0d22, type: 3}
     - {fileID: 966860131259345935, guid: 63118d53d6fd04145981b27b714384b0, type: 3}
@@ -9192,7 +9192,7 @@ MonoBehaviour:
     buttonText: {fileID: 0}
     displayImage: {fileID: 1717194156}
     levelSprites:
-    - {fileID: -2175745049294208623, guid: 599842070ef502c40a68757cd69ebc03, type: 3}
+    - {fileID: -2175745049294208623, guid: 3efe0b93def0d84438d5656b567a591a, type: 3}
     - {fileID: -128807318314111398, guid: b1ab8a411096df545966184417713290, type: 3}
     - {fileID: 4755915880828392046, guid: 126be623832a62342b8356d0d80bcc59, type: 3}
     - {fileID: 2826930927166792059, guid: 0e3ae1e1ef43ae443a9b76bd0b473423, type: 3}
@@ -9217,22 +9217,11 @@ MonoBehaviour:
     costMultiplier: 0
     requiresUpgradeId: 
     requiresLevel: 0
-    requiredWave: 5
+    requiredWave: 6
     button: {fileID: 1102178836}
     buttonText: {fileID: 0}
     displayImage: {fileID: 1717194156}
-    levelSprites:
-    - {fileID: -2175745049294208623, guid: 599842070ef502c40a68757cd69ebc03, type: 3}
-    - {fileID: -128807318314111398, guid: b1ab8a411096df545966184417713290, type: 3}
-    - {fileID: 4755915880828392046, guid: 126be623832a62342b8356d0d80bcc59, type: 3}
-    - {fileID: 2826930927166792059, guid: 0e3ae1e1ef43ae443a9b76bd0b473423, type: 3}
-    - {fileID: -104332959603502834, guid: b0b8028e21867b041b1b199d268c8c4f, type: 3}
-    - {fileID: -682266101658221830, guid: 4cd73d42700c771449d823cf3209c881, type: 3}
-    - {fileID: 3642741642099972623, guid: e8468710cad3ecf4f870d3d359532fb4, type: 3}
-    - {fileID: 2475099996501615627, guid: e603104bf5e607e48996d98288c692f7, type: 3}
-    - {fileID: -4502387974166073304, guid: a5cde855f8740dd4c93be2ca0d5ee76f, type: 3}
-    - {fileID: 4571106790152938593, guid: a2a9914a0db924d47ab7d8af3d7b41e2, type: 3}
-    - {fileID: -4470507821973993451, guid: 4ef0d30eca8f9bd4ea94fef3b340a8a6, type: 3}
+    levelSprites: []
     tooltip: {fileID: 0}
     isActiveAbility: 1
     abilityDamage: 20
@@ -9247,22 +9236,11 @@ MonoBehaviour:
     costMultiplier: 0
     requiresUpgradeId: 
     requiresLevel: 0
-    requiredWave: 10
+    requiredWave: 11
     button: {fileID: 1102178836}
     buttonText: {fileID: 0}
     displayImage: {fileID: 1717194156}
-    levelSprites:
-    - {fileID: -2175745049294208623, guid: 599842070ef502c40a68757cd69ebc03, type: 3}
-    - {fileID: -128807318314111398, guid: b1ab8a411096df545966184417713290, type: 3}
-    - {fileID: 4755915880828392046, guid: 126be623832a62342b8356d0d80bcc59, type: 3}
-    - {fileID: 2826930927166792059, guid: 0e3ae1e1ef43ae443a9b76bd0b473423, type: 3}
-    - {fileID: -104332959603502834, guid: b0b8028e21867b041b1b199d268c8c4f, type: 3}
-    - {fileID: -682266101658221830, guid: 4cd73d42700c771449d823cf3209c881, type: 3}
-    - {fileID: 3642741642099972623, guid: e8468710cad3ecf4f870d3d359532fb4, type: 3}
-    - {fileID: 2475099996501615627, guid: e603104bf5e607e48996d98288c692f7, type: 3}
-    - {fileID: -4502387974166073304, guid: a5cde855f8740dd4c93be2ca0d5ee76f, type: 3}
-    - {fileID: 4571106790152938593, guid: a2a9914a0db924d47ab7d8af3d7b41e2, type: 3}
-    - {fileID: -4470507821973993451, guid: 4ef0d30eca8f9bd4ea94fef3b340a8a6, type: 3}
+    levelSprites: []
     tooltip: {fileID: 0}
     isActiveAbility: 1
     abilityDamage: 35
@@ -9277,22 +9255,11 @@ MonoBehaviour:
     costMultiplier: 0
     requiresUpgradeId: 
     requiresLevel: 0
-    requiredWave: 15
+    requiredWave: 16
     button: {fileID: 1102178836}
     buttonText: {fileID: 0}
     displayImage: {fileID: 1717194156}
-    levelSprites:
-    - {fileID: -2175745049294208623, guid: 599842070ef502c40a68757cd69ebc03, type: 3}
-    - {fileID: -128807318314111398, guid: b1ab8a411096df545966184417713290, type: 3}
-    - {fileID: 4755915880828392046, guid: 126be623832a62342b8356d0d80bcc59, type: 3}
-    - {fileID: 2826930927166792059, guid: 0e3ae1e1ef43ae443a9b76bd0b473423, type: 3}
-    - {fileID: -104332959603502834, guid: b0b8028e21867b041b1b199d268c8c4f, type: 3}
-    - {fileID: -682266101658221830, guid: 4cd73d42700c771449d823cf3209c881, type: 3}
-    - {fileID: 3642741642099972623, guid: e8468710cad3ecf4f870d3d359532fb4, type: 3}
-    - {fileID: 2475099996501615627, guid: e603104bf5e607e48996d98288c692f7, type: 3}
-    - {fileID: -4502387974166073304, guid: a5cde855f8740dd4c93be2ca0d5ee76f, type: 3}
-    - {fileID: 4571106790152938593, guid: a2a9914a0db924d47ab7d8af3d7b41e2, type: 3}
-    - {fileID: -4470507821973993451, guid: 4ef0d30eca8f9bd4ea94fef3b340a8a6, type: 3}
+    levelSprites: []
     tooltip: {fileID: 0}
     isActiveAbility: 1
     abilityDamage: 50
@@ -9530,7 +9497,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2045994070260232039, guid: 5a5c366eab7d3ba4cad6abb33e465f37, type: 3}
+  m_Sprite: {fileID: -765187810910609461, guid: 795a8fd38ea31eb46970ae4af5fa7246, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10043,7 +10010,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -128807318314111398, guid: b1ab8a411096df545966184417713290, type: 3}
+  m_Sprite: {fileID: -2175745049294208623, guid: 3efe0b93def0d84438d5656b567a591a, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10177,7 +10144,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 110679143074904534, guid: 3a64e8ee8f4e3104ebe4b759cb8800cd, type: 3}
+  m_Sprite: {fileID: -7064005884759454157, guid: c24b688b87d43664c95e3edab22bce28, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -11842,7 +11809,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 2045994070260232039, guid: 5a5c366eab7d3ba4cad6abb33e465f37, type: 3}
+  m_Sprite: {fileID: -765187810910609461, guid: 795a8fd38ea31eb46970ae4af5fa7246, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
