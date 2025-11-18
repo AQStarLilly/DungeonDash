@@ -37,7 +37,7 @@ public class UpgradeTooltip : MonoBehaviour
         if (currentUpgrade.requiredWave > 0 && currentWave < currentUpgrade.requiredWave)
         {
             descriptionText.text =
-                $"<color=#FF8080>Locked</color>\nBeat wave {currentUpgrade.requiredWave} to unlock.";
+                $"<color=#FF8080>Locked</color>\nReach wave {currentUpgrade.requiredWave} to unlock.";
 
             levelText.text = $"{currentUpgrade.level}/{currentUpgrade.maxLevel}";
             costText.text = $"{cost}";

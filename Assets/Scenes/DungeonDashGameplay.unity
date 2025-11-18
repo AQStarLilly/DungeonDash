@@ -9060,7 +9060,7 @@ MonoBehaviour:
   upgrades:
   - id: damage1
     displayName: Damage 1
-    description: Gain 2 Damage
+    description: Gain 2 Attack
     level: 0
     maxLevel: 10
     baseCost: 30
@@ -9090,7 +9090,7 @@ MonoBehaviour:
     abilityIcon: {fileID: 0}
   - id: damage2
     displayName: Damage 2
-    description: Gain 4 Damage
+    description: Gain 4 Attack
     level: 0
     maxLevel: 10
     baseCost: 120
