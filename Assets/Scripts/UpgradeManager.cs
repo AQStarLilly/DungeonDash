@@ -233,7 +233,7 @@ public class UpgradeManager : MonoBehaviour
                 up.displayImage.sprite = up.levelSprites[index];
             }
 
-            //currently forcing as it's the only way to get the currency mult upgrade to work (whyy)
+            //currently forcing as it's the only way to get the currency mult upgrade to work (whyy) (update this to only affect the currency multiplier)
             up.button.interactable = true;
             Debug.Log($"[FORCE TEST] {up.id} interactable set to TRUE");
         }
