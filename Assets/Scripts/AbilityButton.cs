@@ -26,14 +26,14 @@ public class AbilityButton : MonoBehaviour
 
     public void Initialize(UpgradeManager.Upgrade up)
     {
+        gameObject.SetActive(true);
+
         upgrade = up;
         cooldown = up.cooldown;
         damage = up.abilityDamage;
 
         if (up.abilityIcon != null)
             icon.sprite = up.abilityIcon;
-
-        gameObject.SetActive(true);
     }
 
     private void UseAbility()

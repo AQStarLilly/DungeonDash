@@ -677,9 +677,17 @@ public class GameManager : MonoBehaviour
         {
             var up = UpgradeManager.Instance.GetUpgrade(id);
             if (up != null && up.level > 0 && up.isActiveAbility)
-                button.Initialize(up);
+            {
+                // <-- make sure it's ON before initializing
+                if (!button.gameObject.activeSelf)
+                    button.gameObject.SetActive(true);
+
+                button.Initialize(up); // sets sprites/cooldown/damage, etc.
+            }
             else
+            {
                 button.gameObject.SetActive(false);
+            }
         }
 
         Setup(janitorButton, "janitor");
