@@ -17,11 +17,22 @@ public class AbilityButton : MonoBehaviour
     private UpgradeManager.Upgrade upgrade;
     private GameManager gm => GameManager.Instance;
 
+    private void Awake()
+    {
+        if (button  == null) 
+            button = GetComponent<Button>();
+
+        button.onClick.AddListener(UseAbility);
+    }
+
     private void Start()
     {
-        button.onClick.AddListener(UseAbility);
-        cooldownText.text = "";
-        gameObject.SetActive(false); // hidden until unlocked
+        if (cooldownText != null)
+            cooldownText.text = "";
+
+        onCooldown = false;
+        if (button != null)
+            button.interactable = true;
     }
 
     public void Initialize(UpgradeManager.Upgrade up)
@@ -34,6 +45,16 @@ public class AbilityButton : MonoBehaviour
 
         if (up.abilityIcon != null)
             icon.sprite = up.abilityIcon;
+
+        if (!gameObject.activeSelf)
+            gameObject.SetActive(true);
+
+        // reset cooldown visuals when we start a new run
+        onCooldown = false;
+        if (cooldownText != null)
+            cooldownText.text = "";
+        if (button != null)
+            button.interactable = true;
     }
 
     private void UseAbility()
@@ -55,14 +76,18 @@ public class AbilityButton : MonoBehaviour
 
         float timer = cooldown;
 
-        while (timer > 0)
+        while (timer > 0f)
         {
-            cooldownText.text = Mathf.CeilToInt(timer).ToString();
+            if (cooldownText != null)
+                cooldownText.text = Mathf.CeilToInt(timer).ToString();
+
             timer -= Time.deltaTime;
             yield return null;
         }
 
-        cooldownText.text = "";
+        if (cooldownText != null)
+            cooldownText.text = "";
+
         button.interactable = true;
         onCooldown = false;
     }
