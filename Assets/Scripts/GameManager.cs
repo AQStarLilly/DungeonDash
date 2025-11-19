@@ -473,6 +473,7 @@ public class GameManager : MonoBehaviour
         // Show Results screen
         ChangeState(GameState.Results);
 
+        // Update this so results look a bit better, explained better
         // Update Results UI
         int wavesCleared = progressionManager.GetCurrentLevel() - 1;
 
