@@ -98,6 +98,11 @@ public class UpgradeManager : MonoBehaviour
         if (!map.TryGetValue(upgradeId, out var up) || up == null) return;
 
         if (IsLocked(up)) return;
+
+        int currentWave = GameManager.Instance.progressionManager.GetCurrentLevel();
+        if (up.requiredWave > 0 && currentWave < up.requiredWave)
+            return;
+
         if (up.IsMaxed) return;
 
         int cost = up.CurrentCost;
@@ -233,7 +238,7 @@ public class UpgradeManager : MonoBehaviour
                 up.displayImage.sprite = up.levelSprites[index];
             }
 
-            //currently forcing as it's the only way to get the currency mult upgrade to work (whyy) (update this to only affect the currency multiplier)
+            //currently forcing as it's the only way to get the currency mult upgrade to work (whyy)
             up.button.interactable = true;
             Debug.Log($"[FORCE TEST] {up.id} interactable set to TRUE");
         }
