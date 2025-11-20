@@ -43,6 +43,8 @@ public class GameManager : MonoBehaviour
     [Header("Results UI")]
     public TMP_Text resultsCurrencyText;
     public TMP_Text resultsWavesText;
+    public TMP_Text enemiesBeatText;
+    public TMP_Text resultsCurrencyMultText;
 
     [Header("Upgrades UI")]
     public TMP_Text upgradesCurrencyText;
@@ -473,15 +475,24 @@ public class GameManager : MonoBehaviour
         // Show Results screen
         ChangeState(GameState.Results);
 
-        // Update this so results look a bit better, explained better
         // Update Results UI
         int wavesCleared = progressionManager.GetCurrentLevel() - 1;
+        int maxWaves = progressionManager.GetMaxWaves();
 
-        if (resultsCurrencyText != null)
-            resultsCurrencyText.text = $"{earnedThisRun}";
+        int baseGoldPerWave = 10;
+        float mult = CurrencyManager.Instance.currencyMultiplier;
 
         if (resultsWavesText != null)
-            resultsWavesText.text = $"Waves Cleared: {wavesCleared}";
+            resultsWavesText.text = $"Waves Cleared: {wavesCleared} / {maxWaves}";
+
+        if (enemiesBeatText != null)
+            enemiesBeatText.text = $"Enemies Beat: {wavesCleared} x {baseGoldPerWave}";
+
+        if (resultsCurrencyMultText != null)
+            resultsCurrencyMultText.text = $"Currency Multiplier: x {mult:0.0}";
+
+        if (resultsCurrencyText != null)
+            resultsCurrencyText.text = $"{earnedThisRun}";       
     }
 
     private void HandleEnemyDeath(HealthSystem enemy)
