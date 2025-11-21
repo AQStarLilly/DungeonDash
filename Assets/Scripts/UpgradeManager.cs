@@ -33,6 +33,9 @@ public class UpgradeManager : MonoBehaviour
         [Header("Wave Unlock (optional)")]
         public int requiredWave = 0;
 
+        [Header("Permanent Unlock")]
+        public bool permanentlyUnlocked = false;
+
         [Header("UI")]
         public Button button;
         public TMP_Text buttonText;
@@ -110,6 +113,7 @@ public class UpgradeManager : MonoBehaviour
         if (CurrencyManager.Instance.SpendCurrency(cost))
         {
             up.level++;
+            up.permanentlyUnlocked = true;
             SoundManager.Instance?.PlaySFX(SoundManager.Instance.upgradePurchase);
 
             ApplyUpgradeEffect(up);
@@ -184,6 +188,17 @@ public class UpgradeManager : MonoBehaviour
         {
             if (up == null) continue;
 
+            int currentWave = GameManager.Instance.progressionManager.GetCurrentLevel();
+
+            // Unlock permanently as soon as requirement is ever met
+            if (up.requiredWave > 0 &&
+                currentWave >= up.requiredWave &&
+                !up.permanentlyUnlocked)
+            {
+                up.permanentlyUnlocked = true;
+            }
+
+
             // --- SAFETY FIX ---
             // Force empty dependency to behave correctly even if inspector saved whitespace
             if (up.requiresUpgradeId != null && up.requiresUpgradeId.Trim() == "")
@@ -196,6 +211,7 @@ public class UpgradeManager : MonoBehaviour
             // ---- Wave Lock ----
             bool waveLocked =
                 up.requiredWave > 0 &&
+                !up.permanentlyUnlocked &&
                 GameManager.Instance.progressionManager.GetCurrentLevel() < up.requiredWave;
 
             // DEBUG JUST FOR THE CURRENCY UPGRADE

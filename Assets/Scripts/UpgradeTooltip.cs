@@ -34,7 +34,7 @@ public class UpgradeTooltip : MonoBehaviour
         //
         // --- WAVE LOCK (ability upgrades) ---
         //
-        if (currentUpgrade.requiredWave > 0 && currentWave < currentUpgrade.requiredWave)
+        if (currentUpgrade.requiredWave > 0 && !currentUpgrade.permanentlyUnlocked && currentWave < currentUpgrade.requiredWave)
         {
             descriptionText.text =
                 $"<color=#FF8080>Locked</color>\nReach wave {currentUpgrade.requiredWave} to unlock.";

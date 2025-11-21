@@ -73,6 +73,8 @@ public class AbilityButton : MonoBehaviour
     {
         onCooldown = true;
         button.interactable = false;
+        if (icon != null)
+            icon.color = new Color(1f, 1f, 1f, 0.35f);
 
         float timer = cooldown;
 
@@ -87,6 +89,9 @@ public class AbilityButton : MonoBehaviour
 
         if (cooldownText != null)
             cooldownText.text = "";
+
+        if (icon != null)
+            icon.color = Color.white;
 
         button.interactable = true;
         onCooldown = false;
