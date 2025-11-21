@@ -103,7 +103,7 @@ public class UpgradeManager : MonoBehaviour
         if (IsLocked(up)) return;
 
         int currentWave = GameManager.Instance.progressionManager.GetCurrentLevel();
-        if (up.requiredWave > 0 && currentWave < up.requiredWave)
+        if (up.requiredWave > 0 && !up.permanentlyUnlocked && currentWave < up.requiredWave)
             return;
 
         if (up.IsMaxed) return;
@@ -242,8 +242,16 @@ public class UpgradeManager : MonoBehaviour
                 }
                 else
                 {
-                    up.buttonText.text = $"{up.CurrentCost}";
-                    up.buttonText.color = affordable ? canAffordColor : cannotAffordColor;
+                    if (maxed)
+                    {
+                        up.buttonText.text = "MAX";
+                        up.buttonText.color = Color.black;
+                    }
+                    else
+                    {
+                        up.buttonText.text = $"{up.CurrentCost}";
+                        up.buttonText.color = affordable ? canAffordColor : cannotAffordColor;
+                    }
                 }
             }
 

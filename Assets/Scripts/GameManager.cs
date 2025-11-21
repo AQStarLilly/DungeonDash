@@ -54,6 +54,9 @@ public class GameManager : MonoBehaviour
     public AbilityButton hrLadyButton;
     public AbilityButton drunkButton;
 
+    [Header("Tutorial Popup")]
+    public GameObject abilityTutorialPopup;
+
     [Header("Gameplay Container")]
     public GameObject gameplayContainer;
 
@@ -64,6 +67,12 @@ public class GameManager : MonoBehaviour
     private bool loadingFromSave = false;
     private bool isSpawningEnemy = false;
     private Coroutine stageTransitionCR;
+
+    public bool HasShownAbilityPopup
+    {
+        get => PlayerPrefs.GetInt("HasShownAbilityPopup", 0) == 1;
+        set => PlayerPrefs.SetInt("HasShownAbilityPopup", value ? 1 : 0);
+    }
 
     private void Awake()
     {
@@ -705,6 +714,21 @@ public class GameManager : MonoBehaviour
         Setup(janitorButton, "janitor");
         Setup(hrLadyButton, "hrlady");
         Setup(drunkButton, "drunkCoworker");
+
+        bool hasAnyAbilityUnlocked =
+        UpgradeManager.Instance.GetUpgrade("janitor").level > 0 ||
+        UpgradeManager.Instance.GetUpgrade("hrlady").level > 0 ||
+        UpgradeManager.Instance.GetUpgrade("drunkCoworker").level > 0;
+
+        if (hasAnyAbilityUnlocked && !HasShownAbilityPopup)
+        {
+            abilityTutorialPopup.SetActive(true);
+            HasShownAbilityPopup = true;
+        }
+    }
+    public void CloseAbilityPopup()
+    {
+        abilityTutorialPopup.SetActive(false);
     }
 
     public void Quit()

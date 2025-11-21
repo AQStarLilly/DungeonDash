@@ -11,6 +11,7 @@ public class UpgradeTooltip : MonoBehaviour
     [Header("Cost Colors")]
     public Color canAffordColor = Color.green;
     public Color cannotAffordColor = Color.red;
+    public Color maxedColor = Color.black;
 
     private UpgradeManager.Upgrade currentUpgrade;
 
@@ -30,6 +31,20 @@ public class UpgradeTooltip : MonoBehaviour
         int currentWave = GameManager.Instance.progressionManager.GetCurrentLevel();
         int cost = currentUpgrade.CurrentCost;
         bool canAfford = CurrencyManager.Instance.totalCurrency >= cost;
+
+        //
+        // --- MAXED OVERRIDE ---
+        // If the upgrade is fully maxed, always show "MAX" instead of a number
+        //
+        if (currentUpgrade.IsMaxed)
+        {
+            descriptionText.text = currentUpgrade.description;
+            levelText.text = $"{currentUpgrade.level}/{currentUpgrade.maxLevel}";
+
+            costText.text = "MAX";
+            costText.color = maxedColor;
+            return;
+        }
 
         //
         // --- WAVE LOCK (ability upgrades) ---
