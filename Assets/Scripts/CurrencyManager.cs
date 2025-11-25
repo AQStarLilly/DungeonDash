@@ -20,8 +20,16 @@ public class CurrencyManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance == null) Instance = this;
-        else Destroy(gameObject);
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Debug.LogWarning("Duplicate CurrencyManager found. Destroying new one.");
+            Destroy(gameObject);
+        }
     }
 
     private void Start()
@@ -29,18 +37,42 @@ public class CurrencyManager : MonoBehaviour
         UpdateUI();
     }
 
+    // -------------------------------
+    //         CURRENCY LOGIC
+    // -------------------------------
+
     public void AddCurrency(int baseAmount)
     {
-        int finalAmount = Mathf.RoundToInt(baseAmount * currencyMultiplier);
+        int finalAmount = CurrencyMath.ApplyMultiplier(baseAmount, currencyMultiplier);
+
         runCurrency += finalAmount;
+        runCurrency = Mathf.Max(0, runCurrency);
         UpdateUI();
+    }
+
+    public bool SpendCurrency(int amount)
+    {
+        if (totalCurrency >= amount)
+        {
+            totalCurrency -= amount;
+            totalCurrency = Mathf.Max(0, totalCurrency);
+
+            UpdateUI();
+            return true;
+        }
+
+        Debug.Log("Not enough currency to spend.");
+        return false;
     }
 
     public void CommitRunToTotal()
     {
         lastRunEarnings = runCurrency;
+
         totalCurrency += runCurrency;
-        runCurrency = 0; // reset for next run
+        totalCurrency = Mathf.Max(0, totalCurrency);
+
+        runCurrency = 0;
         UpdateUI();
     }
 
@@ -50,42 +82,41 @@ public class CurrencyManager : MonoBehaviour
         UpdateUI();
     }
 
-    public int GetRunCurrency()
-    {
-        return runCurrency;
-    }
-
-    public int GetTotalCurrency()
-    {
-        return totalCurrency;
-    }
-
-    public bool SpendCurrency(int amount)
-    {
-        if(totalCurrency >= amount)
-        {
-            totalCurrency -= amount;
-            UpdateUI();
-            return true;
-        }
-        else
-        {
-            Debug.Log("Not enough currency to spend");
-            return false;
-        }
-    }
+    // -------------------------------
+    //              UI
+    // -------------------------------
 
     public void UpdateUI()
     {
         if (gameplayCurrencyText != null)
-            gameplayCurrencyText.text = $"{runCurrency}";
+            gameplayCurrencyText.text = runCurrency.ToString();
+        else
+            Debug.LogWarning("GameplayCurrencyText is not assigned.");
 
-        // Upgrades screen shows total saved gold
         if (upgradesCurrencyText != null)
-            upgradesCurrencyText.text = $"{totalCurrency}";
+            upgradesCurrencyText.text = totalCurrency.ToString();
+        else
+            Debug.LogWarning("UpgradesCurrencyText is not assigned.");
 
-        // Results screen shows what you earned this run
         if (resultsCurrencyText != null)
-            resultsCurrencyText.text = $"{runCurrency}";
+            resultsCurrencyText.text = runCurrency.ToString();
+    }
+
+
+    // -------------------------------
+    //   STATIC UTILITY CLASS
+    // -------------------------------
+    public static class CurrencyMath
+    {
+        /// <summary>
+        /// Safely applies multipliers with clamping.
+        /// Demonstrates static class usage for assignment.
+        /// </summary>
+        public static int ApplyMultiplier(int baseAmount, float multiplier)
+        {
+            multiplier = Mathf.Max(0f, multiplier);
+            return Mathf.RoundToInt(baseAmount * multiplier);
+        }
+
     }
 }
