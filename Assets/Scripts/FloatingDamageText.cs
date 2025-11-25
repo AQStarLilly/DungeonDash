@@ -33,7 +33,7 @@ public class FloatingDamageText : MonoBehaviour
         }
         else
         {
-            text.color = Color.black;
+            text.color = Color.white;
         }
 
         StartCoroutine(FloatAndFade());
