@@ -7,12 +7,12 @@ public class HealthSystem : MonoBehaviour
     [Header("Stats")]
     public int maxHealth = 100;
     public int currentHealth;
-    
+
     [Header("Attack Stats")]
     public int attackDamage = 10;
     [Range(0f, 1f)] public float critChance = 0.1f;
     public float critMultiplier = 2f;
-    
+
     [Header("UI")]
     public TMP_Text healthText;
     public HealthBarUI healthBarUI;
@@ -31,29 +31,26 @@ public class HealthSystem : MonoBehaviour
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        if (spriteRenderer != null)
+        if (!TryGetComponent(out spriteRenderer))
+        {
+            Debug.LogWarning($"{name} has no SpriteRenderer. FlashRed() will be skipped.");
+        }
+        else
+        {
             originalColor = spriteRenderer.color;
+        }
     }
 
     private void Start()
     {
-        // Don’t reset health automatically — GameManager handles initialization
-        if (healthBarUI == null)
-        {
-            var bars = Object.FindObjectsByType<HealthBarUI>(FindObjectsSortMode.None);
-            foreach (var bar in bars)
-            {
-                string lower = bar.name.ToLower();
-                if (isPlayer && lower.Contains("player")) { healthBarUI = bar; break; }
-                if (!isPlayer && lower.Contains("enemy")) { healthBarUI = bar; break; }
-            }
-        }
-
+        // If UI reference isn't assigned, attempt auto-match
+        AutoAssignHealthBar();
         UpdateUI();
     }
 
-    // Initialize values from PlayerStats when the run starts
+    /// <summary>
+    /// Initialize health using PlayerStats (run start).
+    /// </summary>
     public void InitializeFromPlayerStats(bool firstSpawnOfRun)
     {
         if (isPlayer && PlayerStats.Instance != null)
@@ -61,55 +58,61 @@ public class HealthSystem : MonoBehaviour
             maxHealth = Mathf.RoundToInt(maxHealth * PlayerStats.Instance.healthMultiplier);
             currentHealth = maxHealth;
 
-            // Show shield visual if you have damage reduction
-            if (PlayerStats.Instance.damageReduction > 0f && shieldVisual != null)
+            if (PlayerStats.Instance.damageReduction > 0 && shieldVisual != null)
                 shieldVisual.ShowShield();
         }
         else
         {
             currentHealth = maxHealth;
-            if (shieldVisual != null)
-                shieldVisual.HideShield();
+            shieldVisual?.HideShield();
         }
 
         UpdateUI();
     }
 
-    //Reset for next wave (health only)
+    /// <summary>
+    /// Used by enemy waves.
+    /// </summary>
     public void ResetForNextWave()
     {
-        currentHealth = maxHealth;   
-
+        currentHealth = maxHealth;
         UpdateUI();
     }
+
+    /// <summary>
+    /// Pure enemy initialization if needed.
+    /// </summary>
+    public void InitializeEnemy()
+    {
+        currentHealth = maxHealth;
+        shieldVisual?.HideShield();
+        UpdateUI();
+    }
+
+    // -------------------------------
+    //          DAMAGE
+    // -------------------------------
 
     public void TakeDamage(int damage, bool isCrit = false)
     {
         int finalDamage = damage;
 
-        // --- Apply player’s damage reduction ---
-        if (isPlayer && PlayerStats.Instance != null && PlayerStats.Instance.damageReduction > 0f)
+        // Apply PlayerStats damage reduction
+        if (isPlayer && PlayerStats.Instance != null)
         {
-            float reduction = PlayerStats.Instance.damageReduction;
+            float reduction = Mathf.Clamp01(PlayerStats.Instance.damageReduction);
             finalDamage = Mathf.RoundToInt(finalDamage * (1f - reduction));
         }
 
         currentHealth -= finalDamage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
 
         if (spriteRenderer != null)
             StartCoroutine(FlashRed());
+
         StartCoroutine(ShakeOnHit());
 
-        // --- Floating text (normal red/black) ---
-        if (floatingTextPrefab != null)
-        {
-            Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
-            Vector3 worldPos = transform.position + new Vector3(0f, 3.5f, 0f);
-            Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
-
-            var popup = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
-            popup.GetComponent<FloatingDamageText>().Initialize(finalDamage, isCrit);
-        }
+        SpawnFloatingText(finalDamage, isCrit);
 
         if (currentHealth <= 0)
         {
@@ -119,6 +122,10 @@ public class HealthSystem : MonoBehaviour
 
         UpdateUI();
     }
+
+    // -------------------------------
+    //        VISUAL FEEDBACK
+    // -------------------------------
 
     private IEnumerator FlashRed()
     {
@@ -130,9 +137,9 @@ public class HealthSystem : MonoBehaviour
     private IEnumerator ShakeOnHit(float duration = 0.15f, float magnitude = 0.1f)
     {
         Vector3 originalPos = transform.localPosition;
-
         float elapsed = 0f;
-        while(elapsed < duration)
+
+        while (elapsed < duration)
         {
             float offsetX = Random.Range(-1f, 1f) * magnitude;
             float offsetY = Random.Range(-1f, 1f) * magnitude;
@@ -146,6 +153,49 @@ public class HealthSystem : MonoBehaviour
         transform.localPosition = originalPos;
     }
 
+    private void SpawnFloatingText(int damage, bool isCrit)
+    {
+        if (floatingTextPrefab == null)
+            return;
+
+        Canvas mainCanvas = GameObject.FindAnyObjectByType<Canvas>();
+        if (mainCanvas == null)
+        {
+            Debug.LogWarning("No Canvas found for floating text!");
+            return;
+        }
+
+        Vector3 worldPos = transform.position + new Vector3(0f, 3.5f, 0f);
+        Vector3 screenPos = Camera.main.WorldToScreenPoint(worldPos);
+
+        GameObject obj = Instantiate(floatingTextPrefab, screenPos, Quaternion.identity, mainCanvas.transform);
+
+        if (obj.TryGetComponent(out FloatingDamageText fdt))
+            fdt.Initialize(damage, isCrit);
+        else
+            Debug.LogWarning("FloatingTextPrefab is missing FloatingDamageText component!");
+    }
+
+    // -------------------------------
+    //        DAMAGE CALCULATION
+    // -------------------------------
+
+    public (int damage, bool isCrit) CalculateAttackDamage()
+    {
+        int dmg = attackDamage;
+
+        if (isPlayer && PlayerStats.Instance != null)
+            dmg = Mathf.RoundToInt(dmg * PlayerStats.Instance.damageMultiplier);
+
+        int final = DamageCalculator.CalculateCritDamage(dmg, critChance, critMultiplier, out bool crit);
+
+        return (final, crit);
+    }
+
+    // -------------------------------
+    //             UI
+    // -------------------------------
+
     public void UpdateUI()
     {
         if (healthText != null)
@@ -155,31 +205,36 @@ public class HealthSystem : MonoBehaviour
             healthBarUI.SetHealth(currentHealth, maxHealth);
     }
 
-    public (int damage, bool isCrit) CalculateAttackDamage()
+    private void AutoAssignHealthBar()
     {
-        int dmg = attackDamage;
-        bool crit = false;
+        if (healthBarUI != null)
+            return;
 
-        if (isPlayer && PlayerStats.Instance != null)
-            dmg = Mathf.RoundToInt(dmg * PlayerStats.Instance.damageMultiplier);
-
-        if (Random.value <= critChance)
+        var bars = Object.FindObjectsByType<HealthBarUI>(FindObjectsSortMode.None);
+        foreach (var bar in bars)
         {
-            dmg = Mathf.RoundToInt(dmg * critMultiplier);
-            crit = true;
+            string lower = bar.name.ToLower();
+            if (isPlayer && lower.Contains("player")) { healthBarUI = bar; break; }
+            if (!isPlayer && lower.Contains("enemy")) { healthBarUI = bar; break; }
         }
-
-        return (dmg, crit);
     }
 
-    public void InitializeEnemy()
+
+    // ------------------------------------------------------------------
+    //                      STATIC DAMAGE CALCULATOR
+    // ------------------------------------------------------------------
+
+    /// <summary>
+    /// Static utility class to demonstrate static OOP usage and separation of concerns.
+    /// </summary>
+    public static class DamageCalculator
     {
-        currentHealth = maxHealth;
-
-        if (shieldVisual != null)
-            shieldVisual.HideShield();
-
-        UpdateUI();
+        public static int CalculateCritDamage(int baseDamage, float critChance, float critMultiplier, out bool isCrit)
+        {
+            isCrit = Random.value <= critChance;
+            return isCrit ? Mathf.RoundToInt(baseDamage * critMultiplier) : baseDamage;
+        }
     }
 }
+
 
