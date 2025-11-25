@@ -28,7 +28,8 @@ public class FloatingDamageText : MonoBehaviour
         else if (isCrit)
         {
             text.color = Color.red;
-            text.text += " *";
+            text.text += "* ";
+            text.text += "CRITICAL";
             text.fontSize *= 1.3f;
         }
         else
