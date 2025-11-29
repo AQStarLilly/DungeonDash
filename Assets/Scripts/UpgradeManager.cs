@@ -215,16 +215,6 @@ public class UpgradeManager : MonoBehaviour
                 !up.permanentlyUnlocked &&
                 GameManager.Instance.progressionManager.GetCurrentLevel() < up.requiredWave;
 
-            // DEBUG JUST FOR THE CURRENCY UPGRADE
-            if (up.id == "currency")
-            {
-                Debug.Log($"[Currency Upgrade] " +
-                          $"level={up.level}, maxLevel={up.maxLevel}, " +
-                          $"cost={up.CurrentCost}, totalCurrency={CurrencyManager.Instance.totalCurrency}, " +
-                          $"affordable={affordable}, maxed={maxed}, " +
-                          $"dependencyLocked={dependencyLocked}, waveLocked={waveLocked}");
-            }
-
             // ---- Button Interactable ----
             up.button.interactable = !maxed && !dependencyLocked && !waveLocked && affordable;
 
@@ -271,8 +261,6 @@ public class UpgradeManager : MonoBehaviour
                     up.displayImage.sprite = up.levelSprites[index];
                 }
             }
-
-            Debug.Log($"[FORCE TEST] {up.id} interactable set to TRUE");
         }
     }
 

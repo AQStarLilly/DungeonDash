@@ -13,7 +13,7 @@ public class ConfirmPopup : MonoBehaviour
     private Action onConfirm;
     private Action onCancel;
 
-    private void Awake()
+    private void Start()
     {
         gameObject.SetActive(false); 
     }
