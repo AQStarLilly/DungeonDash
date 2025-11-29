@@ -74,7 +74,9 @@ public static class SaveSystem
                 }
             }
         }
+
+        PlayerPrefs.DeleteKey("HasShownAbilityPopup");
+
         Debug.Log("Save Cleared.");
     }
 }
-//Need to add upgrades here

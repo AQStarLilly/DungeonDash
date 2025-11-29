@@ -200,6 +200,7 @@ public class GameManager : MonoBehaviour
     public void StartNewGame()
     {
         SaveSystem.ClearSave();
+        HasShownAbilityPopup = false;
         ResetGame(resetUpgrades: true, resetCurrency: true);
 
         var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
