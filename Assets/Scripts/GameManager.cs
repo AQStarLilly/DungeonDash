@@ -495,7 +495,7 @@ public class GameManager : MonoBehaviour
             resultsWavesText.text = $"Waves Cleared: {wavesCleared} / {maxWaves}";
 
         if (enemiesBeatText != null)
-            enemiesBeatText.text = $"Enemies Beat: {wavesCleared} x {baseGoldPerWave}";
+            enemiesBeatText.text = $"Enemies Beat: {wavesCleared} x   <sprite=0>{baseGoldPerWave}";
 
         if (resultsCurrencyMultText != null)
             resultsCurrencyMultText.text = $"Currency Multiplier: x {mult:0.0}";
