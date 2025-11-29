@@ -41,6 +41,7 @@ public class UpgradeManager : MonoBehaviour
         public TMP_Text buttonText;
         public Image displayImage;
         public List<Sprite> levelSprites;
+        public List<Sprite> levelSpritesGreyedOut;
 
         public int CurrentCost => Mathf.RoundToInt(baseCost * Mathf.Pow(costMultiplier, level));
         public bool IsMaxed => level >= maxLevel;
@@ -259,11 +260,18 @@ public class UpgradeManager : MonoBehaviour
             if (up.displayImage != null && up.levelSprites != null && up.levelSprites.Count > 0)
             {
                 int index = Mathf.Clamp(up.level, 0, up.levelSprites.Count - 1);
-                up.displayImage.sprite = up.levelSprites[index];
+
+                if (!affordable && up.levelSpritesGreyedOut != null &&
+                    up.levelSpritesGreyedOut.Count > index)
+                {
+                    up.displayImage.sprite = up.levelSpritesGreyedOut[index];
+                }
+                else
+                {
+                    up.displayImage.sprite = up.levelSprites[index];
+                }
             }
 
-            //currently forcing as it's the only way to get the currency mult upgrade to work (whyy)
-            up.button.interactable = true;
             Debug.Log($"[FORCE TEST] {up.id} interactable set to TRUE");
         }
     }

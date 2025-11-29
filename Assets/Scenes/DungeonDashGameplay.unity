@@ -9937,6 +9937,18 @@ MonoBehaviour:
     - {fileID: -4994993053255823853, guid: e389ecf80a084fb4bb19240d7bf75346, type: 3}
     - {fileID: 3078863161526630201, guid: cca95707e29b11b40a55e4d7515615c6, type: 3}
     - {fileID: -6543177528567038029, guid: f53d2d330a5e6f741a04327ecdb7b1f8, type: 3}
+    levelSpritesGreyedOut:
+    - {fileID: 4913778805793154419, guid: 09070678de4c1934ab16888382896034, type: 3}
+    - {fileID: -3476784246803448072, guid: 4b4749d53bc22dd4994cfc1fe74be5c6, type: 3}
+    - {fileID: 1205565607029655835, guid: 744a09939f3ad424c9f3ad0991df4a44, type: 3}
+    - {fileID: -8751035582137495423, guid: cbfb7bcc266b2ce4f932566e0224f044, type: 3}
+    - {fileID: -4728586450528902430, guid: 64d5b77059abca641b010e307ab620f7, type: 3}
+    - {fileID: 1574470290379652836, guid: 53fc0e33f74906c419ce0b1a7b4cb739, type: 3}
+    - {fileID: 417583729960656638, guid: 4f1c3a07673bceb428710857ac31aa1d, type: 3}
+    - {fileID: -6125260543464500601, guid: ce43c370f8444bc4c969d022907878d5, type: 3}
+    - {fileID: -4633713509497612727, guid: 82cf168e5b43069428afccaf16c1fd26, type: 3}
+    - {fileID: 8669831132027047938, guid: 6bde5893c69f11b419cb0776aac200ab, type: 3}
+    - {fileID: -8488046640201032413, guid: 63edeb8b2a245f647b845df101040f6c, type: 3}
     tooltip: {fileID: 0}
     isActiveAbility: 0
     abilityDamage: 20
@@ -9968,6 +9980,18 @@ MonoBehaviour:
     - {fileID: 188156873334375291, guid: 39ba1293fcc31004b84b9aaa80a4d4b4, type: 3}
     - {fileID: 4973392323495178484, guid: f6505560dcb49974f8ecebec603ded4d, type: 3}
     - {fileID: 1860318176010100101, guid: 4f90dcc7e4e900b42ab7d4f9d40f1a27, type: 3}
+    levelSpritesGreyedOut:
+    - {fileID: 9060314923931186434, guid: 2d2b299802b9019498bc1892ec1b05b7, type: 3}
+    - {fileID: -8819177370827548115, guid: d8850792f31f4654b8af518152ad78c3, type: 3}
+    - {fileID: 1876319116824138278, guid: 7e23bc7c8b27f784e99777330f54476a, type: 3}
+    - {fileID: 709468646645481920, guid: 43971f6242e87ce41bd2897d01a95468, type: 3}
+    - {fileID: -5036297131374987625, guid: 3621f3c5ee941234aa538a58bfb00551, type: 3}
+    - {fileID: 0}
+    - {fileID: 8827687144009079151, guid: e62a369a200f42d41884d39f81017f04, type: 3}
+    - {fileID: -3940802519808380273, guid: d5e6fa31abb39204dbd4cfceac766990, type: 3}
+    - {fileID: -1391529469628436672, guid: e438d4c9e5c9b5147a1e36197a145590, type: 3}
+    - {fileID: 648120370946169112, guid: d291263f0b2f66747b138a3dc79c89d5, type: 3}
+    - {fileID: -1432584970254991139, guid: fbd5d85dbaeabdd498eb9bbc785f00d6, type: 3}
     tooltip: {fileID: 0}
     isActiveAbility: 0
     abilityDamage: 20
@@ -9999,6 +10023,18 @@ MonoBehaviour:
     - {fileID: 144488724123241685, guid: 1d1a5374c329df84c841f61fc230718c, type: 3}
     - {fileID: 8477784841642651665, guid: 4b2aedb4bd5a71e4a9e8514b35bfd682, type: 3}
     - {fileID: 9183983601773399299, guid: a149397667e13064a8103a3bd30b9cdf, type: 3}
+    levelSpritesGreyedOut:
+    - {fileID: -5602307027386921252, guid: 0225c82236cadc44582a39331062d439, type: 3}
+    - {fileID: 2364421447317640373, guid: 468f0dff832afad47b144273d1518459, type: 3}
+    - {fileID: 9034530741216620069, guid: bf1afcab4dc9ee743b4a70ae68bc19ba, type: 3}
+    - {fileID: 6427989781418761025, guid: a8c9a3c16f9bd194c99eb51361e4f782, type: 3}
+    - {fileID: 849819542569727308, guid: b30b00accaf35c442a25da1e1f37a3d0, type: 3}
+    - {fileID: -7144523711444337106, guid: 318b611ec966baf40bb4a04216ac380d, type: 3}
+    - {fileID: 7847651894621945756, guid: 2ed9daaa5e85acc48ba684ac633c73c9, type: 3}
+    - {fileID: 1687751877377198118, guid: ce1dc299a0f4eb741b2753745933a4f1, type: 3}
+    - {fileID: 4326142964384650515, guid: 0b9fff279283e6d47966ae824960ac56, type: 3}
+    - {fileID: 1411584901678100403, guid: f3f65354b32656242b506cbe1bfde248, type: 3}
+    - {fileID: -9062041060046692466, guid: 27ef5bab11076fd45ae2e920ad14a18e, type: 3}
     tooltip: {fileID: 0}
     isActiveAbility: 0
     abilityDamage: 20
@@ -10030,6 +10066,18 @@ MonoBehaviour:
     - {fileID: 5544654857103549903, guid: c117b24614c7e8d4e941444db6598d03, type: 3}
     - {fileID: 2290109663076856312, guid: 91142aa0e01c6d640a2ec183dc7b5779, type: 3}
     - {fileID: 7368338403343874875, guid: 343b6e39c564655489b4aea96200c8d4, type: 3}
+    levelSpritesGreyedOut:
+    - {fileID: -1587510848526609864, guid: 8e05e5b9a55b99049adaec096bec9490, type: 3}
+    - {fileID: -5550250759424753757, guid: f251d0bdccfa02a4f9f23dea58b47802, type: 3}
+    - {fileID: 7218155186964869979, guid: c6142760ee02e4f4b828780d59fea467, type: 3}
+    - {fileID: -5227546405756037754, guid: a1b625a234dc8df4e80d8f45caff2b00, type: 3}
+    - {fileID: -1055848503994354457, guid: 5d4872d184557f349b46ca10c079cf9f, type: 3}
+    - {fileID: -4038775015439582310, guid: 34f7a62e7b76c664a92b73f8b0358f4f, type: 3}
+    - {fileID: 8177619153009089503, guid: 32c049f00a1e486428319b811c5b6a0c, type: 3}
+    - {fileID: 2821218465231726570, guid: b0d9cf5122f8a5c4c897ba3bde240a2c, type: 3}
+    - {fileID: -8270971452792129926, guid: 0cf5b8989570c6c4283f25957606dbf2, type: 3}
+    - {fileID: 868345119296590312, guid: f3800d2714fc60c44903157fad811c9c, type: 3}
+    - {fileID: -5154012614331926325, guid: 4c3619cdb0763814c92441df70e82aac, type: 3}
     tooltip: {fileID: 0}
     isActiveAbility: 0
     abilityDamage: 20
@@ -10061,6 +10109,18 @@ MonoBehaviour:
     - {fileID: -4502387974166073304, guid: 559dc8584aca4414da8fbfd2bf50d0a6, type: 3}
     - {fileID: 4571106790152938593, guid: 58b764002345e324aa8fc7ceca41d598, type: 3}
     - {fileID: -4470507821973993451, guid: 9299dc575e29f364c96a2a4cf2ed98ac, type: 3}
+    levelSpritesGreyedOut:
+    - {fileID: 4850766867751728142, guid: c687d375e78ab9c409aa835d3cee6c55, type: 3}
+    - {fileID: 1756136879553031526, guid: fd09186d0bc90c34283bc8a9bb96099f, type: 3}
+    - {fileID: 58791661180774234, guid: af255a554ed1a994bbfae0abe26c75af, type: 3}
+    - {fileID: 328327061127897541, guid: 4f41e6099b31b6e4abf5dd9a8f3f42ac, type: 3}
+    - {fileID: -8866908635238683904, guid: 17fb3fb387b82204890e4e8b3bf62d5d, type: 3}
+    - {fileID: -3051959656032620365, guid: 5e661260939a5184ba2a5fa83ab748a6, type: 3}
+    - {fileID: 4869850943967173011, guid: d74f20a6f1cbb9b47a96000628c0025e, type: 3}
+    - {fileID: -3554905677331549316, guid: 5e2e12bf57573dd438de5bdc06819eae, type: 3}
+    - {fileID: 4644102926046136474, guid: 1e160363142c8ce4da9566f4e83a747c, type: 3}
+    - {fileID: 862745736808554511, guid: 8467b8f74f8b14e438ba7d93f8283252, type: 3}
+    - {fileID: 2997144187347901057, guid: a272bfeab095b3f4f88196d83c92c0cd, type: 3}
     tooltip: {fileID: 0}
     isActiveAbility: 0
     abilityDamage: 50
@@ -10077,10 +10137,13 @@ MonoBehaviour:
     requiresLevel: 0
     requiredWave: 6
     permanentlyUnlocked: 0
-    button: {fileID: 1102178836}
+    button: {fileID: 1117683035}
     buttonText: {fileID: 0}
-    displayImage: {fileID: 1717194156}
-    levelSprites: []
+    displayImage: {fileID: 643348690}
+    levelSprites:
+    - {fileID: 7705963250077103835, guid: 6ca6a25ebab5d1e49be4fa75002ce8cd, type: 3}
+    levelSpritesGreyedOut:
+    - {fileID: -1366505809253246905, guid: 96983c89f402b384ca543769dbc3cc28, type: 3}
     tooltip: {fileID: 0}
     isActiveAbility: 1
     abilityDamage: 20
@@ -10097,10 +10160,13 @@ MonoBehaviour:
     requiresLevel: 0
     requiredWave: 11
     permanentlyUnlocked: 0
-    button: {fileID: 1102178836}
+    button: {fileID: 369724739}
     buttonText: {fileID: 0}
-    displayImage: {fileID: 1717194156}
-    levelSprites: []
+    displayImage: {fileID: 327610876}
+    levelSprites:
+    - {fileID: -4844189031459079609, guid: 8502d193708a9304c9f16f0caa343965, type: 3}
+    levelSpritesGreyedOut:
+    - {fileID: 7727754705575617346, guid: c4e45553acadd0549bfe55bb3cfcfa94, type: 3}
     tooltip: {fileID: 0}
     isActiveAbility: 1
     abilityDamage: 35
@@ -10117,10 +10183,13 @@ MonoBehaviour:
     requiresLevel: 0
     requiredWave: 16
     permanentlyUnlocked: 0
-    button: {fileID: 1102178836}
+    button: {fileID: 305096938}
     buttonText: {fileID: 0}
-    displayImage: {fileID: 1717194156}
-    levelSprites: []
+    displayImage: {fileID: 1842677300}
+    levelSprites:
+    - {fileID: 5505367683410340449, guid: 91a96c8d3d5f30d44bb5ebd6f74cb6a6, type: 3}
+    levelSpritesGreyedOut:
+    - {fileID: -8936879109246294355, guid: 42ea4eaf350d60b45b75646e808c7cfd, type: 3}
     tooltip: {fileID: 0}
     isActiveAbility: 1
     abilityDamage: 50
