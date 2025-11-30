@@ -60,7 +60,7 @@ public class GameManager : MonoBehaviour
     [Header("Gameplay Container")]
     public GameObject gameplayContainer;
 
-    private HealthSystem playerHealth;
+    public HealthSystem playerHealth;
     public HealthSystem currentEnemy;
     private Coroutine battleLoop;
     private bool isPaused = false;

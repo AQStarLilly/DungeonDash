@@ -62,6 +62,9 @@ public class AbilityButton : MonoBehaviour
         if (onCooldown) return;
         if (gm.currentEnemy == null) return;
 
+        AbilityEffectController.Instance.PlayAbilityEffect(upgradeId,
+        gm.playerHealth.transform, gm.currentEnemy.transform);
+
         // Deal damage
         gm.currentEnemy.TakeDamage(damage, false);
 

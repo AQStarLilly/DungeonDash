@@ -5603,6 +5603,7 @@ MonoBehaviour:
   drunkButton: {fileID: 1936762610}
   abilityTutorialPopup: {fileID: 646287394}
   gameplayContainer: {fileID: 1967657536}
+  playerHealth: {fileID: 0}
   currentEnemy: {fileID: 0}
 --- !u!4 &859732908
 Transform:
@@ -5630,6 +5631,7 @@ Transform:
   - {fileID: 1967657537}
   - {fileID: 1565956535}
   - {fileID: 625301801}
+  - {fileID: 1793882355}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &875241284
@@ -11105,6 +11107,56 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   upgradeId: shield
+--- !u!1 &1793882354
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1793882355}
+  - component: {fileID: 1793882356}
+  m_Layer: 0
+  m_Name: AbilityEffectController
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1793882355
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793882354}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 859732908}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1793882356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1793882354}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8c4db6fc47b882f4799187100c4384c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  janitorFacePopup: {fileID: 1756010968837408918, guid: a699d67b0fa459942880ec4d7d8c815b, type: 3}
+  hrLadyFacePopup: {fileID: 1030441899907935251, guid: 58807e1472960b8489e84ef19b703ae6, type: 3}
+  drunkFacePopup: {fileID: 4476767189512892039, guid: bb8e707a9c237cd468f03f7b7e145840, type: 3}
+  janitorProjectile: {fileID: 4857139196039098112, guid: dd063f0a940eaf74eae4f6d508c241db, type: 3}
+  hrLadyProjectile: {fileID: 5399857014051730743, guid: b4b224639a80da049b51febae20ea521, type: 3}
+  drunkProjectile: {fileID: 2347132272702814661, guid: 62290a60dd25ade4382b3b99cabeacd1, type: 3}
 --- !u!114 &1794775599 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 3665335826692596429, guid: 47ab3be3068a5b741a5cfcdc99e60698, type: 3}
