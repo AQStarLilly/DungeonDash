@@ -1,19 +1,10 @@
 fileFormatVersion: 2
-guid: 747e74c13a4c4344daf57edc74ff80f6
+guid: 220c08933d934314ba8a47945d4cf001
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -566520620318188696
-    second: Bossmonsteranimationsprite_0
-  - first:
-      213: -8787050255400968213
-    second: Bossmonsteranimationsprite_1
-  - first:
-      213: -6819658382878186055
-    second: Bossmonsteranimationsprite_2
-  - first:
-      213: -2319971228672788639
-    second: Bossmonsteranimationsprite_3
+      213: -7017748848440376597
+    second: IntroScreen_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +37,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -109,89 +100,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bossmonsteranimationsprite_0
+      name: IntroScreen_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1335
-        height: 1650
+        width: 2388
+        height: 1668
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 86b10045f705328f0800000000000000
-      internalID: -566520620318188696
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bossmonsteranimationsprite_1
-      rect:
-        serializedVersion: 2
-        x: 1335
-        y: 0
-        width: 1335
-        height: 1650
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: befd15739502e0680800000000000000
-      internalID: -8787050255400968213
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bossmonsteranimationsprite_2
-      rect:
-        serializedVersion: 2
-        x: 2670
-        y: 0
-        width: 1335
-        height: 1650
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 9b5e70735d4bb51a0800000000000000
-      internalID: -6819658382878186055
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Bossmonsteranimationsprite_3
-      rect:
-        serializedVersion: 2
-        x: 4005
-        y: 0
-        width: 1335
-        height: 1650
-      alignment: 0
-      pivot: {x: 0.5, y: 0.5}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 167f4d1957ecdcfd0800000000000000
-      internalID: -2319971228672788639
+      spriteID: be20ecd9a92fb9e90800000000000000
+      internalID: -7017748848440376597
       vertices: []
       indices: 
       edges: []
@@ -200,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9c5c6039ba9f9a345a4da67140810c56
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -210,10 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Bossmonsteranimationsprite_0: -566520620318188696
-      Bossmonsteranimationsprite_1: -8787050255400968213
-      Bossmonsteranimationsprite_2: -6819658382878186055
-      Bossmonsteranimationsprite_3: -2319971228672788639
+      IntroScreen_0: -7017748848440376597
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 747e74c13a4c4344daf57edc74ff80f6
+guid: fdc450e1c62931c42a5b5984a7da7304
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -46,7 +46,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -113,11 +113,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 1335
-        height: 1650
+        y: 6
+        width: 1331
+        height: 1642
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -135,11 +135,11 @@ TextureImporter:
       rect:
         serializedVersion: 2
         x: 1335
-        y: 0
-        width: 1335
-        height: 1650
+        y: 6
+        width: 1331
+        height: 1642
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -156,12 +156,12 @@ TextureImporter:
       name: Bossmonsteranimationsprite_2
       rect:
         serializedVersion: 2
-        x: 2670
-        y: 0
-        width: 1335
-        height: 1650
+        x: 2665
+        y: 8
+        width: 1331
+        height: 1642
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -178,12 +178,12 @@ TextureImporter:
       name: Bossmonsteranimationsprite_3
       rect:
         serializedVersion: 2
-        x: 4005
-        y: 0
-        width: 1335
-        height: 1650
+        x: 4000
+        y: 10
+        width: 1331
+        height: 1640
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -200,7 +200,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9c5c6039ba9f9a345a4da67140810c56
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 

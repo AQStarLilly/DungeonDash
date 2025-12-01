@@ -1,19 +1,22 @@
 fileFormatVersion: 2
-guid: 747e74c13a4c4344daf57edc74ff80f6
+guid: 1e4ea92798d832c4da9d509f13448de9
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -566520620318188696
-    second: Bossmonsteranimationsprite_0
+      213: 6805386450178760762
+    second: Devinanimationsprite_0
   - first:
-      213: -8787050255400968213
-    second: Bossmonsteranimationsprite_1
+      213: 3784463425570735526
+    second: Devinanimationsprite_1
   - first:
-      213: -6819658382878186055
-    second: Bossmonsteranimationsprite_2
+      213: -1927966653980525440
+    second: Devinanimationsprite_2
   - first:
-      213: -2319971228672788639
-    second: Bossmonsteranimationsprite_3
+      213: 7113486901982998645
+    second: Devinanimationsprite_3
+  - first:
+      213: -3930652064915428078
+    second: Devinanimationsprite_4
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +49,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 0
+    filterMode: 1
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -109,89 +112,111 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Bossmonsteranimationsprite_0
+      name: Devinanimationsprite_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1335
-        height: 1650
+        x: 17
+        y: 6
+        width: 357
+        height: 599
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 86b10045f705328f0800000000000000
-      internalID: -566520620318188696
+      spriteID: a3069228be6917e50800000000000000
+      internalID: 6805386450178760762
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bossmonsteranimationsprite_1
+      name: Devinanimationsprite_1
       rect:
         serializedVersion: 2
-        x: 1335
+        x: 410
         y: 0
-        width: 1335
-        height: 1650
+        width: 345
+        height: 605
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: befd15739502e0680800000000000000
-      internalID: -8787050255400968213
+      spriteID: 6a50a924f6d158430800000000000000
+      internalID: 3784463425570735526
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bossmonsteranimationsprite_2
+      name: Devinanimationsprite_2
       rect:
         serializedVersion: 2
-        x: 2670
+        x: 887
         y: 0
-        width: 1335
-        height: 1650
+        width: 268
+        height: 605
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 9b5e70735d4bb51a0800000000000000
-      internalID: -6819658382878186055
+      spriteID: 08c31b20b8c7e35e0800000000000000
+      internalID: -1927966653980525440
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: Bossmonsteranimationsprite_3
+      name: Devinanimationsprite_3
       rect:
         serializedVersion: 2
-        x: 4005
+        x: 1287
         y: 0
-        width: 1335
-        height: 1650
+        width: 268
+        height: 605
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 167f4d1957ecdcfd0800000000000000
-      internalID: -2319971228672788639
+      spriteID: 570371306ae28b260800000000000000
+      internalID: 7113486901982998645
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Devinanimationsprite_4
+      rect:
+        serializedVersion: 2
+        x: 1629
+        y: 0
+        width: 343
+        height: 605
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 21d6f0fb5c48379c0800000000000000
+      internalID: -3930652064915428078
       vertices: []
       indices: 
       edges: []
@@ -200,7 +225,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 9c5c6039ba9f9a345a4da67140810c56
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -210,10 +235,11 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Bossmonsteranimationsprite_0: -566520620318188696
-      Bossmonsteranimationsprite_1: -8787050255400968213
-      Bossmonsteranimationsprite_2: -6819658382878186055
-      Bossmonsteranimationsprite_3: -2319971228672788639
+      Devinanimationsprite_0: 6805386450178760762
+      Devinanimationsprite_1: 3784463425570735526
+      Devinanimationsprite_2: -1927966653980525440
+      Devinanimationsprite_3: 7113486901982998645
+      Devinanimationsprite_4: -3930652064915428078
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
