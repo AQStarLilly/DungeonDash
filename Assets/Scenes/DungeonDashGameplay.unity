@@ -6182,7 +6182,7 @@ MonoBehaviour:
   gameplayMusic: {fileID: 8300000, guid: e5ae4e5b8ad39a44eb879c8fbbe10901, type: 3}
   bossMusic: {fileID: 8300000, guid: 8d6870e0957b8fb49913ef0d1117a2d8, type: 3}
   sfxSource: {fileID: 902689067}
-  buttonClick: {fileID: 8300000, guid: 03098887ce9357e43b6a5639bee5193a, type: 3}
+  buttonClick: {fileID: 8300000, guid: d75a287f5543de945b81b2696a69ee15, type: 3}
   upgradePurchase: {fileID: 8300000, guid: 4bcc04d5d5c02e9468d8feafa7641504, type: 3}
   announcerSound: {fileID: 8300000, guid: d69e059cbf5b8ec4dbb5b30324336072, type: 3}
   playerAttack: {fileID: 8300000, guid: aa9042c5318f4204893fda83d773d91d, type: 3}
@@ -6304,7 +6304,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.8
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
