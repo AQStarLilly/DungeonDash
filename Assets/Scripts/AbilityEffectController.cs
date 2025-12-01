@@ -62,16 +62,26 @@ public class AbilityEffectController : MonoBehaviour
         float t = 0f;
 
         Vector3 start = proj.transform.position;
-        Vector3 end = enemy.position + new Vector3(0f, 0.5f, 0f);
 
         while (t < duration)
         {
+            // if enemy died or was destroyed - kill projectile immediately
+            if (enemy == null)
+            {
+                Destroy(proj);
+                yield break;
+            }
+
             t += Time.deltaTime;
             float progress = t / duration;
+
+            Vector3 end = enemy.position + new Vector3(0f, 0.5f, 0f);
             proj.transform.position = Vector3.Lerp(start, end, progress);
+
             yield return null;
         }
 
+        // Final safety
         Destroy(proj);
     }
 }
