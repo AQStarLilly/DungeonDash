@@ -4,58 +4,88 @@ using static GameManager;
 
 public class UIManager : MonoBehaviour
 {
-    public GameObject mainMenuUI;
-    public GameObject gameplayUI;
-    public GameObject pausePanel;
-    public GameObject gameInstructionsUI;
-    public GameObject mainMenuOptionsUI;
-    public GameObject pauseMenuOptionsUI;
-    public GameObject upgradesUI;
-    public GameObject resultsUI;
-    public GameObject creditsUI;
-    public GameObject winUI;
+    [Header("UI Screens")]
+    [SerializeField] private GameObject mainMenuUI;
+    [SerializeField] private GameObject gameplayUI;
+    [SerializeField] private GameObject pausePanel;
+    [SerializeField] private GameObject gameInstructionsUI;
+    [SerializeField] private GameObject mainMenuOptionsUI;
+    [SerializeField] private GameObject pauseMenuOptionsUI;
+    [SerializeField] private GameObject upgradesUI;
+    [SerializeField] private GameObject resultsUI;
+    [SerializeField] private GameObject creditsUI;
+    [SerializeField] private GameObject winUI;
 
     [Header("Main Menu Button")]
-    public Button loadGameButton;
+    [SerializeField] private Button loadGameButton;
+    public Button LoadGameButton => loadGameButton;
 
     [Header("Background Reference")]
-    public ScrollingBackground scrollingBackground;
+    [SerializeField] private ScrollingBackground scrollingBackground;
 
     [Header("Popups")]
-    public ConfirmPopup confirmPopup;
+    [SerializeField] private ConfirmPopup confirmPopup;
 
+    private GameObject[] allScreens;
 
+    private void Awake()
+    {
+        // Cache screens for cleaner logic later
+        allScreens = new[]
+        {
+            mainMenuUI, gameplayUI, pausePanel, gameInstructionsUI,
+            mainMenuOptionsUI, pauseMenuOptionsUI, upgradesUI,
+            resultsUI, creditsUI, winUI
+        };
+    }
+
+    // --- Public Methods ---
     public void UpdateUI(GameState state)
     {
-        // Disable all
-        mainMenuUI.SetActive(false);
-        gameplayUI.SetActive(false);
-        gameInstructionsUI.SetActive(false);
-        mainMenuOptionsUI.SetActive(false);
-        pauseMenuOptionsUI.SetActive(false);
-        upgradesUI.SetActive(false);
-        resultsUI.SetActive(false);
-        creditsUI.SetActive(false);
-        winUI.SetActive(false);
+        DisableAllScreens();
 
-        pausePanel.SetActive(false);
-
-        // Enable current
         switch (state)
         {
-            case GameState.MainMenu: mainMenuUI.SetActive(true); break;
-            case GameState.Gameplay: gameplayUI.SetActive(true); break;
-            case GameState.Pause:
-                gameplayUI.SetActive(true);
-                pausePanel.SetActive(true);
+            case GameState.MainMenu:
+                Activate(mainMenuUI);
                 break;
-            case GameState.Instructions: gameInstructionsUI.SetActive(true); break;
-            case GameState.MainMenuOptions: mainMenuOptionsUI.SetActive(true); break;
-            case GameState.PauseMenuOptions: pauseMenuOptionsUI.SetActive(true); break;
-            case GameState.Upgrades: upgradesUI.SetActive(true); break;
-            case GameState.Results: resultsUI.SetActive(true); break;
-            case GameState.Credits: creditsUI.SetActive(true); break;
-            case GameState.Win: winUI.SetActive(true); break;
+
+            case GameState.Gameplay:
+                Activate(gameplayUI);
+                break;
+
+            case GameState.Pause:
+                Activate(gameplayUI);
+                Activate(pausePanel);
+                break;
+
+            case GameState.Instructions:
+                Activate(gameInstructionsUI);
+                break;
+
+            case GameState.MainMenuOptions:
+                Activate(mainMenuOptionsUI);
+                break;
+
+            case GameState.PauseMenuOptions:
+                Activate(pauseMenuOptionsUI);
+                break;
+
+            case GameState.Upgrades:
+                Activate(upgradesUI);
+                break;
+
+            case GameState.Results:
+                Activate(resultsUI);
+                break;
+
+            case GameState.Credits:
+                Activate(creditsUI);
+                break;
+
+            case GameState.Win:
+                Activate(winUI);
+                break;
         }
     }
 
@@ -67,114 +97,143 @@ public class UIManager : MonoBehaviour
         }
     }
 
+    // --- NAVIGATION FUNCTIONS ---
     public void GoToMainMenu()
     {
-        if (SoundManager.Instance != null)
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
-
+        PlayClick();
         GameManager.Instance.ChangeState(GameState.MainMenu);
     }
 
     public void GoToGameplay(bool fromResume = false, bool fromUpgrades = false)
     {
-        // Only play the announcer and reset scroll if this is a *new run*,
-        // not a resume from pause.
         if (!fromResume)
         {
-            if (SoundManager.Instance != null)
-                SoundManager.Instance.PlaySFX(SoundManager.Instance.announcerSound);
-
-            // Reset background when starting a new run from Upgrades or Main Menu
-            if (scrollingBackground != null)
-                scrollingBackground.ResetScroll();
-            else
-            {
-                // fallback if you forgot to assign it
-                var scroll = Object.FindFirstObjectByType<ScrollingBackground>();
-                if (scroll != null)
-                    scroll.ResetScroll();
-            }
+            PlayStartGameSFX();
+            ResetBackgroundScroll();
         }
 
-        // Tell GameManager whether this is a *fresh run* (from upgrades or main menu)
         GameManager.Instance.StartGameplay(fromUpgrades);
     }
+
     public void GoToPause()
     {
-        if (SoundManager.Instance != null)
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
-
+        PlayClick();
         GameManager.Instance.ChangeState(GameState.Pause);
     }
+
     public void GoToInstructions()
     {
-        if (SoundManager.Instance != null)
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
-
+        PlayClick();
         GameManager.Instance.ChangeState(GameState.Instructions);
     }
+
     public void GoToMainMenuOptions()
     {
-        if (SoundManager.Instance != null)
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
-
+        PlayClick();
         GameManager.Instance.ChangeState(GameState.MainMenuOptions);
     }
+
     public void GoToPauseMenuOptions()
     {
-        if (SoundManager.Instance != null)
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
-
+        PlayClick();
         GameManager.Instance.ChangeState(GameState.PauseMenuOptions);
     }
+
     public void GoToUpgrades()
     {
-        if (SoundManager.Instance != null)
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
-
+        PlayClick();
         GameManager.Instance.ChangeState(GameState.Upgrades);
     }
-    public void GoToResults() => GameManager.Instance.ChangeState(GameState.Results);
+
+    public void GoToResults()
+        => GameManager.Instance.ChangeState(GameState.Results);
+
     public void GoToCredits()
     {
-        if (SoundManager.Instance != null)
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.buttonClick);
+        PlayClick();
         GameManager.Instance.ChangeState(GameState.Credits);
     }
-    public void GoToWin() => GameManager.Instance.ChangeState(GameState.Win);
+
+    public void GoToWin()
+        => GameManager.Instance.ChangeState(GameState.Win);
 
 
-    public void ClearSaveData() //Update this to fix having to double click save button before popup appears
+    // --- Save System Popup ---
+    public void ClearSaveData()
     {
-        if (confirmPopup != null)
-        {
-            confirmPopup.Show("Are you sure you want to delete all save data?",() =>
-                {
-                    // On Confirm
-                    SaveSystem.ClearSave();
-                    GameManager.Instance.currencyManager.totalCurrency = 0;
-                    GameManager.Instance.currencyManager.runCurrency = 0;
-                    GameManager.Instance.progressionManager.ResetLevel();
-                    GameManager.Instance.upgradeManager.ResetUpgrades();
-                    UpdateLoadButtonInteractable(false);
-                    Debug.Log("Save data cleared!");
-                },
-                () =>
-                {
-                    // On Cancel
-                    Debug.Log("Clear save canceled.");
-                }
-            );
-        }
-        else
+        if (confirmPopup == null)
         {
             Debug.LogWarning("ConfirmPopup not assigned in UIManager!");
+            return;
         }
+
+        confirmPopup.Show(
+            "Are you sure you want to delete all save data?",
+            () =>
+            {
+                SaveSystem.ClearSave();
+                var gm = GameManager.Instance;
+
+                gm.currencyManager.totalCurrency = 0;
+                gm.currencyManager.runCurrency = 0;
+                gm.progressionManager.ResetLevel();
+                gm.upgradeManager.ResetUpgrades();
+
+                UpdateLoadButtonInteractable(false);
+
+                Debug.Log("Save data cleared!");
+            },
+            () =>
+            {
+                Debug.Log("Clear save canceled.");
+            }
+        );
     }
 
 
-    // --- Button-friendly shortcuts ---
+    // --- Button-Friendly Shortcuts ---
     public void GoToGameplayFromMenu() => GoToGameplay(false, false);
     public void GoToGameplayFromPause() => GoToGameplay(true, false);
     public void GoToGameplayFromUpgrades() => GoToGameplay(false, true);
+
+
+    // --- Private Helper Methods ---
+    private void DisableAllScreens()
+    {
+        foreach (var screen in allScreens)
+        {
+            if (screen != null)
+                screen.SetActive(false);
+        }
+    }
+
+    private void Activate(GameObject obj)
+    {
+        if (obj != null)
+            obj.SetActive(true);
+    }
+
+    private void PlayClick()
+    {
+        SoundManager.Instance?.PlaySFX(SoundManager.Instance.buttonClick);
+    }
+
+    private void PlayStartGameSFX()
+    {
+        SoundManager.Instance?.PlaySFX(SoundManager.Instance.announcerSound);
+    }
+
+    private void ResetBackgroundScroll()
+    {
+        if (scrollingBackground != null)
+        {
+            scrollingBackground.ResetScroll();
+        }
+        else
+        {
+            // Fallback
+            var scroll = FindFirstObjectByType<ScrollingBackground>();
+            scroll?.ResetScroll();
+        }
+    }
 }
