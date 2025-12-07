@@ -215,12 +215,12 @@ public class UIManager : MonoBehaviour
 
     private void PlayClick()
     {
-        SoundManager.Instance?.PlaySFX(SoundManager.Instance.buttonClick);
+        SoundManager.Instance?.PlayButtonClick();
     }
 
     private void PlayStartGameSFX()
     {
-        SoundManager.Instance?.PlaySFX(SoundManager.Instance.announcerSound);
+        SoundManager.Instance?.PlayAnnouncer();
     }
 
     private void ResetBackgroundScroll()

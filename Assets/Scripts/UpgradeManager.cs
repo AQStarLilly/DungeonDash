@@ -115,7 +115,7 @@ public class UpgradeManager : MonoBehaviour
         {
             up.level++;
             up.permanentlyUnlocked = true;
-            SoundManager.Instance?.PlaySFX(SoundManager.Instance.upgradePurchase);
+            SoundManager.Instance?.PlayUpgradePurchase();
 
             ApplyUpgradeEffect(up);
             UpdateAllButtons();

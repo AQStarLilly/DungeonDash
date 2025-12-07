@@ -319,7 +319,7 @@ public class GameManager : MonoBehaviour
             //
             var (playerDamage, playerCrit) = playerHealth.CalculateAttackDamage();
             currentEnemy.TakeDamage(playerDamage, playerCrit);
-            SoundManager.Instance?.PlaySFX(SoundManager.Instance.playerAttack);
+            SoundManager.Instance?.PlayPlayerAttack();
 
             // Wait briefly for hit animation / damage text
             yield return new WaitForSeconds(0.5f);
@@ -339,11 +339,11 @@ public class GameManager : MonoBehaviour
 
             if (progressionManager.GetCurrentLevel() == progressionManager.GetMaxWaves())
             {
-                SoundManager.Instance?.PlaySFX(SoundManager.Instance.bossAttack);
+                SoundManager.Instance?.PlayBossAttack();
             }
             else
             {
-                SoundManager.Instance?.PlaySFX(SoundManager.Instance.enemyAttack);
+                SoundManager.Instance?.PlayEnemyAttack();
             }
 
             yield return new WaitForSeconds(0.5f);
@@ -376,7 +376,7 @@ public class GameManager : MonoBehaviour
         progressionManager.IncreaseLevel();
         if (progressionManager.GetCurrentLevel() == progressionManager.GetMaxWaves())
         {
-            SoundManager.Instance?.PlaySFX(SoundManager.Instance.bossHowl);
+            SoundManager.Instance?.PlayBossHowl();
         }
 
         var visual = FindFirstObjectByType<WaveNumberVisual>();
@@ -463,7 +463,7 @@ public class GameManager : MonoBehaviour
     private void HandlePlayerDeath(HealthSystem player)
     {
         Debug.Log("[GameManager] HandlePlayerDeath()");
-        SoundManager.Instance?.PlaySFX(SoundManager.Instance.playerDeath);
+        SoundManager.Instance?.PlayPlayerDeath();
 
         if (battleLoop != null)
         {
@@ -508,10 +508,10 @@ public class GameManager : MonoBehaviour
     private void HandleEnemyDeath(HealthSystem enemy)
     {
         Debug.Log("[GameManager] HandleEnemyDeath()");
-        SoundManager.Instance?.PlaySFX(SoundManager.Instance.enemyDeath);
+        SoundManager.Instance?.PlayEnemyDeath();
         if (progressionManager.GetCurrentLevel() >= progressionManager.GetMaxWaves())
         {
-            SoundManager.Instance?.PlaySFX(SoundManager.Instance.bossDeath);
+            SoundManager.Instance?.PlayBossDeath();
         }
 
         // Stop battle loop first

@@ -3,45 +3,50 @@ using System.Collections;
 
 public class SoundManager : MonoBehaviour
 { 
-    public static SoundManager Instance;
+    public static SoundManager Instance { get; private set; }
 
     [Header("Audio Source")]
-    public AudioSource musicSource;
+    [SerializeField] private AudioSource musicSource;
 
     [Header("Music Tracks")]
-    public AudioClip menuMusic;
-    public AudioClip gameplayMusic;
-    public AudioClip bossMusic;
+    [SerializeField] private AudioClip menuMusic;
+    [SerializeField] private AudioClip gameplayMusic;
+    [SerializeField] private AudioClip bossMusic;
 
     [Header("Sound Effects")]
-    public AudioSource sfxSource; // separate source for short effects
+    [SerializeField] private AudioSource sfxSource; 
 
     [Header("UI Sounds")]
-    public AudioClip buttonClick;
-    public AudioClip upgradePurchase;
-    public AudioClip announcerSound;
+    [SerializeField] private AudioClip buttonClick;
+    [SerializeField] private AudioClip upgradePurchase;
+    [SerializeField] private AudioClip announcerSound;
 
     [Header("Player Sounds")]
-    public AudioClip playerAttack;
-    public AudioClip playerDeath;
+    [SerializeField] private AudioClip playerAttack;
+    [SerializeField] private AudioClip playerDeath;
 
     [Header("Enemy Sounds")]
-    public AudioClip enemyAttack;
-    public AudioClip enemyDeath;
+    [SerializeField] private AudioClip enemyAttack;
+    [SerializeField] private AudioClip enemyDeath;
 
     [Header("Boss Sounds")]
-    public AudioClip bossHowl;       // when boss is about to spawn (wave 30)
-    public AudioClip bossAttack;
-    public AudioClip bossDeath;
+    [SerializeField] private AudioClip bossHowl;     
+    [SerializeField] private AudioClip bossAttack;
+    [SerializeField] private AudioClip bossDeath;
 
     [Header("Settings")]
-    public float fadeDuration = 0.7f;
-    private AudioClip currentTrack;
+    [SerializeField] private float fadeDuration = 0.7f;
 
     [Header("Volume Settings")]
-    [Range(0f, 1f)] public float masterVolume = 1f;
+    [Range(0f, 1f)]
+    [SerializeField] private float masterVolume = 1f;
+
     private const string VolumeKey = "MusicVolume";
 
+    private AudioClip currentTrack;
+    private Coroutine fadeCoroutine;
+
+    // --- Unity Methods ---
     private void Awake()
     {
         if (Instance == null)
@@ -60,6 +65,12 @@ public class SoundManager : MonoBehaviour
     {
         if (musicSource == null)
             musicSource = GetComponent<AudioSource>();
+
+        if (PlayerPrefs.HasKey(VolumeKey))
+            masterVolume = PlayerPrefs.GetFloat(VolumeKey);
+
+        if (musicSource != null)
+            musicSource.volume = masterVolume;
     }
 
     /// <summary>
@@ -91,34 +102,85 @@ public class SoundManager : MonoBehaviour
             default:
                 return;
         }
-        if (nextTrack != null && musicSource.clip != nextTrack)
-        {
-            StartCoroutine(FadeAndSwitch(nextTrack));
-        }
+        if (nextTrack != null && nextTrack != currentTrack)
+            StartFade(nextTrack);
     }
 
     public void PlayBossMusic()
     {
         if (bossMusic != null && bossMusic != currentTrack)
         {
-            StartCoroutine(FadeAndSwitch(bossMusic));
+            StartFade(bossMusic);
         }
     }
 
     public void PlaySFX(AudioClip clip, float volume = 1f)
     {
-        if (clip == null || sfxSource == null) return;
+        if (clip == null)
+        {
+            Debug.LogWarning("[SoundManager] Attempted to play a null SFX clip.");
+            return;
+        }
+
+        if (sfxSource == null)
+        {
+            Debug.LogWarning("[SoundManager] No SFX AudioSource assigned.");
+            return;
+        }
+
         sfxSource.PlayOneShot(clip, volume * masterVolume);
+    }
+
+    public void SetVolume(float value)
+    {
+        masterVolume = Mathf.Clamp01(value);
+
+        if (musicSource != null)
+            musicSource.volume = masterVolume;
+
+        PlayerPrefs.SetFloat(VolumeKey, masterVolume);
+        PlayerPrefs.Save();
+    }
+
+    public float GetVolume() => masterVolume;
+
+    public void PlayButtonClick() => PlaySFX(buttonClick);
+    public void PlayUpgradePurchase() => PlaySFX(upgradePurchase);
+    public void PlayAnnouncer() => PlaySFX(announcerSound);
+
+    public void PlayPlayerAttack() => PlaySFX(playerAttack);
+    public void PlayPlayerDeath() => PlaySFX(playerDeath);
+
+    public void PlayEnemyAttack() => PlaySFX(enemyAttack);
+    public void PlayEnemyDeath() => PlaySFX(enemyDeath);
+
+    public void PlayBossHowl() => PlaySFX(bossHowl);
+    public void PlayBossAttack() => PlaySFX(bossAttack);
+    public void PlayBossDeath() => PlaySFX(bossDeath);
+
+    // --- Internal Utilities ---
+    private void StartFade(AudioClip nextTrack)
+    {
+        if (fadeCoroutine != null)
+            StopCoroutine(fadeCoroutine);
+
+        fadeCoroutine = StartCoroutine(FadeAndSwitch(nextTrack));
     }
 
     private IEnumerator FadeAndSwitch(AudioClip nextTrack)
     {
-        if (musicSource == null) yield break;
+        if (musicSource == null)
+        {
+            Debug.LogWarning("[SoundManager] No music source found.");
+            yield break;
+        }
+
+        currentTrack = nextTrack;
 
         float startVolume = musicSource.volume;
 
-        // Fade OUT using unscaledDeltaTime
-        for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
+        // Fade OUT
+        for (float t = 0f; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
             float progress = fadeDuration <= 0f ? 1f : t / fadeDuration;
             musicSource.volume = Mathf.Lerp(startVolume, 0f, progress);
@@ -129,12 +191,12 @@ public class SoundManager : MonoBehaviour
         musicSource.clip = nextTrack;
         musicSource.Play();
 
-        // Re-apply the current saved volume before fading in
-        float targetVolume = PlayerPrefs.GetFloat("MusicVolume", masterVolume);
-        masterVolume = targetVolume; // sync the internal variable
+        // Refresh saved volume
+        float targetVolume = PlayerPrefs.GetFloat(VolumeKey, masterVolume);
+        masterVolume = targetVolume;
 
-        // Fade IN using unscaledDeltaTime
-        for (float t = 0; t < fadeDuration; t += Time.unscaledDeltaTime)
+        // Fade IN
+        for (float t = 0f; t < fadeDuration; t += Time.unscaledDeltaTime)
         {
             float progress = fadeDuration <= 0f ? 1f : t / fadeDuration;
             musicSource.volume = Mathf.Lerp(0f, targetVolume, progress);
@@ -142,28 +204,7 @@ public class SoundManager : MonoBehaviour
         }
 
         musicSource.volume = targetVolume;
-    }
-
-    public void SetVolume(float value)
-    {
-        masterVolume = Mathf.Clamp01(value);
-        if (musicSource != null)
-            musicSource.volume = masterVolume;
-        PlayerPrefs.SetFloat(VolumeKey, masterVolume);
-        PlayerPrefs.Save();
-    }
-
-    public float GetVolume()
-    {
-        return masterVolume;
-    }
-
-    private void OnEnable()
-    {
-        if (PlayerPrefs.HasKey(VolumeKey))
-            masterVolume = PlayerPrefs.GetFloat(VolumeKey);
-        if (musicSource != null)
-            musicSource.volume = masterVolume;
+        fadeCoroutine = null;
     }
 }
 
